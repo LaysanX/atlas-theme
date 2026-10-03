@@ -14,8 +14,7 @@ Liquid-like subset, not a promise of full Liquid compatibility.
 
 ## Quick start
 
-1. Choose **Code > Download ZIP** here, or download the
-   [import-ready release ZIP](https://github.com/LaysanX/atlas-theme/releases/latest/download/laysanx-atlas-v2.0.1.zip).
+1. Choose **Code > Download ZIP** here. The GitHub archive is import-ready.
 2. In LaysanX Client Admin, open **Appearance & Themes** and upload the ZIP
    directly. Do not unpack or repackage the GitHub ZIP.
 3. Review the theme security audit, preview the theme, and publish it when
