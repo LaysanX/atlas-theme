@@ -15,7 +15,7 @@ Liquid-like subset, not a promise of full Liquid compatibility.
 ## Quick start
 
 1. Choose **Code > Download ZIP** here, or download the
-   [import-ready release ZIP](https://github.com/LaysanX/atlas-theme/releases/latest/download/laysanx-atlas-v2.0.0.zip).
+   [import-ready release ZIP](https://github.com/LaysanX/atlas-theme/releases/latest/download/laysanx-atlas-v2.0.1.zip).
 2. In LaysanX Client Admin, open **Appearance & Themes** and upload the ZIP
    directly. Do not unpack or repackage the GitHub ZIP.
 3. Review the theme security audit, preview the theme, and publish it when
@@ -37,7 +37,7 @@ atlas-theme/
   assets/js/main.js         # interactive behavior
 ```
 
-The [manifest](theme.json) is the source of truth for the 38 registered page
+The [manifest](theme.json) is the source of truth for the 39 registered page
 templates and 31 declared section schemas. There are additional helper
 partials in `sections/`. Keep manifest paths and files in sync if you rename
 or add templates.
@@ -46,7 +46,7 @@ or add templates.
 
 | Area | Atlas templates |
 | --- | --- |
-| Website | `home`, `page`, `custom-section-detail`, `contact` |
+| Website | `home`, `page`, `custom-section-detail`, `contact`, dedicated `clients` (`/client` or `/clients`) |
 | Content | service, product, project, blog, news, event, job, and team list/detail pages; career, FAQ, gallery, pricing, and notifications |
 | Commerce | `cart`, `checkout`, `order-success`, `orders`, `returns` |
 | Customer | `customer-account`, `customer-profile`, `customer-orders`, `customer-addresses`, `customer-wishlist`, `customer-change-password` |

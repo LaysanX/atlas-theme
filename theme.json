@@ -1,7 +1,7 @@
 {
   "name": "LaysanX Atlas",
   "handle": "laysanx-atlas",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "status": "draft",
   "author": "Laysan Technologies",
   "type": "standalone-html",
@@ -38,6 +38,7 @@
     "job-list": "templates/job-list.html",
     "job-detail": "templates/job-detail.html",
     "team-list": "templates/team-list.html",
+    "clients": "templates/clients.html",
     "team-detail": "templates/team-detail.html",
     "career-list": "templates/career-list.html",
     "faq-list": "templates/faq-list.html",
