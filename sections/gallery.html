@@ -1,0 +1,36 @@
+{% assign section_data = section | default: section_controls.gallery %}
+<section class="{{ section_class | default: section_data.section_class | default: 'section-inner-page' }}" data-reveal>
+  <div class="shell" data-gallery-collection>
+    {% if section_data.kicker != blank or section_data.title != blank or section_data.subtitle != blank %}
+      <div class="section-head">
+        <div>
+          {% if section_data.kicker != blank or section_data.title != blank %}<span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>{% endif %}
+          {% if section_data.subtitle != blank %}<div class="partner-label">{{ section_data.subtitle }}</div>{% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="gallery-filter-bar" data-gallery-filters aria-label="Gallery categories">
+      <button type="button" class="gallery-filter-tab is-active" data-gallery-filter="all" aria-pressed="true">All</button>
+    </div>
+    <div class="gallery-grid gallery-section-grid" data-gallery-grid{% if section_data.columns > 0 %} style="grid-template-columns: repeat({{ section_data.columns }}, minmax(0, 1fr));"{% endif %}>
+      {% for item in gallery limit: section_data.count %}
+        {% if item.image != blank %}<article class="gallery-card gallery-section-card" data-reveal data-gallery-item data-gallery-category="{{ item.category | default: item.category_title | escape }}">
+          <button type="button"
+                  class="gallery-lightbox-trigger"
+                  data-gallery-trigger
+                  data-gallery-src="{{ item.image | escape }}"
+                  data-gallery-title="{{ item.title | escape }}"
+                  data-gallery-category="{{ item.category | default: item.category_title | default: 'Gallery' | escape }}"
+                  aria-label="View {{ item.title | default: 'gallery image' | escape }}">
+            <img src="{{ item.image | escape }}" alt="{{ item.title | default: 'Gallery image' | escape }}" loading="lazy" />
+          </button>
+          <div class="masonry-card-body gallery-section-body">
+            {% if item.category != blank or item.category_title != blank %}<span class="insight-meta"><span>{{ item.category | default: item.category_title | escape }}</span></span>{% endif %}
+            {% if item.title != blank %}<h3>{{ item.title | escape }}</h3>{% endif %}
+          </div>
+        </article>{% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>

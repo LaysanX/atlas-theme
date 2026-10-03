@@ -1,0 +1,328 @@
+{
+  "name": "LaysanX Atlas",
+  "handle": "laysanx-atlas",
+  "version": "2.0.0",
+  "status": "draft",
+  "author": "Laysan Technologies",
+  "type": "standalone-html",
+  "engine": "liquid-like",
+  "frameworks": [
+    "bootstrap-5",
+    "gsap"
+  ],
+  "description": "Standalone HTML reference theme built from the internal TheLiaison source of truth.",
+  "sourcePolicy": {
+    "origin": "internal-the-liaison-source-of-truth",
+    "copiedFrom": "LaysanX internal TheLiaison theme",
+    "notes": "CSS and JavaScript foundation assets are taken directly from the internal .NET theme for exact UI/UX parity."
+  },
+  "assetRoot": "assets",
+  "templateRoot": "templates",
+  "sectionRoot": "sections",
+  "supportedTemplates": {
+    "home": "templates/home.html",
+    "page": "templates/page.html",
+    "custom-section-detail": "templates/custom-section-detail.html",
+    "service-list": "templates/service-list.html",
+    "service-detail": "templates/service-detail.html",
+    "product-list": "templates/product-list.html",
+    "product-detail": "templates/product-detail.html",
+    "project-list": "templates/project-list.html",
+    "project-detail": "templates/project-detail.html",
+    "blog-list": "templates/blog-list.html",
+    "blog-detail": "templates/blog-detail.html",
+    "news-list": "templates/news-list.html",
+    "news-detail": "templates/news-detail.html",
+    "event-list": "templates/event-list.html",
+    "event-detail": "templates/event-detail.html",
+    "job-list": "templates/job-list.html",
+    "job-detail": "templates/job-detail.html",
+    "team-list": "templates/team-list.html",
+    "team-detail": "templates/team-detail.html",
+    "career-list": "templates/career-list.html",
+    "faq-list": "templates/faq-list.html",
+    "gallery": "templates/gallery.html",
+    "faq": "templates/faq.html",
+    "pricing": "templates/pricing.html",
+    "pricing-list": "templates/pricing-list.html",
+    "contact": "templates/contact.html",
+    "cart": "templates/cart.html",
+    "checkout": "templates/checkout.html",
+    "order-success": "templates/order-success.html",
+    "orders": "templates/orders.html",
+    "returns": "templates/returns.html",
+    "customer-account": "templates/customer-account.html",
+    "customer-profile": "templates/customer-profile.html",
+    "customer-orders": "templates/customer-orders.html",
+    "customer-addresses": "templates/customer-addresses.html",
+    "customer-wishlist": "templates/customer-wishlist.html",
+    "customer-change-password": "templates/customer-change-password.html",
+    "notification-list": "templates/notification-list.html"
+  },
+  "sectionSchemas": {
+    "header": {
+      "file": "sections/header.html",
+      "dynamicFields": [
+        "topbar_email",
+        "topbar_phone",
+        "topbar_links",
+        "topbar_html",
+        "brand_name",
+        "brand_logo",
+        "brand_tagline",
+        "nav_items",
+        "primary_cta_url",
+        "primary_cta_label"
+      ]
+    },
+    "hero": {
+      "file": "sections/hero.html",
+      "dynamicFields": [
+        "kicker",
+        "title",
+        "description",
+        "primary_button_text",
+        "primary_button_url",
+        "secondary_button_text",
+        "secondary_button_url",
+        "slides",
+        "metrics",
+        "image_url",
+        "image_alt"
+      ]
+    },
+    "introduction": {
+      "file": "sections/introduction.html",
+      "dynamicFields": [
+        "kicker",
+        "title",
+        "subtitle",
+        "html",
+        "image_url",
+        "image_alt"
+      ]
+    },
+    "footer": {
+      "file": "sections/footer.html",
+      "dynamicFields": [
+        "footer_logo",
+        "footer_about",
+        "footer_links_one",
+        "footer_links_two",
+        "footer_address",
+        "footer_email",
+        "footer_phone",
+        "newsletter_action",
+        "system_status"
+      ]
+    },
+    "logos": {
+      "file": "sections/logos.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "clients": {
+      "file": "sections/clients.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "partners": {
+      "file": "sections/partners.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "collections": {
+      "file": "sections/collections.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "services": {
+      "file": "sections/services.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "link_text", "link_url", "items"]
+    },
+    "products": {
+      "file": "sections/products.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "link_text", "link_url", "items"]
+    },
+    "product_gallery": {
+      "file": "sections/product-gallery.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "projects": {
+      "file": "sections/projects.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "link_text", "link_url", "items"]
+    },
+    "pricing": {
+      "file": "sections/pricing.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "link_text", "link_url", "items"]
+    },
+    "testimonials": {
+      "file": "sections/testimonials.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "trust_badges": {
+      "file": "sections/trust-badges.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "jobs": {
+      "file": "sections/jobs.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "blogs": {
+      "file": "sections/blogs.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "news": {
+      "file": "sections/news.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "faqs": {
+      "file": "sections/faqs.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "contact_form": {
+      "file": "sections/contact-form.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "html", "fields"]
+    },
+    "auxiliaries": {
+      "file": "sections/auxiliaries.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "detail_faqs": {
+      "file": "sections/detail-faqs.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "events": {
+      "file": "sections/events.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "gallery": {
+      "file": "sections/gallery.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "marketing": {
+      "file": "sections/marketing.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "notifications": {
+      "file": "sections/notifications.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "related_products": {
+      "file": "sections/related-products.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "related_projects": {
+      "file": "sections/related-projects.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "related_services": {
+      "file": "sections/related-services.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "team": {
+      "file": "sections/team.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    },
+    "teams": {
+      "file": "sections/teams.html",
+      "dynamicFields": ["kicker", "title", "subtitle", "items"]
+    }
+  },
+  "dynamicRegionBindings": {
+    "site": [
+      "topbar_email",
+      "topbar_phone",
+      "topbar_links",
+      "topbar_html",
+      "brand_name",
+      "brand_logo",
+      "brand_tagline",
+      "primary_cta_url",
+      "primary_cta_label",
+      "secondary_cta_url",
+      "secondary_cta_label",
+      "footer_about",
+      "footer_address",
+      "footer_email",
+      "footer_phone",
+      "footer_links_one",
+      "footer_links_two",
+      "copyright"
+    ],
+    "page": [
+      "title",
+      "subtitle",
+      "description",
+      "content",
+      "custom_html_sections"
+    ],
+    "hero": [
+      "kicker",
+      "title",
+      "description",
+      "slides",
+      "metrics",
+      "image_url",
+      "image_alt",
+      "primary_button_url",
+      "primary_button_text",
+      "secondary_button_url",
+      "secondary_button_text"
+    ],
+    "sections": [
+      "header",
+      "hero",
+      "introduction",
+      "footer",
+      "logos",
+      "clients",
+      "partners",
+      "collections",
+      "services",
+      "products",
+      "product_gallery",
+      "projects",
+      "pricing",
+      "testimonials",
+      "trust_badges",
+      "jobs",
+      "blogs",
+      "news",
+      "faqs",
+      "contact_form",
+      "auxiliaries",
+      "detail_faqs",
+      "events",
+      "gallery",
+      "marketing",
+      "notifications",
+      "related_products",
+      "related_projects",
+      "related_services",
+      "team",
+      "teams"
+    ]
+  },
+  "settingsContract": {
+    "header_layout_type": [
+      "header-above-hero",
+      "overlay-header",
+      "left-sidebar-header",
+      "center-logo-header"
+    ],
+    "slider_layout_type": [
+      "text-left-slider-right",
+      "text-top-three-cards",
+      "fullpage-slider",
+      "banner-single",
+      "video-hero",
+      "static-hero"
+    ],
+    "header_transparent_on_hero": "boolean",
+    "header_sticky": "boolean",
+    "header_cta_text": "string",
+    "header_cta_url": "url",
+    "product_detail_layout_type": [
+      "slider-left-content-right",
+      "full-slider-content-below",
+      "image-right-content-left"
+    ]
+  }
+}

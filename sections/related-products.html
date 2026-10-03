@@ -1,0 +1,18 @@
+<section class="section-inner-page" data-reveal>
+  <div class="shell">
+    <div class="section-head compact">
+      <div>
+        {% if section.title %}<span class="eyebrow">{{ section.title }}</span>{% endif %}
+        {% if section.subtitle %}<h2>{{ section.subtitle }}</h2>{% endif %}
+      </div>
+    </div>
+    <div class="mini-list">
+      {% for item in related_products %}
+        <a href="{{ site.base_path }}/{{ item.slug }}" class="mini-list-item">
+          <strong>{{ item.title }}</strong>
+          <span>{{ item.sub_title }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>

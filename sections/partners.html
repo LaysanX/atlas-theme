@@ -1,0 +1,18 @@
+{% assign section_data = section | default: section_controls.partners %}
+<section class="section partner-strip" data-reveal>
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        {% if section_data.kicker or section_data.title %}<span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>{% endif %}
+        {% if section_data.subtitle or section_data.title %}<h2>{{ section_data.subtitle | default: section_data.title }}</h2>{% endif %}
+      </div>
+    </div>
+    <div class="partner-grid">
+      {% for item in partners %}
+        <article class="partner-logo" data-reveal>
+          {% if item.logo != blank %}<img src="{{ item.logo }}" alt="{{ item.name }}" />{% elsif item.image != blank %}<img src="{{ item.image }}" alt="{{ item.name }}" />{% else %}<span>{{ item.name }}</span>{% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

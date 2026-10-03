@@ -1,0 +1,23 @@
+<section class="section-inner-page" data-reveal>
+  <div class="shell">
+    <div class="section-head compact faq-section-head">
+      <div>
+        {% if section.title %}<span class="eyebrow">{{ section.title }}</span>{% endif %}
+        {% if section.subtitle %}<h2>{{ section.subtitle }}</h2>{% endif %}
+      </div>
+    </div>
+    <div class="faq-list faq-list-detail" data-accordion>
+      {% for faq in detail_faqs %}
+        <article class="faq-item {% if forloop.first %}is-open{% endif %}">
+          <button type="button" class="faq-trigger" data-accordion-trigger>
+            <span>{{ faq.question }}</span>
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-panel" data-accordion-panel>
+            <div>{{ faq.answer }}</div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

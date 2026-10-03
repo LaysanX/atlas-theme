@@ -1,0 +1,21 @@
+{% assign items = marketing.items %}
+{% if items and items.size > 0 or marketing.title or marketing.subtitle %}
+<section class="{{ marketing.section_class | default: 'section' }}" data-reveal>
+  <div class="shell">
+    <div class="section-head">
+      {% if marketing.kicker or marketing.title %}<span class="eyebrow">{{ marketing.kicker | default: marketing.title }}</span>{% endif %}
+      {% if marketing.subtitle %}<h2>{{ marketing.subtitle }}</h2>{% endif %}
+    </div>
+    <div class="{{ marketing.grid_class | default: 'trust-grid' }}">
+      {% for item in items %}
+        <article class="marketing-card" data-reveal>
+          {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
+          {% if item.title %}<h3>{{ item.title }}</h3>{% endif %}
+          {% if item.subheading %}<p>{{ item.subheading }}</p>{% elsif item.subtitle %}<p>{{ item.subtitle }}</p>{% elsif item.description %}<div>{{ item.description | raw }}</div>{% endif %}
+          {% if item.cta_text and item.cta_url %}<a href="{{ item.cta_url }}" class="tile-link">{{ item.cta_text }}</a>{% elsif item.cta_title and item.cta_url %}<a href="{{ item.cta_url }}" class="tile-link">{{ item.cta_title }}</a>{% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

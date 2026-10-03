@@ -1,0 +1,36 @@
+{% assign section_data = section | default: section_controls.products %}
+{% assign items = listing_products | default: products %}
+{% if items and items.size > 0 or section_data.kicker or section_data.title or section_data.subtitle %}
+<section class="section section-solutions" data-reveal>
+  <div class="shell">
+    <div class="section-head">
+      {% if section_data.kicker or section_data.title %}
+        <span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>
+      {% endif %}
+      {% if section_data.subtitle or section_data.title %}<h2>{{ section_data.subtitle | default: section_data.title }}</h2>{% endif %}
+      {% if link_text and link_url %}<a href="{{ link_url }}" class="text-link">{{ link_text }}</a>{% endif %}
+    </div>
+    <div class="home-product-grid"{% if section_data.columns %} style="grid-template-columns: repeat({{ section_data.columns }}, minmax(0, 1fr));"{% endif %}>
+      {% for product in items limit: section_data.count %}
+        <article class="home-product-card" data-reveal>
+          <a href="{{ product.url | default: product.slug | default: '/' }}" class="card-link-wrap">
+            <div class="home-product-media-wrap">
+              {% if product.image %}
+                <img src="{{ product.image }}" alt="{{ product.title }}" class="home-product-media">
+              {% else %}
+                <div class="home-product-media home-product-fallback"><div class="service-tile-icon"><i class="{{ product.icon | default: 'fas fa-box-open' }}"></i></div></div>
+              {% endif %}
+              <div class="home-product-badge">Solution</div>
+            </div>
+            <div class="home-product-body">
+              <h3>{{ product.title }}</h3>
+              <div class="home-product-copy">{{ product.short_description | default: product.subtitle | raw }}</div>
+              <div class="home-product-footer"><span class="tile-link">View more</span></div>
+            </div>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

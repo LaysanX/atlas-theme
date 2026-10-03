@@ -1,0 +1,44 @@
+{% assign items = collections | default: collection_items %}
+{% if items and items.size > 0 %}
+<section class="section surface-strip" data-reveal>
+  <div class="container-fluid px-3 px-lg-4">
+    <div class="section-head mb-4">
+      <div>
+        {% if section.kicker or section.title %}<span class="eyebrow">{{ section.kicker | default: section.title }}</span>{% endif %}
+        {% if section.subtitle or section.title %}<h2>{{ section.subtitle | default: section.title }}</h2>{% endif %}
+      </div>
+      {% if section.description %}<p class="text-muted mb-0">{{ section.description }}</p>{% endif %}
+    </div>
+
+    <div class="row g-4">
+      {% for item in items limit: section.count %}
+        <div class="col-12 col-md-6 col-xl-3">
+          <a href="{{ item.cta_url | default: item.url | default: '/products' }}" class="text-decoration-none d-block h-100">
+            <article class="h-100 border-0 shadow-sm bg-white p-4" style="border-radius: 12px;">
+              {% if item.image != blank %}
+                <div class="mb-4 overflow-hidden" style="border-radius: 10px;">
+                  <img src="{{ item.image }}" alt="{{ item.heading | default: item.title }}" style="width:100%;height:180px;object-fit:cover;">
+                </div>
+              {% endif %}
+              <div class="d-flex align-items-start justify-content-between mb-3">
+                <div>
+                  <h3 class="h5 text-dark mb-0">{{ item.heading | default: item.title }}</h3>
+                </div>
+              </div>
+              {% if item.description != blank %}
+                <p class="text-muted mb-4">{{ item.description | strip_html | truncate: 120 }}</p>
+              {% else %}
+                {% if item.description != blank %}<p class="text-muted mb-4">{{ item.description }}</p>{% endif %}
+              {% endif %}
+              <div class="d-flex align-items-center text-primary font-weight-bold">
+                {% if item.cta_text != blank %}<span>{{ item.cta_text }}</span>{% endif %}
+                <i class="fas fa-arrow-right ml-2"></i>
+              </div>
+            </article>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

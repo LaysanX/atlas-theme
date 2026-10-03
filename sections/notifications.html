@@ -1,0 +1,17 @@
+<section class="section-inner-page" data-reveal>
+  <div class="shell">
+    <div class="notification-stack">
+      {% for item in notifications %}
+        <article class="content-card notification-card" data-reveal>
+          <div class="notification-card-head">
+            <h3>{{ item.title }}</h3>
+          </div>
+          {% if item.url != blank %}
+            <a href="{{ item.url }}" class="tile-link" aria-label="{{ item.title }}"><i class="fas fa-arrow-right"></i></a>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+

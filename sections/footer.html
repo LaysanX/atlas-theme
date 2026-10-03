@@ -1,0 +1,100 @@
+{% assign site_name = site.name | default: "LaysanX" %}
+{% assign footer_data = site.footer | default: footer %}
+{% assign footer_bg = footer_data.background_color | default: '#0f1a2c' %}
+{% assign footer_bottom_bg = footer_data.bottom_background_color | default: '#09111d' %}
+{% if footer_data.status != false and footer_data.enabled != false %}
+<footer class="site-footer" style="background: {{ footer_bg }};">
+  <div class="container-fluid px-3 px-lg-4">
+    <div class="row footer-grid">
+      {% if footer_data.columns and footer_data.columns.size > 0 %}
+        {% for column in footer_data.columns limit: footer_data.section_count %}
+          <div class="col-12 col-md-6 col-lg-3 footer-column">
+            <div class="footer-panel {% if column.type == 'About' or column.type == 'about' %}footer-brand{% endif %}">
+              {% if column.title != blank %}<h4>{{ column.title }}</h4>{% endif %}
+              {% if column.type == 'About' or column.type == 'about' %}
+                {% if column.logo != blank or footer_data.logo != blank %}
+                <img src="{{ column.logo | default: footer_data.logo }}" alt="{{ site_name }} footer logo" class="footer-logo" />
+                {% endif %}
+                <div class="footer-richtext">{{ footer_data.about_html | default: footer_data.about | default: column.html }}</div>
+              {% elsif column.type == "menu" or column.type == "Menu" or column.type == "FooterMenu" or column.type == "Footer Menu" or column.type == "footer_menu" %}
+                <ul class="footer-menu-list">
+                  {% for item in column.items limit: 8 %}
+                    <li class="footer-menu-item"><a href="{{ item.url }}" class="footer-menu-link">{% if item.icon != blank %}<i class="{{ item.icon }}"></i>{% endif %}<span>{{ item.title }}</span></a></li>
+                  {% endfor %}
+                </ul>
+              {% elsif column.type == "contact" or column.type == "ContactSocial" or column.type == "contact_social" %}
+                <ul class="footer-list">
+                  {% if column.html != blank %}<li class="footer-richtext">{{ column.html }}</li>{% endif %}
+                  {% if site.address != blank %}<li>{{ site.address }}</li>{% endif %}
+                  {% if site.phone != blank %}<li><a href="tel:{{ site.phone }}">{{ site.phone }}</a></li>{% endif %}
+                  {% if site.email != blank %}<li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>{% endif %}
+                </ul>
+                {% if social.show_social_links == true and social.links and social.links.size > 0 %}
+                  <div class="footer-social">
+                    {% for link in social.links %}
+                      <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ link.label }}"><i class="{{ link.icon }}"></i></a>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              {% elsif column.type == "html" or column.type == "CustomHtml" or column.type == "custom_html" %}
+                <div class="footer-richtext">{{ column.html }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-12 col-md-6 col-lg-3 footer-column">
+          <div class="footer-panel footer-brand">
+            <h4>{{ footer_data.section_1_title | default: site_name }}</h4>
+            {% if footer_data.logo != blank %}
+              <img src="{{ footer_data.logo }}" alt="{{ site_name }} footer logo" class="footer-logo" />
+            {% endif %}
+            <div class="footer-richtext">{{ footer_data.about_html | default: footer_data.about }}</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 footer-column">
+          <div class="footer-panel">
+            <h4>{{ footer_data.section_2_title }}</h4>
+            <ul class="footer-menu-list">
+              {% for item in menus.footer limit: 5 %}
+                <li class="footer-menu-item"><a href="{{ item.url }}" class="footer-menu-link">{{ item.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 footer-column">
+          <div class="footer-panel">
+            <h4>{{ footer_data.section_3_title }}</h4>
+            <div class="footer-richtext">
+              {{ footer_data.about_html | default: footer_data.about }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 footer-column">
+          <div class="footer-panel">
+            <h4>{{ footer_data.section_4_title }}</h4>
+            <ul class="footer-list">
+              {% if footer_data.address != blank or site.address != blank %}<li>{{ footer_data.address | default: site.address }}</li>{% endif %}
+              {% if footer_data.phone != blank or site.phone != blank %}<li><a href="tel:{{ footer_data.phone | default: site.phone }}">{{ footer_data.phone | default: site.phone }}</a></li>{% endif %}
+              {% if footer_data.email != blank or site.email != blank %}<li><a href="mailto:{{ footer_data.email | default: site.email }}">{{ footer_data.email | default: site.email }}</a></li>{% endif %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="footer-bottom" style="background: {{ footer_bottom_bg }};">
+    <div class="container-fluid px-3 px-lg-4 footer-bottom-row">
+      <div class="footer-bottom-content">{{ footer_data.bottom_html | default: footer_data.copyright | default: copyright_html }}</div>
+      {% if social.show_social_links == true and social.links and social.links.size > 0 %}
+        <div class="footer-bottom-social">
+          {% for link in social.links %}
+            <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ link.label }}"><i class="{{ link.icon }}"></i></a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</footer>
+{% endif %}

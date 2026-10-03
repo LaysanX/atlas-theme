@@ -1,0 +1,14 @@
+{% if assigned_form.id > 0 %}<div class="content-card conversion-form-card inline-form" data-section="inline-form">
+  <h3>{{ assigned_form.heading | default: assigned_form.name }}</h3>
+  <form method="post" action="{{ assigned_form.submit_url }}" class="conversion-form-grid" enctype="multipart/form-data">
+    {{ forms.antiforgery_field | raw }}
+    <input type="hidden" name="formId" value="{{ assigned_form.id }}">
+    <input type="hidden" name="pageName" value="{{ page.title }}">
+    {% for field in assigned_form.fields %}
+      <div class="conversion-field"><label>{{ field.label }}{% if field.required %}*{% endif %}</label>{{ field.input_html | raw }}</div>
+    {% endfor %}
+    {% if assigned_form.captcha_enabled == true %}{{ assigned_form.captcha_html | raw }}{% endif %}
+    <button type="submit" class="btn btn-primary">{{ assigned_form.cta_text | default: 'Submit' }}</button>
+  </form>
+</div>
+{% if assigned_form.captcha_enabled == true %}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{% endif %}{% endif %}

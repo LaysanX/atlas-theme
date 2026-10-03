@@ -1,0 +1,26 @@
+<section class="section-inner-page" data-reveal>
+  <div class="shell">
+    <div class="section-head compact">
+      <div>
+        {% if section.title %}<span class="eyebrow">{{ section.title }}</span>{% endif %}
+        {% if section.subtitle %}<h2>{{ section.subtitle }}</h2>{% endif %}
+      </div>
+    </div>
+    <div class="gallery-grid">
+      {% for image in product_gallery %}
+        <article class="gallery-card">
+          <button type="button"
+                  class="gallery-lightbox-trigger"
+                  data-gallery-trigger
+                  data-gallery-index="{{ forloop.index0 }}"
+                  data-gallery-src="{{ image.src }}"
+                  data-gallery-title="{{ image.title | default: section.title }}"
+                  data-gallery-category="{{ image.category | default: 'Product Gallery' }}">
+            <img src="{{ image.src }}" alt="{{ image.alt | default: image.title }}" />
+          </button>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% render 'sections/auxiliaries.html' %}

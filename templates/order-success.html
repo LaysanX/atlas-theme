@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="{{ site.language | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ seo.title | default: 'Order Successful' }}</title>
+  <meta name="description" content="{{ seo.description | default: 'Review your confirmed order, invoice, and next steps.' }}">
+  <link rel="stylesheet" href="/frontend-assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
+</head>
+<body class="theme-theliaison atlas-page atlas-commerce-page atlas-order-success-page">
+  {% render 'sections/header.html' %}
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Order Success</span>
+        <h1>Thank you, {{ customer.first_name | default: order_success.customer_name | default: 'your order is confirmed' }}.</h1>
+        <p>{{ order_success.message | default: 'We have saved your order details and sent the next-step confirmation.' }}</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container commerce-shell">
+        <div class="commerce-card commerce-form-panel">
+          <div class="d-flex flex-wrap justify-content-between align-items-start mb-3" style="gap:12px;">
+            <div>
+              <span class="eyebrow">Confirmation</span>
+              <h2 style="margin:6px 0 0;">Order {{ order_success.order_number }}</h2>
+            </div>
+            <div class="button-row">
+              <a class="btn btn-primary" href="{{ order_success.invoice_url }}">View Invoice</a>
+              <a class="btn btn-light" href="{{ order_success.orders_url }}">View Orders</a>
+            </div>
+          </div>
+
+          <div class="commerce-grid">
+            <div class="commerce-address">
+              <strong>Placed On</strong>
+              <p>{{ order_success.created_date }}</p>
+            </div>
+            <div class="commerce-address">
+              <strong>Payment</strong>
+              <p>{{ order_success.payment_status }}</p>
+            </div>
+            <div class="commerce-address">
+              <strong>Status</strong>
+              <p>{{ order_success.order_status }}</p>
+            </div>
+            <div class="commerce-address">
+              <strong>Total</strong>
+              <p>{{ order_success.grand_total_formatted }}</p>
+            </div>
+          </div>
+
+          {% if order_success.sub_orders %}
+            <div style="margin-top:22px;">
+              <h3 style="margin-bottom:14px;">Sub Orders</h3>
+              {% for sub_order in order_success.sub_orders %}
+                <div class="commerce-summary-line">
+                  <div>
+                    <strong>{{ sub_order.order_number }}</strong>
+                    <p>{{ sub_order.order_status }} · {{ sub_order.payment_status }}</p>
+                  </div>
+                  <strong>{{ sub_order.grand_total_formatted }}</strong>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <aside class="commerce-card commerce-summary">
+          <span class="eyebrow">Purchased Items</span>
+          {% for item in order_success.items %}
+            <div class="commerce-summary-line">
+              <div>
+                <strong>{{ item.product_title }}</strong>
+                {% if item.variant_title %}<p>{{ item.variant_title }}</p>{% endif %}
+                <small>Qty {{ item.quantity }}</small>
+              </div>
+              <strong>{{ item.line_total_formatted }}</strong>
+            </div>
+          {% endfor %}
+
+          <div class="commerce-summary-row total">
+            <span>Grand Total</span>
+            <strong>{{ order_success.grand_total_formatted }}</strong>
+          </div>
+
+          <a class="btn btn-light" href="{{ order_success.continue_shopping_url }}" style="margin-top:16px;">Continue Shopping</a>
+        </aside>
+      </div>
+    </section>
+  </main>
+  {% render 'sections/footer.html' %}
+  {% render 'sections/auxiliaries.html' %}
+  <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
+</body>
+</html>

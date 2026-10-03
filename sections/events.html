@@ -1,0 +1,31 @@
+<section class="section blog-home-section" data-reveal>
+  <div class="shell">
+    {% if section.title != blank or section.subtitle != blank %}
+      <div class="section-head">
+        <div>
+          {% if section.title != blank %}<span class="eyebrow">{{ section.title }}</span>{% endif %}
+          {% if section.subtitle != blank %}<h2>{{ section.subtitle }}</h2>{% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="news-stack">
+      {% for item in events %}
+        <article class="news-card" data-reveal>
+          {% if item.image != blank %}
+            <div class="news-card-media"><img src="{{ item.image }}" alt="{{ item.title }}" /></div>
+          {% endif %}
+          <div class="news-card-body">
+            <div class="insight-meta">
+              <span>{{ item.event_date_time | default: item.created_date | date: "%d %b %Y" }}</span>
+            </div>
+            <h3>{{ item.title }}</h3>
+            <div class="insight-copy">{{ item.description }}</div>
+            <a href="{{ site.base_path }}/event/{{ item.id }}" class="tile-link" aria-label="{{ item.title }}"><i class="fas fa-arrow-right"></i></a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+

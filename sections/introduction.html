@@ -1,0 +1,30 @@
+<section class="section surface-strip" data-reveal>
+  <div class="container-fluid px-3 px-lg-4">
+    <div class="home-intro-section">
+      <div class="home-intro-head">
+        {% if section.kicker %}<span class="eyebrow">{{ section.kicker }}</span>{% endif %}
+        {% if section.subtitle or section.title %}<h2>{{ section.subtitle | default: section.title }}</h2>{% endif %}
+      </div>
+      <div class="row g-4 align-items-center home-intro-layout">
+        <div class="col-12 col-lg-7">
+          <div class="home-intro-copy">
+            {% if introduction.html %}
+              {{ introduction.html | raw }}
+            {% elsif introduction.description_html %}
+              {{ introduction.description_html | raw }}
+            {% elsif introduction.content %}
+              {{ introduction.content | raw }}
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-12 col-lg-5">
+          <div class="home-intro-visual">
+            {% if introduction.image_url or introduction.image %}
+              <img src="{{ introduction.image_url | default: introduction.image }}" alt="{{ introduction.image_alt | default: introduction.title | default: introduction.subtitle }}">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
