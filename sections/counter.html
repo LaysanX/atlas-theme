@@ -1,3 +1,37 @@
 {% assign section_data = section | default: section_controls.counter %}
 {% assign items = items | default: marketing.items %}
-{% if items and items.size > 0 %}<section class="{{ section_class | default: 'section section-dark' }}" data-section="counter" data-reveal><div class="container-fluid px-3 px-lg-4"><div class="row split-panel"><div class="col-12 col-xl-5 split-copy">{% if section_data.kicker or section_data.title %}<span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>{% endif %}{% if section_data.subtitle or section_data.title %}<h2>{{ section_data.subtitle | default: section_data.title }}</h2>{% endif %}</div><div class="col-12 col-xl-7"><div class="row g-4 value-stack">{% for item in items %}<div class="col-12 col-sm-6"><article data-section-item="counter"><span>{{ item.counter | default: item.title }}</span><h3>{{ item.title | default: item.subheading }}</h3>{% if item.description %}<div>{{ item.description | raw }}</div>{% endif %}</article></div>{% endfor %}</div></div></div></div></section>{% endif %}
+{% if items and items.size > 0 %}
+  <section
+    class="{{ section_class | default: 'section section-dark' }}"
+    data-section="counter"
+    data-reveal
+  >
+    <div class="container-fluid px-3 px-lg-4">
+      <div class="row split-panel">
+        <div class="col-12 col-xl-5 split-copy">
+          {% if section_data.kicker or section_data.title %}
+            <span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>
+          {% endif %}
+          {% if section_data.subtitle or section_data.title %}
+            <h2>{{ section_data.subtitle | default: section_data.title }}</h2>
+          {% endif %}
+        </div>
+        <div class="col-12 col-xl-7">
+          <div class="row g-4 value-stack">
+            {% for item in items %}
+              <div class="col-12 col-sm-6">
+                <article data-section-item="counter">
+                  <span>{{ item.counter | default: item.title }}</span>
+                  <h3>{{ item.title | default: item.subheading }}</h3>
+                  {% if item.description %}
+                    <div>{{ item.description | raw }}</div>
+                  {% endif %}
+                </article>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}

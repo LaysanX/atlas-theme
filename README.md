@@ -157,6 +157,11 @@ composition in `templates/`, `sections/`, `assets/css/style.css`, and
 - variant, gallery, cart, checkout, and customer-account JavaScript hooks;
 - responsive layout, keyboard access, alt text, and visible focus styles.
 
+HTML templates use two-space indentation. Keep Liquid tags as written: the
+LaysanX renderer does not support whitespace-control delimiters such as
+`{%-`, `-%}`, `{{-`, or `-}}`. A generic Liquid formatter may add them, so
+check formatted templates before publishing.
+
 Test both an empty module and a populated module. A missing image, section,
 variant, or form may reflect missing backend data or a disabled admin setting,
 not just CSS.

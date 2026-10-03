@@ -1,48 +1,109 @@
 {% assign section_data = section | default: section_controls.cta %}
 {% assign contact_form = assigned_form | default: forms.contact %}
 {% if contact_form.id > 0 or request.path contains 'contact' %}
-<section class="section atlas-contact-section" data-reveal>
-  <div class="shell contact-layout atlas-contact-layout">
-    <div class="content-card contact-panel">
-      {% assign contact_heading = contact.heading | default: contact.title | default: section_data.title | default: page.title %}
-      {% assign contact_subheading = contact.subheading | default: contact.subtitle | default: section_data.subtitle | default: page.subheading %}
-      <span class="eyebrow">Contact</span>
-      {% if contact_heading != blank %}<h2>{{ contact_heading }}</h2>{% endif %}
-      {% if contact_subheading != blank %}<p>{{ contact_subheading }}</p>{% endif %}
-      {% if page.has_split_form_only == true and page.content != blank %}<div class="rich-content">{{ page.content | raw }}</div>{% endif %}
-      <div class="contact-points">
-        {% if contact.phone != blank %}<a href="tel:{{ contact.phone }}" class="contact-point"><strong>Phone</strong><span>{{ contact.phone }}</span></a>{% endif %}
-        {% if contact.email != blank %}<a href="mailto:{{ contact.email }}" class="contact-point"><strong>Email</strong><span>{{ contact.email }}</span></a>{% endif %}
-        {% if contact.address != blank %}<div class="contact-point"><strong>Address</strong><span>{{ contact.address }}</span></div>{% endif %}
-        {% if contact.hours != blank %}<div class="contact-point"><strong>Hours</strong><span>{{ contact.hours }}</span></div>{% endif %}
+  <section class="section atlas-contact-section" data-reveal>
+    <div class="shell contact-layout atlas-contact-layout">
+      <div class="content-card contact-panel">
+        {% assign contact_heading = contact.heading
+          | default: contact.title
+          | default: section_data.title
+          | default: page.title
+        %}
+        {% assign contact_subheading = contact.subheading
+          | default: contact.subtitle
+          | default: section_data.subtitle
+          | default: page.subheading
+        %}
+        <span class="eyebrow">Contact</span>
+        {% if contact_heading != blank %}
+          <h2>{{ contact_heading }}</h2>
+        {% endif %}
+        {% if contact_subheading != blank %}
+          <p>{{ contact_subheading }}</p>
+        {% endif %}
+        {% if page.has_split_form_only == true and page.content != blank %}
+          <div class="rich-content">{{ page.content | raw }}</div>
+        {% endif %}
+        <div class="contact-points">
+          {% if contact.phone != blank %}
+            <a href="tel:{{ contact.phone }}" class="contact-point">
+              <strong>Phone</strong>
+              <span>{{ contact.phone }}</span>
+            </a>
+          {% endif %}
+          {% if contact.email != blank %}
+            <a href="mailto:{{ contact.email }}" class="contact-point">
+              <strong>Email</strong>
+              <span>{{ contact.email }}</span>
+            </a>
+          {% endif %}
+          {% if contact.address != blank %}
+            <div class="contact-point">
+              <strong>Address</strong>
+              <span>{{ contact.address }}</span>
+            </div>
+          {% endif %}
+          {% if contact.hours != blank %}
+            <div class="contact-point">
+              <strong>Hours</strong>
+              <span>{{ contact.hours }}</span>
+            </div>
+          {% endif %}
+        </div>
+        {% if social.links and social.links.size > 0 %}
+          <div class="topbar-social contact-social-links">
+            {% for link in social.links %}
+              <a href="{{ link.url }}" target="_blank" rel="noopener" aria-label="{{ link.label }}">
+                <i class="{{ link.icon }}"></i>
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
-      {% if social.links and social.links.size > 0 %}
-        <div class="topbar-social contact-social-links">
-          {% for link in social.links %}
-            <a href="{{ link.url }}" target="_blank" rel="noopener" aria-label="{{ link.label }}"><i class="{{ link.icon }}"></i></a>
-          {% endfor %}
+
+      {% if contact_form.id > 0 %}
+        <div class="content-card contact-form-placeholder atlas-contact-form-card">
+          <span class="eyebrow">Send a message</span>
+          <h3>
+            {{ contact.form_title | default: contact_form.heading | default: contact_form.name }}
+          </h3>
+          {% if contact.form_subtitle != blank %}
+            <p>{{ contact.form_subtitle }}</p>
+          {% endif %}
+          <form
+            method="post"
+            action="{{ contact_form.submit_url }}"
+            class="conversion-form-grid"
+            enctype="multipart/form-data"
+          >
+            {{ forms.antiforgery_field | raw }}
+            <input type="hidden" name="formId" value="{{ contact_form.id }}" />
+            <input type="hidden" name="pageName" value="{{ page.title | default: request.path }}" />
+            {% for field in contact_form.fields %}
+              <div class="conversion-field atlas-contact-field">
+                <div class="atlas-contact-field-label">
+                  {{ field.label }}
+                  {% if field.required %}
+                    <span aria-hidden="true">*</span>
+                  {% endif %}
+                </div>
+                {{ field.input_html | raw }}
+              </div>
+            {% endfor %}
+            {% if contact_form.captcha_enabled == true %}
+              {{ contact_form.captcha_html | raw }}
+            {% endif %}
+            <div class="conversion-form-actions">
+              <button type="submit" class="btn btn-primary">
+                {{ contact_form.cta_text | default: 'Send message' }}
+              </button>
+            </div>
+          </form>
         </div>
       {% endif %}
     </div>
-
-    {% if contact_form.id > 0 %}<div class="content-card contact-form-placeholder atlas-contact-form-card">
-        <span class="eyebrow">Send a message</span>
-        <h3>{{ contact.form_title | default: contact_form.heading | default: contact_form.name }}</h3>
-        {% if contact.form_subtitle != blank %}<p>{{ contact.form_subtitle }}</p>{% endif %}
-        <form method="post" action="{{ contact_form.submit_url }}" class="conversion-form-grid" enctype="multipart/form-data">
-          {{ forms.antiforgery_field | raw }}
-          <input type="hidden" name="formId" value="{{ contact_form.id }}" />
-          <input type="hidden" name="pageName" value="{{ page.title | default: request.path }}" />
-          {% for field in contact_form.fields %}
-            <div class="conversion-field atlas-contact-field"><div class="atlas-contact-field-label">{{ field.label }}{% if field.required %}<span aria-hidden="true"> *</span>{% endif %}</div>{{ field.input_html | raw }}</div>
-          {% endfor %}
-          {% if contact_form.captcha_enabled == true %}{{ contact_form.captcha_html | raw }}{% endif %}
-          <div class="conversion-form-actions">
-            <button type="submit" class="btn btn-primary">{{ contact_form.cta_text | default: 'Send message' }}</button>
-          </div>
-        </form>
-    </div>{% endif %}
-  </div>
-</section>
-{% if contact_form.captcha_enabled == true %}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{% endif %}
+  </section>
+  {% if contact_form.captcha_enabled == true %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  {% endif %}
 {% endif %}

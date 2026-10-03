@@ -1,393 +1,676 @@
 <!doctype html>
 <html lang="{{ site.language | default: 'en' }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ seo.title | default: site.name }}</title>
-  <meta name="description" content="{{ seo.description | default: site.description }}">
-  <meta name="keywords" content="{{ seo.keywords | default: site.keywords }}">
-  <link rel="canonical" href="{{ seo.canonical_url | default: site.url }}">
-  <meta property="og:title" content="{{ seo.title | default: site.name }}">
-  <meta property="og:description" content="{{ seo.description | default: site.description }}">
-  <meta property="og:image" content="{{ seo.image | default: site.og_image }}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
-</head>
-<body class="theme-theliaison header-layout-text-left-slider-right slider-layout-text-left-slider-right header-transparent-on-hero {% if site.topbar.status or topbar.status %}has-topbar {% endif %}atlas-page atlas-page-home">
-  {% render 'sections/header.html' %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ seo.title | default: site.name }}</title>
+    <meta name="description" content="{{ seo.description | default: site.description }}">
+    <meta name="keywords" content="{{ seo.keywords | default: site.keywords }}">
+    <link rel="canonical" href="{{ seo.canonical_url | default: site.url }}">
+    <meta property="og:title" content="{{ seo.title | default: site.name }}">
+    <meta property="og:description" content="{{ seo.description | default: site.description }}">
+    <meta property="og:image" content="{{ seo.image | default: site.og_image }}">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
+  </head>
+  <body class="theme-theliaison header-layout-text-left-slider-right slider-layout-text-left-slider-right header-transparent-on-hero {% if site.topbar.status or topbar.status %}has-topbar {% endif %}atlas-page atlas-page-home">
+    {% render 'sections/header.html' %}
 
-  {% assign hero_content = home.hero | default: hero | default: page.hero %}
-  {% assign hero_slides = home.hero.slides | default: home.hero.slider_items | default: home.hero.sliders | default: hero.slides | default: sliders | default: slides %}
-  {% assign intro_content = home.introduction | default: page.introduction | default: introduction %}
-  {% assign homepage_services = services | where: 'show_on_homepage', true | sort: 'sort_order' %}
-  {% assign homepage_products = products | where: 'show_on_homepage', true | sort: 'sort_order' %}
-  {% assign homepage_projects = projects | where: 'show_on_homepage', true | sort: 'sort_order' %}
-  {% assign homepage_teams = team %}
-  {% assign homepage_blogs = blogs %}
-  {% assign homepage_clients = home.client_logos | default: clients %}
-  {% assign homepage_partners = partners %}
-  {% assign homepage_testimonials = testimonials %}
-  {% assign homepage_client_reviews = home.client_reviews | default: client_reviews %}
-  {% assign homepage_faqs = faqs %}
-  {% assign homepage_pricing = pricing_plans %}
-  {% assign homepage_collections = collections %}
-  {% assign homepage_gallery = gallery %}
+    {% assign hero_content = home.hero | default: hero | default: page.hero %}
+    {% assign hero_slides = home.hero.slides
+      | default: home.hero.slider_items
+      | default: home.hero.sliders
+      | default: hero.slides
+      | default: sliders
+      | default: slides
+    %}
+    {% assign intro_content = home.introduction
+      | default: page.introduction
+      | default: introduction
+    %}
+    {% assign homepage_services = services | where: 'show_on_homepage', true | sort: 'sort_order' %}
+    {% assign homepage_products = products | where: 'show_on_homepage', true | sort: 'sort_order' %}
+    {% assign homepage_projects = projects | where: 'show_on_homepage', true | sort: 'sort_order' %}
+    {% assign homepage_teams = team %}
+    {% assign homepage_blogs = blogs %}
+    {% assign homepage_clients = home.client_logos | default: clients %}
+    {% assign homepage_partners = partners %}
+    {% assign homepage_testimonials = testimonials %}
+    {% assign homepage_client_reviews = home.client_reviews | default: client_reviews %}
+    {% assign homepage_faqs = faqs %}
+    {% assign homepage_pricing = pricing_plans %}
+    {% assign homepage_collections = collections %}
+    {% assign homepage_gallery = gallery %}
 
-
-<main data-header-layout="{{ settings.header_layout_type | default: 'header-above-hero' }}" data-slider-layout="{{ settings.slider_layout_type | default: 'text-left-slider-right' }}">
-    <div class="home-sections">
-      {% if home.ordered_sections and home.ordered_sections.size > 0 %}
-        {% for ordered_section in home.ordered_sections %}
-          {% if ordered_section.type == 'slider' and home.slider_active %}
-            {% if hero_content != blank or hero_slides and hero_slides.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/hero.html', hero: hero_content, slides: hero_slides, settings: settings, hero_metrics: hero_metrics %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'introduction' and home.introduction_active %}
-            {% if intro_content != blank %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/introduction.html', introduction: intro_content, section: section_controls.about %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'services' and home.services_active %}
-            {% if homepage_services and homepage_services.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/services.html', services: homepage_services, section: section_controls.services, link_text: 'See all services', link_url: routes.services %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'products' and home.products_active %}
-            {% if homepage_products and homepage_products.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/products.html', listing_products: homepage_products, section: section_controls.products, link_text: 'See all solutions', link_url: routes.products %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'projects' and home.projects_active %}
-            {% if homepage_projects and homepage_projects.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/projects.html', projects: homepage_projects, section: section_controls.projects, link_text: 'View portfolio', link_url: routes.projects %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'clients' and home.clients_active and home.render_client_logos_from_dynamic_module != true %}
-            {% if homepage_clients and homepage_clients.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/clients.html', clients: homepage_clients, section: section_controls.clients %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'team' and home.team_active %}
-            {% if homepage_teams and homepage_teams.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/team.html', team: homepage_teams, section: section_controls.team, detail_base_url: routes.home %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'faqs' and home.faqs_active %}
-            {% if homepage_faqs and homepage_faqs.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/faqs.html', faqs: homepage_faqs, section: section_controls.faqs %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'gallery' and home.gallery_active %}
-            {% if homepage_gallery and homepage_gallery.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/gallery.html', gallery: homepage_gallery, section: section_controls.gallery %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'blogs' and home.blogs_active %}
-            {% if homepage_blogs and homepage_blogs.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/blogs.html', blogs: homepage_blogs, section: section_controls.blogs %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'collections' and home.collections_active %}
-            {% if homepage_collections and homepage_collections.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/collections.html', collections: homepage_collections, section: section_controls.collections %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'contact_form' and home.contact_form_active and forms.contact.id > 0 %}
-            <div class="home-section-order" style="order:{{ forloop.index }};">
-              {% render 'sections/contact-form.html', contact: contact, section: section_controls.cta %}
-            </div>
-          {% elsif ordered_section.type == 'pricing_plans' and home.pricing_plans_active %}
-            {% if homepage_pricing and homepage_pricing.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/pricing.html', pricing: homepage_pricing, section: section_controls.pricing_plans %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'hero_stat' and home.dynamic_modules_active and home.hero_stat_active %}
-            {% if home.marketing_hero_stats and home.marketing_hero_stats.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/hero-stat.html', marketing: { items: home.marketing_hero_stats, section_class: 'section surface-strip', grid_class: 'trust-grid', subtitle: section_controls.hero_stat.subtitle, kicker: section_controls.hero_stat.kicker } %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'feature' and home.dynamic_modules_active and home.feature_active %}
-            {% if home.marketing_features and home.marketing_features.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/feature.html', marketing: { items: home.marketing_features, section_class: 'section', grid_class: 'trust-grid', subtitle: section_controls.feature.subtitle, kicker: section_controls.feature.kicker } %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'benefit' and home.dynamic_modules_active and home.benefit_active %}
-            {% if home.marketing_benefits and home.marketing_benefits.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/benefit.html', marketing: { items: home.marketing_benefits, section_class: 'section surface-strip', grid_class: 'trust-grid', subtitle: section_controls.benefit.subtitle, kicker: section_controls.benefit.kicker } %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'counter' and home.dynamic_modules_active and home.counter_active %}
-            {% if home.marketing_counters and home.marketing_counters.size > 0 %}
-              <section class="section section-dark counter-section home-section-order" data-reveal style="order:{{ forloop.index }};">
-                <div class="shell counter-strip">
-                  <div class="counter-strip-copy">
-                    {% if section_controls.counter.kicker != blank or section_controls.counter.title != blank %}<span class="eyebrow">{{ section_controls.counter.kicker | default: section_controls.counter.title }}</span>{% endif %}
-                    {% if section_controls.counter.subtitle != blank or section_controls.counter.title != blank %}<h2>{{ section_controls.counter.subtitle | default: section_controls.counter.title }}</h2>{% endif %}
-                  </div>
-                  <div class="counter-strip-grid">
-                    {% for item in home.marketing_counters limit: section_controls.counter.count %}
-                      <article class="counter-strip-card">
-                        <strong class="counter-strip-value">{{ item.counter | default: item.title }}</strong>
-                        <h3>{{ item.title | default: item.subheading }}</h3>
-                        <p>{{ item.description | default: item.subheading }}</p>
-                      </article>
-                    {% endfor %}
-                  </div>
+    <main
+      data-header-layout="{{ settings.header_layout_type | default: 'header-above-hero' }}"
+      data-slider-layout="{{ settings.slider_layout_type | default: 'text-left-slider-right' }}"
+    >
+      <div class="home-sections">
+        {% if home.ordered_sections and home.ordered_sections.size > 0 %}
+          {% for ordered_section in home.ordered_sections %}
+            {% if ordered_section.type == 'slider' and home.slider_active %}
+              {% if hero_content != blank or hero_slides and hero_slides.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/hero.html',
+                    hero: hero_content,
+                    slides: hero_slides,
+                    settings: settings,
+                    hero_metrics: hero_metrics
+                  %}
                 </div>
-              </section>
-            {% endif %}
-          {% elsif ordered_section.type == 'highlight' and home.dynamic_modules_active and home.highlight_active %}
-            {% if home.marketing_highlights and home.marketing_highlights.size > 0 %}
+              {% endif %}
+            {% elsif ordered_section.type == 'introduction' and home.introduction_active %}
+              {% if intro_content != blank %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/introduction.html',
+                    introduction: intro_content,
+                    section: section_controls.about
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'services' and home.services_active %}
+              {% if homepage_services and homepage_services.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/services.html',
+                    services: homepage_services,
+                    section: section_controls.services,
+                    link_text: 'See all services',
+                    link_url: routes.services
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'products' and home.products_active %}
+              {% if homepage_products and homepage_products.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/products.html',
+                    listing_products: homepage_products,
+                    section: section_controls.products,
+                    link_text: 'See all solutions',
+                    link_url: routes.products
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'projects' and home.projects_active %}
+              {% if homepage_projects and homepage_projects.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/projects.html',
+                    projects: homepage_projects,
+                    section: section_controls.projects,
+                    link_text: 'View portfolio',
+                    link_url: routes.projects
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'clients'
+              and home.clients_active
+              and home.render_client_logos_from_dynamic_module != true
+            %}
+              {% if homepage_clients and homepage_clients.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/clients.html',
+                    clients: homepage_clients,
+                    section: section_controls.clients
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'team' and home.team_active %}
+              {% if homepage_teams and homepage_teams.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/team.html',
+                    team: homepage_teams,
+                    section: section_controls.team,
+                    detail_base_url: routes.home
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'faqs' and home.faqs_active %}
+              {% if homepage_faqs and homepage_faqs.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/faqs.html',
+                    faqs: homepage_faqs,
+                    section: section_controls.faqs
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'gallery' and home.gallery_active %}
+              {% if homepage_gallery and homepage_gallery.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/gallery.html',
+                    gallery: homepage_gallery,
+                    section: section_controls.gallery
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'blogs' and home.blogs_active %}
+              {% if homepage_blogs and homepage_blogs.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/blogs.html',
+                    blogs: homepage_blogs,
+                    section: section_controls.blogs
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'collections' and home.collections_active %}
+              {% if homepage_collections and homepage_collections.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/collections.html',
+                    collections: homepage_collections,
+                    section: section_controls.collections
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'contact_form'
+              and home.contact_form_active
+              and forms.contact.id > 0
+            %}
               <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/highlight.html', marketing: { items: home.marketing_highlights, section_class: 'section section-dark', grid_class: 'trust-grid', subtitle: section_controls.highlight.subtitle, kicker: section_controls.highlight.kicker } %}
+                {% render 'sections/contact-form.html',
+                  contact: contact,
+                  section: section_controls.cta
+                %}
               </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'cta' and home.dynamic_modules_active and home.cta_active %}
+            {% elsif ordered_section.type == 'pricing_plans' and home.pricing_plans_active %}
+              {% if homepage_pricing and homepage_pricing.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/pricing.html',
+                    pricing: homepage_pricing,
+                    section: section_controls.pricing_plans
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'hero_stat'
+              and home.dynamic_modules_active
+              and home.hero_stat_active
+            %}
+              {% if home.marketing_hero_stats and home.marketing_hero_stats.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/hero-stat.html', marketing: { items: home.marketing_hero_stats, section_class: 'section surface-strip', grid_class: 'trust-grid', subtitle: section_controls.hero_stat.subtitle, kicker: section_controls.hero_stat.kicker } %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'feature'
+              and home.dynamic_modules_active
+              and home.feature_active
+            %}
+              {% if home.marketing_features and home.marketing_features.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/feature.html', marketing: { items: home.marketing_features, section_class: 'section', grid_class: 'trust-grid', subtitle: section_controls.feature.subtitle, kicker: section_controls.feature.kicker } %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'benefit'
+              and home.dynamic_modules_active
+              and home.benefit_active
+            %}
+              {% if home.marketing_benefits and home.marketing_benefits.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/benefit.html', marketing: { items: home.marketing_benefits, section_class: 'section surface-strip', grid_class: 'trust-grid', subtitle: section_controls.benefit.subtitle, kicker: section_controls.benefit.kicker } %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'counter'
+              and home.dynamic_modules_active
+              and home.counter_active
+            %}
+              {% if home.marketing_counters and home.marketing_counters.size > 0 %}
+                <section
+                  class="section section-dark counter-section home-section-order"
+                  data-reveal
+                  style="order:{{ forloop.index }};"
+                >
+                  <div class="shell counter-strip">
+                    <div class="counter-strip-copy">
+                      {% if section_controls.counter.kicker != blank
+                        or section_controls.counter.title != blank
+                      %}
+                        <span class="eyebrow">
+                          {{
+                            section_controls.counter.kicker
+                            | default: section_controls.counter.title
+                          }}
+                        </span>
+                      {% endif %}
+                      {% if section_controls.counter.subtitle != blank
+                        or section_controls.counter.title != blank
+                      %}
+                        <h2>
+                          {{
+                            section_controls.counter.subtitle
+                            | default: section_controls.counter.title
+                          }}
+                        </h2>
+                      {% endif %}
+                    </div>
+                    <div class="counter-strip-grid">
+                      {% for item in home.marketing_counters
+                        limit: section_controls.counter.count
+                      %}
+                        <article class="counter-strip-card">
+                          <strong class="counter-strip-value">
+                            {{ item.counter | default: item.title }}
+                          </strong>
+                          <h3>{{ item.title | default: item.subheading }}</h3>
+                          <p>{{ item.description | default: item.subheading }}</p>
+                        </article>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </section>
+              {% endif %}
+            {% elsif ordered_section.type == 'highlight'
+              and home.dynamic_modules_active
+              and home.highlight_active
+            %}
+              {% if home.marketing_highlights and home.marketing_highlights.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/highlight.html', marketing: { items: home.marketing_highlights, section_class: 'section section-dark', grid_class: 'trust-grid', subtitle: section_controls.highlight.subtitle, kicker: section_controls.highlight.kicker } %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'cta'
+              and home.dynamic_modules_active
+              and home.cta_active
+            %}
               {% assign cta_item = home.marketing_ctas | first %}
-              {% assign cta_primary_text = cta_item.cta_text | default: section_controls.cta.title %}
+              {% assign cta_primary_text = cta_item.cta_text
+                | default: section_controls.cta.title
+              %}
               {% assign cta_primary_url = cta_item.cta_url | default: routes.contact %}
               <div class="home-section-order" style="order:{{ forloop.index }};">
                 <section class="section cta-band" data-reveal>
                   <div class="shell cta-panel">
                     <div>
-                      {% if cta_item.title != blank or section_controls.cta.title != blank %}<span class="eyebrow">{{ cta_item.title | default: section_controls.cta.title }}</span>{% endif %}
-                      {% if cta_item.subheading != blank or section_controls.cta.subtitle != blank %}<h2>{{ cta_item.subheading | default: section_controls.cta.subtitle }}</h2>{% endif %}
+                      {% if cta_item.title != blank or section_controls.cta.title != blank %}
+                        <span class="eyebrow">
+                          {{ cta_item.title | default: section_controls.cta.title }}
+                        </span>
+                      {% endif %}
+                      {% if cta_item.subheading != blank
+                        or section_controls.cta.subtitle != blank
+                      %}
+                        <h2>{{ cta_item.subheading | default: section_controls.cta.subtitle }}</h2>
+                      {% endif %}
                     </div>
                     <div class="cta-panel-actions">
-                      {% if cta_primary_text != blank and cta_primary_url != blank %}<a href="{{ cta_primary_url }}" class="btn btn-primary">{{ cta_primary_text }}</a>{% endif %}
-                      {% if section_controls.cta.link_text != blank and section_controls.cta.link_url != blank %}<a href="{{ section_controls.cta.link_url }}" class="btn btn-secondary">{{ section_controls.cta.link_text }}</a>{% endif %}
+                      {% if cta_primary_text != blank and cta_primary_url != blank %}
+                        <a href="{{ cta_primary_url }}" class="btn btn-primary">
+                          {{ cta_primary_text }}
+                        </a>
+                      {% endif %}
+                      {% if section_controls.cta.link_text != blank
+                        and section_controls.cta.link_url != blank
+                      %}
+                        <a href="{{ section_controls.cta.link_url }}" class="btn btn-secondary">
+                          {{ section_controls.cta.link_text }}
+                        </a>
+                      {% endif %}
                     </div>
                   </div>
                 </section>
               </div>
-          {% elsif ordered_section.type == 'testimonial' and home.dynamic_modules_active and home.testimonial_active %}
-            {% if homepage_testimonials and homepage_testimonials.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/testimonial.html', testimonials: homepage_testimonials, section: section_controls.testimonials %}
-              </div>
+            {% elsif ordered_section.type == 'testimonial'
+              and home.dynamic_modules_active
+              and home.testimonial_active
+            %}
+              {% if homepage_testimonials and homepage_testimonials.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/testimonial.html',
+                    testimonials: homepage_testimonials,
+                    section: section_controls.testimonials
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'client_review'
+              and home.dynamic_modules_active
+              and home.client_review_active
+            %}
+              {% if homepage_client_reviews and homepage_client_reviews.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/client-review.html',
+                    testimonials: homepage_client_reviews,
+                    section: section_controls.client_review
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'partner'
+              and home.dynamic_modules_active
+              and home.partner_active
+            %}
+              {% if homepage_partners and homepage_partners.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/partner-logo.html',
+                    clients: homepage_partners,
+                    section: section_controls.partners
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'client_logo'
+              and home.dynamic_modules_active
+              and home.client_logo_active
+            %}
+              {% if homepage_clients and homepage_clients.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/client-logo.html',
+                    clients: homepage_clients,
+                    section: section_controls.clients
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'trust_badge'
+              and home.dynamic_modules_active
+              and home.trust_badge_active
+            %}
+              {% if trust_badges and trust_badges.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/trust-badge.html',
+                    trust_badges: trust_badges,
+                    section: section_controls.trust_badges
+                  %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'general'
+              and home.dynamic_modules_active
+              and home.general_active
+            %}
+              {% if home.general_auxiliaries and home.general_auxiliaries.size > 0 %}
+                <div class="home-section-order" style="order:{{ forloop.index }};">
+                  {% render 'sections/general.html', auxiliaries: { items: home.general_auxiliaries, section_class: 'section', grid_class: 'trust-grid', count: section_controls.general.count, subtitle: section_controls.general.subtitle, kicker: section_controls.general.kicker } %}
+                </div>
+              {% endif %}
+            {% elsif ordered_section.type == 'custom_html' and ordered_section.html != blank %}
+              <section
+                class="home-section-order home-custom-html-block"
+                style="order:{{ forloop.index }};"
+              >
+                <div class="container-fluid px-3 px-lg-4">{{ ordered_section.html | raw }}</div>
+              </section>
             {% endif %}
-          {% elsif ordered_section.type == 'client_review' and home.dynamic_modules_active and home.client_review_active %}
-            {% if homepage_client_reviews and homepage_client_reviews.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/client-review.html', testimonials: homepage_client_reviews, section: section_controls.client_review %}
+          {% endfor %}
+        {% elsif false %}
+          {% if hero_content != blank or hero_slides and hero_slides.size > 0 %}
+            <div class="home-section-order" style="order:1;">
+              {% render 'sections/hero.html',
+                hero: hero_content,
+                slides: hero_slides,
+                settings: settings,
+                hero_metrics: hero_metrics
+              %}
+            </div>
+          {% endif %}
+          {% if intro_content != blank %}
+            <div class="home-section-order" style="order:2;">
+              {% render 'sections/introduction.html',
+                introduction: intro_content,
+                section: section_controls.about
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_services and homepage_services.size > 0 %}
+            <div class="home-section-order" style="order:3;">
+              {% render 'sections/services.html',
+                services: homepage_services,
+                section: section_controls.services,
+                link_text: 'See all services',
+                link_url: routes.services
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_products and homepage_products.size > 0 %}
+            <div class="home-section-order" style="order:4;">
+              {% render 'sections/products.html',
+                listing_products: homepage_products,
+                section: section_controls.products,
+                link_text: 'See all solutions',
+                link_url: routes.products
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_projects and homepage_projects.size > 0 %}
+            <div class="home-section-order" style="order:5;">
+              {% render 'sections/projects.html',
+                projects: homepage_projects,
+                section: section_controls.projects,
+                link_text: 'View portfolio',
+                link_url: routes.projects
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_clients
+            and homepage_clients.size > 0
+            and home.render_client_logos_from_dynamic_module != true
+          %}
+            <div class="home-section-order" style="order:6;">
+              {% render 'sections/clients.html',
+                clients: homepage_clients,
+                section: section_controls.clients
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_teams and homepage_teams.size > 0 %}
+            <div class="home-section-order" style="order:7;">
+              {% render 'sections/team.html',
+                team: homepage_teams,
+                section: section_controls.team,
+                detail_base_url: routes.home
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_faqs and homepage_faqs.size > 0 %}
+            <div class="home-section-order" style="order:8;">
+              {% render 'sections/faqs.html', faqs: homepage_faqs, section: section_controls.faqs %}
+            </div>
+          {% endif %}
+          {% if homepage_gallery and homepage_gallery.size > 0 %}
+            <div class="home-section-order" style="order:9;">
+              {% render 'sections/gallery.html',
+                gallery: homepage_gallery,
+                section: section_controls.gallery
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_blogs and homepage_blogs.size > 0 %}
+            <div class="home-section-order" style="order:10;">
+              {% render 'sections/blogs.html',
+                blogs: homepage_blogs,
+                section: section_controls.blogs
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_collections and homepage_collections.size > 0 %}
+            <div class="home-section-order" style="order:11;">
+              {% render 'sections/collections.html',
+                collections: homepage_collections,
+                section: section_controls.collections
+              %}
+            </div>
+          {% endif %}
+          {% if home.contact_form_active and forms.contact.id > 0 %}
+            <div class="home-section-order" style="order:12;">
+              {% render 'sections/contact-form.html',
+                contact: contact,
+                section: section_controls.cta
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_pricing and homepage_pricing.size > 0 %}
+            <div class="home-section-order" style="order:13;">
+              {% render 'sections/pricing.html',
+                pricing: homepage_pricing,
+                section: section_controls.pricing_plans
+              %}
+            </div>
+          {% endif %}
+          {% if home.marketing_hero_stats and home.marketing_hero_stats.size > 0 %}
+            <div class="home-section-order" style="order:14;">
+              {% render 'sections/hero-stat.html', marketing: { items: home.marketing_hero_stats, section_class: 'section surface-strip', grid_class: 'trust-grid', subtitle: section_controls.hero_stat.subtitle, kicker: section_controls.hero_stat.kicker } %}
+            </div>
+          {% endif %}
+          {% if home.marketing_features and home.marketing_features.size > 0 %}
+            <div class="home-section-order" style="order:15;">
+              {% render 'sections/feature.html', marketing: { items: home.marketing_features, section_class: 'section', grid_class: 'trust-grid', subtitle: section_controls.feature.subtitle, kicker: section_controls.feature.kicker } %}
+            </div>
+          {% endif %}
+          {% if home.marketing_benefits and home.marketing_benefits.size > 0 %}
+            <div class="home-section-order" style="order:16;">
+              {% render 'sections/benefit.html', marketing: { items: home.marketing_benefits, section_class: 'section surface-strip', grid_class: 'trust-grid', subtitle: section_controls.benefit.subtitle, kicker: section_controls.benefit.kicker } %}
+            </div>
+          {% endif %}
+          {% if home.marketing_counters and home.marketing_counters.size > 0 %}
+            <section
+              class="section section-dark counter-section home-section-order"
+              data-reveal
+              style="order:17;"
+            >
+              <div class="shell counter-strip">
+                <div class="counter-strip-copy">
+                  {% if section_controls.counter.kicker != blank
+                    or section_controls.counter.title != blank
+                  %}
+                    <span class="eyebrow">
+                      {{
+                        section_controls.counter.kicker
+                        | default: section_controls.counter.title
+                      }}
+                    </span>
+                  {% endif %}
+                  {% if section_controls.counter.subtitle != blank
+                    or section_controls.counter.title != blank
+                  %}
+                    <h2>
+                      {{
+                        section_controls.counter.subtitle
+                        | default: section_controls.counter.title
+                      }}
+                    </h2>
+                  {% endif %}
+                </div>
+                <div class="counter-strip-grid">
+                  {% for item in home.marketing_counters limit: section_controls.counter.count %}
+                    <article class="counter-strip-card">
+                      <strong class="counter-strip-value">
+                        {{ item.counter | default: item.title }}
+                      </strong>
+                      <h3>{{ item.title | default: item.subheading }}</h3>
+                      <p>{{ item.description | default: item.subheading }}</p>
+                    </article>
+                  {% endfor %}
+                </div>
               </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'partner' and home.dynamic_modules_active and home.partner_active %}
-            {% if homepage_partners and homepage_partners.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/partner-logo.html', clients: homepage_partners, section: section_controls.partners %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'client_logo' and home.dynamic_modules_active and home.client_logo_active %}
-            {% if homepage_clients and homepage_clients.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/client-logo.html', clients: homepage_clients, section: section_controls.clients %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'trust_badge' and home.dynamic_modules_active and home.trust_badge_active %}
-            {% if trust_badges and trust_badges.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/trust-badge.html', trust_badges: trust_badges, section: section_controls.trust_badges %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'general' and home.dynamic_modules_active and home.general_active %}
-            {% if home.general_auxiliaries and home.general_auxiliaries.size > 0 %}
-              <div class="home-section-order" style="order:{{ forloop.index }};">
-                {% render 'sections/general.html', auxiliaries: { items: home.general_auxiliaries, section_class: 'section', grid_class: 'trust-grid', count: section_controls.general.count, subtitle: section_controls.general.subtitle, kicker: section_controls.general.kicker } %}
-              </div>
-            {% endif %}
-          {% elsif ordered_section.type == 'custom_html' and ordered_section.html != blank %}
-            <section class="home-section-order home-custom-html-block" style="order:{{ forloop.index }};">
-              <div class="container-fluid px-3 px-lg-4">{{ ordered_section.html | raw }}</div>
             </section>
           {% endif %}
-        {% endfor %}
-      {% elsif false %}
-        {% if hero_content != blank or hero_slides and hero_slides.size > 0 %}
-          <div class="home-section-order" style="order:1;">
-            {% render 'sections/hero.html', hero: hero_content, slides: hero_slides, settings: settings, hero_metrics: hero_metrics %}
-          </div>
-        {% endif %}
-        {% if intro_content != blank %}
-          <div class="home-section-order" style="order:2;">
-            {% render 'sections/introduction.html', introduction: intro_content, section: section_controls.about %}
-          </div>
-        {% endif %}
-        {% if homepage_services and homepage_services.size > 0 %}
-          <div class="home-section-order" style="order:3;">
-            {% render 'sections/services.html', services: homepage_services, section: section_controls.services, link_text: 'See all services', link_url: routes.services %}
-          </div>
-        {% endif %}
-        {% if homepage_products and homepage_products.size > 0 %}
-          <div class="home-section-order" style="order:4;">
-            {% render 'sections/products.html', listing_products: homepage_products, section: section_controls.products, link_text: 'See all solutions', link_url: routes.products %}
-          </div>
-        {% endif %}
-        {% if homepage_projects and homepage_projects.size > 0 %}
-          <div class="home-section-order" style="order:5;">
-            {% render 'sections/projects.html', projects: homepage_projects, section: section_controls.projects, link_text: 'View portfolio', link_url: routes.projects %}
-          </div>
-        {% endif %}
-        {% if homepage_clients and homepage_clients.size > 0 and home.render_client_logos_from_dynamic_module != true %}
-          <div class="home-section-order" style="order:6;">
-            {% render 'sections/clients.html', clients: homepage_clients, section: section_controls.clients %}
-          </div>
-        {% endif %}
-        {% if homepage_teams and homepage_teams.size > 0 %}
-          <div class="home-section-order" style="order:7;">
-            {% render 'sections/team.html', team: homepage_teams, section: section_controls.team, detail_base_url: routes.home %}
-          </div>
-        {% endif %}
-        {% if homepage_faqs and homepage_faqs.size > 0 %}
-          <div class="home-section-order" style="order:8;">
-            {% render 'sections/faqs.html', faqs: homepage_faqs, section: section_controls.faqs %}
-          </div>
-        {% endif %}
-        {% if homepage_gallery and homepage_gallery.size > 0 %}
-          <div class="home-section-order" style="order:9;">
-            {% render 'sections/gallery.html', gallery: homepage_gallery, section: section_controls.gallery %}
-          </div>
-        {% endif %}
-        {% if homepage_blogs and homepage_blogs.size > 0 %}
-          <div class="home-section-order" style="order:10;">
-            {% render 'sections/blogs.html', blogs: homepage_blogs, section: section_controls.blogs %}
-          </div>
-        {% endif %}
-        {% if homepage_collections and homepage_collections.size > 0 %}
-          <div class="home-section-order" style="order:11;">
-            {% render 'sections/collections.html', collections: homepage_collections, section: section_controls.collections %}
-          </div>
-        {% endif %}
-        {% if home.contact_form_active and forms.contact.id > 0 %}
-          <div class="home-section-order" style="order:12;">
-            {% render 'sections/contact-form.html', contact: contact, section: section_controls.cta %}
-          </div>
-        {% endif %}
-        {% if homepage_pricing and homepage_pricing.size > 0 %}
-          <div class="home-section-order" style="order:13;">
-            {% render 'sections/pricing.html', pricing: homepage_pricing, section: section_controls.pricing_plans %}
-          </div>
-        {% endif %}
-        {% if home.marketing_hero_stats and home.marketing_hero_stats.size > 0 %}
-          <div class="home-section-order" style="order:14;">
-            {% render 'sections/hero-stat.html', marketing: { items: home.marketing_hero_stats, section_class: 'section surface-strip', grid_class: 'trust-grid', subtitle: section_controls.hero_stat.subtitle, kicker: section_controls.hero_stat.kicker } %}
-          </div>
-        {% endif %}
-        {% if home.marketing_features and home.marketing_features.size > 0 %}
-          <div class="home-section-order" style="order:15;">
-            {% render 'sections/feature.html', marketing: { items: home.marketing_features, section_class: 'section', grid_class: 'trust-grid', subtitle: section_controls.feature.subtitle, kicker: section_controls.feature.kicker } %}
-          </div>
-        {% endif %}
-        {% if home.marketing_benefits and home.marketing_benefits.size > 0 %}
-          <div class="home-section-order" style="order:16;">
-            {% render 'sections/benefit.html', marketing: { items: home.marketing_benefits, section_class: 'section surface-strip', grid_class: 'trust-grid', subtitle: section_controls.benefit.subtitle, kicker: section_controls.benefit.kicker } %}
-          </div>
-        {% endif %}
-        {% if home.marketing_counters and home.marketing_counters.size > 0 %}
-          <section class="section section-dark counter-section home-section-order" data-reveal style="order:17;">
-            <div class="shell counter-strip">
-              <div class="counter-strip-copy">
-                {% if section_controls.counter.kicker != blank or section_controls.counter.title != blank %}<span class="eyebrow">{{ section_controls.counter.kicker | default: section_controls.counter.title }}</span>{% endif %}
-                {% if section_controls.counter.subtitle != blank or section_controls.counter.title != blank %}<h2>{{ section_controls.counter.subtitle | default: section_controls.counter.title }}</h2>{% endif %}
-              </div>
-              <div class="counter-strip-grid">
-                {% for item in home.marketing_counters limit: section_controls.counter.count %}
-                  <article class="counter-strip-card">
-                    <strong class="counter-strip-value">{{ item.counter | default: item.title }}</strong>
-                    <h3>{{ item.title | default: item.subheading }}</h3>
-                    <p>{{ item.description | default: item.subheading }}</p>
-                  </article>
-                {% endfor %}
-              </div>
+          {% if home.marketing_highlights and home.marketing_highlights.size > 0 %}
+            <div class="home-section-order" style="order:18;">
+              {% render 'sections/highlight.html', marketing: { items: home.marketing_highlights, section_class: 'section section-dark', grid_class: 'trust-grid', subtitle: section_controls.highlight.subtitle, kicker: section_controls.highlight.kicker } %}
             </div>
-          </section>
-        {% endif %}
-        {% if home.marketing_highlights and home.marketing_highlights.size > 0 %}
-          <div class="home-section-order" style="order:18;">
-            {% render 'sections/highlight.html', marketing: { items: home.marketing_highlights, section_class: 'section section-dark', grid_class: 'trust-grid', subtitle: section_controls.highlight.subtitle, kicker: section_controls.highlight.kicker } %}
-          </div>
-        {% endif %}
-        {% if home.dynamic_modules_active and home.cta_active or section_controls.cta.title != blank or section_controls.cta.subtitle != blank %}
-          {% assign cta_item = home.marketing_ctas | first %}
-          {% assign cta_primary_text = cta_item.cta_text | default: section_controls.cta.title %}
-          {% assign cta_primary_url = cta_item.cta_url | default: routes.contact %}
-          <div class="home-section-order" style="order:19;">
-            <section class="section cta-band" data-reveal>
-              <div class="shell cta-panel">
-                <div>
-                  {% if cta_item.title != blank or section_controls.cta.title != blank %}<span class="eyebrow">{{ cta_item.title | default: section_controls.cta.title }}</span>{% endif %}
-                  {% if cta_item.subheading != blank or section_controls.cta.subtitle != blank %}<h2>{{ cta_item.subheading | default: section_controls.cta.subtitle }}</h2>{% endif %}
+          {% endif %}
+          {% if home.dynamic_modules_active
+            and home.cta_active
+            or section_controls.cta.title != blank
+            or section_controls.cta.subtitle != blank
+          %}
+            {% assign cta_item = home.marketing_ctas | first %}
+            {% assign cta_primary_text = cta_item.cta_text | default: section_controls.cta.title %}
+            {% assign cta_primary_url = cta_item.cta_url | default: routes.contact %}
+            <div class="home-section-order" style="order:19;">
+              <section class="section cta-band" data-reveal>
+                <div class="shell cta-panel">
+                  <div>
+                    {% if cta_item.title != blank or section_controls.cta.title != blank %}
+                      <span class="eyebrow">
+                        {{ cta_item.title | default: section_controls.cta.title }}
+                      </span>
+                    {% endif %}
+                    {% if cta_item.subheading != blank or section_controls.cta.subtitle != blank %}
+                      <h2>{{ cta_item.subheading | default: section_controls.cta.subtitle }}</h2>
+                    {% endif %}
+                  </div>
+                  <div class="cta-panel-actions">
+                    {% if cta_primary_text != blank and cta_primary_url != blank %}
+                      <a href="{{ cta_primary_url }}" class="btn btn-primary">
+                        {{ cta_primary_text }}
+                      </a>
+                    {% endif %}
+                    {% if section_controls.cta.link_text != blank
+                      and section_controls.cta.link_url != blank
+                    %}
+                      <a href="{{ section_controls.cta.link_url }}" class="btn btn-secondary">
+                        {{ section_controls.cta.link_text }}
+                      </a>
+                    {% endif %}
+                  </div>
                 </div>
-                <div class="cta-panel-actions">
-                  {% if cta_primary_text != blank and cta_primary_url != blank %}<a href="{{ cta_primary_url }}" class="btn btn-primary">{{ cta_primary_text }}</a>{% endif %}
-                  {% if section_controls.cta.link_text != blank and section_controls.cta.link_url != blank %}<a href="{{ section_controls.cta.link_url }}" class="btn btn-secondary">{{ section_controls.cta.link_text }}</a>{% endif %}
-                </div>
-              </div>
-            </section>
-          </div>
+              </section>
+            </div>
+          {% endif %}
+          {% if homepage_testimonials and homepage_testimonials.size > 0 %}
+            <div class="home-section-order" style="order:20;">
+              {% render 'sections/testimonial.html',
+                testimonials: homepage_testimonials,
+                section: section_controls.testimonials
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_client_reviews and homepage_client_reviews.size > 0 %}
+            <div class="home-section-order" style="order:21;">
+              {% render 'sections/client-review.html',
+                testimonials: homepage_client_reviews,
+                section: section_controls.client_review
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_clients and homepage_clients.size > 0 %}
+            <div class="home-section-order" style="order:22;">
+              {% render 'sections/client-logo.html',
+                clients: homepage_clients,
+                section: section_controls.clients
+              %}
+            </div>
+          {% endif %}
+          {% if homepage_partners and homepage_partners.size > 0 %}
+            <div class="home-section-order" style="order:23;">
+              {% render 'sections/partner-logo.html',
+                clients: homepage_partners,
+                section: section_controls.partners
+              %}
+            </div>
+          {% endif %}
+          {% if trust_badges and trust_badges.size > 0 %}
+            <div class="home-section-order" style="order:24;">
+              {% render 'sections/trust-badge.html',
+                trust_badges: trust_badges,
+                section: section_controls.trust_badges
+              %}
+            </div>
+          {% endif %}
+          {% if home.general_auxiliaries and home.general_auxiliaries.size > 0 %}
+            <div class="home-section-order" style="order:25;">
+              {% render 'sections/general.html', auxiliaries: { items: home.general_auxiliaries, section_class: 'section', grid_class: 'trust-grid', count: section_controls.general.count, subtitle: section_controls.general.subtitle, kicker: section_controls.general.kicker } %}
+            </div>
+          {% endif %}
         {% endif %}
-        {% if homepage_testimonials and homepage_testimonials.size > 0 %}
-          <div class="home-section-order" style="order:20;">
-            {% render 'sections/testimonial.html', testimonials: homepage_testimonials, section: section_controls.testimonials %}
-          </div>
-        {% endif %}
-        {% if homepage_client_reviews and homepage_client_reviews.size > 0 %}
-          <div class="home-section-order" style="order:21;">
-            {% render 'sections/client-review.html', testimonials: homepage_client_reviews, section: section_controls.client_review %}
-          </div>
-        {% endif %}
-        {% if homepage_clients and homepage_clients.size > 0 %}
-          <div class="home-section-order" style="order:22;">
-            {% render 'sections/client-logo.html', clients: homepage_clients, section: section_controls.clients %}
-          </div>
-        {% endif %}
-        {% if homepage_partners and homepage_partners.size > 0 %}
-          <div class="home-section-order" style="order:23;">
-            {% render 'sections/partner-logo.html', clients: homepage_partners, section: section_controls.partners %}
-          </div>
-        {% endif %}
-        {% if trust_badges and trust_badges.size > 0 %}
-          <div class="home-section-order" style="order:24;">
-            {% render 'sections/trust-badge.html', trust_badges: trust_badges, section: section_controls.trust_badges %}
-          </div>
-        {% endif %}
-        {% if home.general_auxiliaries and home.general_auxiliaries.size > 0 %}
-          <div class="home-section-order" style="order:25;">
-            {% render 'sections/general.html', auxiliaries: { items: home.general_auxiliaries, section_class: 'section', grid_class: 'trust-grid', count: section_controls.general.count, subtitle: section_controls.general.subtitle, kicker: section_controls.general.kicker } %}
-          </div>
-        {% endif %}
-      {% endif %}
+      </div>
+      {% render 'sections/auxiliaries.html' %}
+    </main>
 
-    </div>
-    {% render 'sections/auxiliaries.html' %}
-  </main>
-
-  {% render 'sections/footer.html' %}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.17/dist/lenis.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.min.js" defer></script>
-  <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
-</body>
+    {% render 'sections/footer.html' %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.17/dist/lenis.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.min.js" defer></script>
+    <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
+  </body>
 </html>

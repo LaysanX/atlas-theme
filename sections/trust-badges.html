@@ -1,25 +1,50 @@
 {% assign section_data = section | default: section_controls.trust_badges %}
-{% if trust_badges and trust_badges.size > 0 or section_data.kicker != blank or section_data.title != blank or section_data.subtitle != blank %}
-<section class="{{ section.section_class | default: section_data.section_class | default: 'section partner-strip' }}" data-reveal>
-  <div class="shell">
-    {% if section_data.kicker != blank or section_data.title != blank or section_data.subtitle != blank %}
-      <div class="section-head">
-        <div>
-          {% if section_data.kicker != blank or section_data.title != blank %}<span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>{% endif %}
-          {% if section_data.subtitle != blank or section_data.title != blank %}<h2>{{ section_data.subtitle | default: section_data.title }}</h2>{% endif %}
+{% if trust_badges
+  and trust_badges.size > 0
+  or section_data.kicker != blank
+  or section_data.title != blank
+  or section_data.subtitle != blank
+%}
+  <section
+    class="{{ section.section_class | default: section_data.section_class | default: 'section partner-strip' }}"
+    data-reveal
+  >
+    <div class="shell">
+      {% if section_data.kicker != blank
+        or section_data.title != blank
+        or section_data.subtitle != blank
+      %}
+        <div class="section-head">
+          <div>
+            {% if section_data.kicker != blank or section_data.title != blank %}
+              <span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>
+            {% endif %}
+            {% if section_data.subtitle != blank or section_data.title != blank %}
+              <h2>{{ section_data.subtitle | default: section_data.title }}</h2>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="partner-marquee auto-slider {% if trust_badges.size > 1 %}is-animated{% else %}is-static{% endif %}">
+        <div class="auto-slider-track">
+          {% for loop_item in (1..2) %}
+            {% if loop_item == 1 or trust_badges.size > 1 %}
+              {% for item in trust_badges limit: section_data.count %}
+                <div class="partner-logo" data-reveal>
+                  {% if item.logo %}
+                    <img src="{{ item.logo }}" alt="{{ item.name }}">
+                  {% elsif item.image %}
+                    <img src="{{ item.image }}" alt="{{ item.name }}">
+                  {% else %}
+                    <span>{{ item.name }}</span>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
-    {% endif %}
-
-    <div class="partner-marquee auto-slider {% if trust_badges.size > 1 %}is-animated{% else %}is-static{% endif %}">
-      <div class="auto-slider-track">
-        {% for loop_item in (1..2) %}{% if loop_item == 1 or trust_badges.size > 1 %}{% for item in trust_badges limit: section_data.count %}
-          <div class="partner-logo" data-reveal>
-            {% if item.logo %}<img src="{{ item.logo }}" alt="{{ item.name }}">{% elsif item.image %}<img src="{{ item.image }}" alt="{{ item.name }}">{% else %}<span>{{ item.name }}</span>{% endif %}
-          </div>
-        {% endfor %}{% endif %}{% endfor %}
-      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endif %}

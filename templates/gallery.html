@@ -1,53 +1,98 @@
 <!doctype html>
 <html lang="{{ site.language | default: 'en' }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ seo.title | default: site.name }}</title>
-  <meta name="description" content="{{ seo.description | default: site.description }}">
-  <meta name="keywords" content="{{ seo.keywords | default: site.keywords }}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
-</head>
-<body class="theme-theliaison header-layout-text-left-slider-right slider-layout-text-left-slider-right {% if site.topbar.status or topbar.status %}has-topbar {% endif %}atlas-page atlas-page-gallery">
-  {% render 'sections/header.html' %}
-  <main>
-    <section class="page-hero atlas-gallery-hero" data-reveal>
-      <div class="shell">
-        <span class="eyebrow">Gallery</span>
-        <h1>{{ page.title | default: 'Gallery' | escape }}</h1>
-        {% if page.subtitle != blank %}<p class="lead">{{ page.subtitle | escape }}</p>{% endif %}
-      </div>
-    </section>
-    {% if gallery and gallery.size > 0 %}
-      <section class="section atlas-gallery-section" data-reveal>
-        <div class="shell" data-gallery-collection>
-          <div class="gallery-filter-bar" data-gallery-filters aria-label="Gallery categories">
-            <button type="button" class="gallery-filter-tab is-active" data-gallery-filter="all" aria-pressed="true">All</button>
-          </div>
-          <div class="atlas-gallery-grid" data-gallery-grid>
-            {% for item in gallery %}
-              {% if item.image != blank %}
-                <article class="atlas-gallery-card" data-gallery-item data-gallery-category="{{ item.category | escape }}">
-                  <button type="button" class="gallery-lightbox-trigger" data-gallery-trigger data-gallery-src="{{ item.image | escape }}" data-gallery-title="{{ item.title | escape }}" data-gallery-category="{{ item.category | default: 'Gallery' | escape }}" aria-label="View {{ item.title | default: 'gallery image' | escape }}">
-                    <img src="{{ item.image | escape }}" alt="{{ item.title | default: 'Gallery image' | escape }}" loading="lazy">
-                    <span class="atlas-gallery-zoom" aria-hidden="true"><i class="fas fa-expand-alt"></i></span>
-                  </button>
-                  <div class="atlas-gallery-card-body">
-                    {% if item.category != blank %}<span class="atlas-gallery-category">{{ item.category | escape }}</span>{% endif %}
-                    {% if item.title != blank %}<h2>{{ item.title | escape }}</h2>{% endif %}
-                  </div>
-                </article>
-              {% endif %}
-            {% endfor %}
-          </div>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ seo.title | default: site.name }}</title>
+    <meta name="description" content="{{ seo.description | default: site.description }}">
+    <meta name="keywords" content="{{ seo.keywords | default: site.keywords }}">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+    <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
+  </head>
+  <body class="theme-theliaison header-layout-text-left-slider-right slider-layout-text-left-slider-right {% if site.topbar.status or topbar.status %}has-topbar {% endif %}atlas-page atlas-page-gallery">
+    {% render 'sections/header.html' %}
+    <main>
+      <section class="page-hero atlas-gallery-hero" data-reveal>
+        <div class="shell">
+          <span class="eyebrow">Gallery</span>
+          <h1>{{ page.title | default: 'Gallery' | escape }}</h1>
+          {% if page.subtitle != blank %}
+            <p class="lead">{{ page.subtitle | escape }}</p>
+          {% endif %}
         </div>
       </section>
-    {% endif %}
-  </main>
-  {% render 'sections/footer.html' %}{% render 'sections/auxiliaries.html' %}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script><script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
-</body>
+      {% if gallery and gallery.size > 0 %}
+        <section class="section atlas-gallery-section" data-reveal>
+          <div class="shell" data-gallery-collection>
+            <div class="gallery-filter-bar" data-gallery-filters aria-label="Gallery categories">
+              <button
+                type="button"
+                class="gallery-filter-tab is-active"
+                data-gallery-filter="all"
+                aria-pressed="true"
+              >
+                All
+              </button>
+            </div>
+            <div class="atlas-gallery-grid" data-gallery-grid>
+              {% for item in gallery %}
+                {% if item.image != blank %}
+                  <article
+                    class="atlas-gallery-card"
+                    data-gallery-item
+                    data-gallery-category="{{ item.category | escape }}"
+                  >
+                    <button
+                      type="button"
+                      class="gallery-lightbox-trigger"
+                      data-gallery-trigger
+                      data-gallery-src="{{ item.image | escape }}"
+                      data-gallery-title="{{ item.title | escape }}"
+                      data-gallery-category="{{ item.category | default: 'Gallery' | escape }}"
+                      aria-label="View {{ item.title | default: 'gallery image' | escape }}"
+                    >
+                      <img
+                        src="{{ item.image | escape }}"
+                        alt="{{ item.title | default: 'Gallery image' | escape }}"
+                        loading="lazy"
+                      >
+                      <span class="atlas-gallery-zoom" aria-hidden="true">
+                        <i class="fas fa-expand-alt"></i>
+                      </span>
+                    </button>
+                    <div class="atlas-gallery-card-body">
+                      {% if item.category != blank %}
+                        <span class="atlas-gallery-category">{{ item.category | escape }}</span>
+                      {% endif %}
+                      {% if item.title != blank %}
+                        <h2>{{ item.title | escape }}</h2>
+                      {% endif %}
+                    </div>
+                  </article>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+      {% endif %}
+    </main>
+    {% render 'sections/footer.html' %}
+    {% render 'sections/auxiliaries.html' %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+    <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
+  </body>
 </html>

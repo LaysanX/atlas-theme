@@ -1,37 +1,78 @@
 {% assign section_data = section | default: section_controls.projects %}
 {% assign items = projects | default: project_items %}
 {% assign card_variant = variant | default: 'showcase' %}
-{% if items and items.size > 0 or section_data.kicker or section_data.title or section_data.subtitle %}
-<section class="{{ section_class | default: 'section' }}" data-reveal>
-  <div class="shell">
-    <div class="section-head">
-      {% if section_data.kicker or section_data.title %}<span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>{% endif %}
-      {% if section_data.subtitle or section_data.title %}<h2>{{ section_data.subtitle | default: section_data.title }}</h2>{% endif %}
-      {% if link_text and link_url %}<a href="{{ link_url }}" class="text-link">{{ link_text }}</a>{% endif %}
-    </div>
-    <div class="{% if card_variant == 'simple' %}project-grid{% else %}home-portfolio-grid{% endif %}"{% if section_data.columns %} style="grid-template-columns: repeat({{ section_data.columns }}, minmax(0, 1fr));"{% endif %}>
-      {% for project in items limit: section_data.count %}
-        <article class="{% if card_variant == 'simple' %}project-card{% else %}home-portfolio-card{% endif %}" data-reveal>
-          <a href="{{ project.url | default: project.slug | default: '/' }}" class="{% if card_variant == 'simple' %}project-card-link{% else %}card-link-wrap home-portfolio-link{% endif %}">
-            <div class="{% if card_variant == 'simple' %}project-media-wrap{% else %}home-portfolio-media-wrap{% endif %}">
-              {% if project.image %}
-                <img src="{{ project.image }}" alt="{{ project.title }}" class="{% if card_variant == 'simple' %}project-media{% else %}home-portfolio-media{% endif %}">
-              {% else %}
-                <div class="{% if card_variant == 'simple' %}project-media project-fallback{% else %}home-portfolio-media home-portfolio-fallback{% endif %}"><div class="service-tile-icon"><i class="{{ project.icon | default: 'fas fa-briefcase' }}"></i></div></div>
-              {% endif %}
-              {% if card_variant != 'simple' %}<div class="home-portfolio-overlay"></div>{% endif %}
-            </div>
-            <div class="{% if card_variant == 'simple' %}project-body{% else %}home-portfolio-body{% endif %}">
-              <div class="{% if card_variant == 'simple' %}project-head{% else %}home-portfolio-head{% endif %}">
-                {% if project.category_title %}<span class="project-tag">{{ project.category_title }}</span>{% endif %}
-                <h3>{{ project.title }}</h3>
+{% if items
+  and items.size > 0
+  or section_data.kicker
+  or section_data.title
+  or section_data.subtitle
+%}
+  <section class="{{ section_class | default: 'section' }}" data-reveal>
+    <div class="shell">
+      <div class="section-head">
+        {% if section_data.kicker or section_data.title %}
+          <span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>
+        {% endif %}
+        {% if section_data.subtitle or section_data.title %}
+          <h2>{{ section_data.subtitle | default: section_data.title }}</h2>
+        {% endif %}
+        {% if link_text and link_url %}
+          <a href="{{ link_url }}" class="text-link">{{ link_text }}</a>
+        {% endif %}
+      </div>
+      <div
+        class="{% if card_variant == 'simple' %}project-grid{% else %}home-portfolio-grid{% endif %}"
+        {% if section_data.columns %}
+          style="grid-template-columns: repeat({{ section_data.columns }}, minmax(0, 1fr));"
+        {% endif %}
+      >
+        {% for project in items limit: section_data.count %}
+          <article
+            class="{% if card_variant == 'simple' %}project-card{% else %}home-portfolio-card{% endif %}"
+            data-reveal
+          >
+            <a
+              href="{{ project.url | default: project.slug | default: '/' }}"
+              class="{% if card_variant == 'simple' %}project-card-link{% else %}card-link-wrap home-portfolio-link{% endif %}"
+            >
+              <div class="{% if card_variant == 'simple' %}project-media-wrap{% else %}home-portfolio-media-wrap{% endif %}">
+                {% if project.image %}
+                  <img
+                    src="{{ project.image }}"
+                    alt="{{ project.title }}"
+                    class="{% if card_variant == 'simple' %}project-media{% else %}home-portfolio-media{% endif %}"
+                  >
+                {% else %}
+                  <div class="{% if card_variant == 'simple' %}project-media project-fallback{% else %}home-portfolio-media home-portfolio-fallback{% endif %}">
+                    <div class="service-tile-icon">
+                      <i class="{{ project.icon | default: 'fas fa-briefcase' }}"></i>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if card_variant != 'simple' %}
+                  <div class="home-portfolio-overlay"></div>
+                {% endif %}
               </div>
-              {% if card_variant == 'simple' %}<p>{{ project.subheading | default: project.subtitle }}</p>{% else %}<div class="home-portfolio-copy">{{ project.short_description | default: project.subtitle | raw }}</div><div class="home-portfolio-footer"><span class="tile-link">View more</span></div>{% endif %}
-            </div>
-          </a>
-        </article>
-      {% endfor %}
+              <div class="{% if card_variant == 'simple' %}project-body{% else %}home-portfolio-body{% endif %}">
+                <div class="{% if card_variant == 'simple' %}project-head{% else %}home-portfolio-head{% endif %}">
+                  {% if project.category_title %}
+                    <span class="project-tag">{{ project.category_title }}</span>
+                  {% endif %}
+                  <h3>{{ project.title }}</h3>
+                </div>
+                {% if card_variant == 'simple' %}
+                  <p>{{ project.subheading | default: project.subtitle }}</p>
+                {% else %}
+                  <div class="home-portfolio-copy">
+                    {{ project.short_description | default: project.subtitle | raw }}
+                  </div>
+                  <div class="home-portfolio-footer"><span class="tile-link">View more</span></div>
+                {% endif %}
+              </div>
+            </a>
+          </article>
+        {% endfor %}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endif %}

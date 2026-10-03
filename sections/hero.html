@@ -1,8 +1,18 @@
-{% assign slides = hero.slides | default: hero.slider_items | default: hero.sliders | default: slides | default: sliders %}
+{% assign slides = hero.slides
+  | default: hero.slider_items
+  | default: hero.sliders
+  | default: slides
+  | default: sliders
+%}
 {% assign metrics = hero.metrics | default: hero_metrics %}
-{% assign layout_type = hero.layout_type | default: hero.slider_layout_type | default: settings.slider_layout_type | default: settings.sliderLayoutType %}
+{% assign layout_type = hero.layout_type
+  | default: hero.slider_layout_type
+  | default: settings.slider_layout_type
+  | default: settings.sliderLayoutType
+%}
 {% assign layout = layout_type | downcase %}
-{% assign use_constrained_wrapper = layout == "text-left-slider-right" or layout == "text-top-three-cards" %}
+{% assign use_constrained_wrapper = layout == 'text-left-slider-right'
+  or layout == 'text-top-three-cards' %}
 {% assign hero_eyebrow = hero.eyebrow | default: hero.kicker | default: hero.tagline %}
 {% assign hero_title = hero.title | default: hero.heading %}
 {% assign hero_description = hero.description_html | default: hero.description %}
@@ -14,22 +24,39 @@
 <section class="hero-band dynamic-hero dynamic-hero--{{ layout }}" data-hero-variant>
   {% if use_constrained_wrapper %}
     <div class="shell">
-      {% if layout == "text-top-three-cards" %}
+      {% if layout == 'text-top-three-cards' %}
         <div class="dustfree-hero-shell">
           <div class="dustfree-hero-copy">
-            {% if hero.eyebrow %}<span class="eyebrow">{{ hero.eyebrow }}</span>{% endif %}
-            {% if hero.title %}<h1>{{ hero.title }}</h1>{% endif %}
-            {% if hero.description_html %}<div class="hero-summary">{{ hero.description_html | raw }}</div>{% endif %}
+            {% if hero.eyebrow %}
+              <span class="eyebrow">{{ hero.eyebrow }}</span>
+            {% endif %}
+            {% if hero.title %}
+              <h1>{{ hero.title }}</h1>
+            {% endif %}
+            {% if hero.description_html %}
+              <div class="hero-summary">{{ hero.description_html | raw }}</div>
+            {% endif %}
             {% if hero.primary_button_text or hero.secondary_button_text %}
               <div class="hero-actions">
-                {% if hero.primary_button_text %}<a href="{{ hero.primary_button_url }}" class="btn btn-primary">{{ hero.primary_button_text }}</a>{% endif %}
-                {% if hero.secondary_button_text %}<a href="{{ hero.secondary_button_url }}" class="btn btn-secondary">{{ hero.secondary_button_text }}</a>{% endif %}
+                {% if hero.primary_button_text %}
+                  <a href="{{ hero.primary_button_url }}" class="btn btn-primary">
+                    {{ hero.primary_button_text }}
+                  </a>
+                {% endif %}
+                {% if hero.secondary_button_text %}
+                  <a href="{{ hero.secondary_button_url }}" class="btn btn-secondary">
+                    {{ hero.secondary_button_text }}
+                  </a>
+                {% endif %}
               </div>
             {% endif %}
             {% if metrics and metrics.size > 0 %}
               <div class="hero-metrics">
                 {% for metric in metrics %}
-                  <div><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div>
+                  <div>
+                    <strong>{{ metric.value }}</strong>
+                    <span>{{ metric.label }}</span>
+                  </div>
                 {% endfor %}
               </div>
             {% endif %}
@@ -39,15 +66,32 @@
               {% for slide in slides limit: 3 %}
                 <article class="dustfree-visual-card dustfree-visual-card-{{ forloop.index }}">
                   {% if slide.is_direct_video == true %}
-                    <video autoplay muted loop playsinline preload="auto" poster="{{ slide.image }}">
-                      {% if slide.is_mobile_direct_video == true and slide.mobile_video_url %}<source src="{{ slide.mobile_video_url }}" media="(max-width: 767.98px)">{% endif %}
+                    <video
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      preload="auto"
+                      poster="{{ slide.image }}"
+                    >
+                      {% if slide.is_mobile_direct_video == true and slide.mobile_video_url %}
+                        <source src="{{ slide.mobile_video_url }}" media="(max-width: 767.98px)">
+                      {% endif %}
                       <source src="{{ slide.video_url }}">
                     </video>
                   {% elsif slide.video_embed_url %}
-                    <iframe src="{{ slide.video_embed_url }}" title="{{ slide.title }}" loading="lazy" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe
+                      src="{{ slide.video_embed_url }}"
+                      title="{{ slide.title }}"
+                      loading="lazy"
+                      allow="autoplay; encrypted-media"
+                      allowfullscreen
+                    ></iframe>
                   {% elsif slide.image %}
                     <picture>
-                      {% if slide.mobile_image %}<source media="(max-width: 767.98px)" srcset="{{ slide.mobile_image }}">{% endif %}
+                      {% if slide.mobile_image %}
+                        <source media="(max-width: 767.98px)" srcset="{{ slide.mobile_image }}">
+                      {% endif %}
                       <img src="{{ slide.image }}" alt="{{ slide.title }}">
                     </picture>
                   {% else %}
@@ -68,13 +112,18 @@
             {% if hero_primary_text or hero_secondary_text %}
               <div class="hero-actions">
                 <a href="{{ hero_primary_url }}" class="btn btn-primary">{{ hero_primary_text }}</a>
-                <a href="{{ hero_secondary_url }}" class="btn btn-secondary">{{ hero_secondary_text }}</a>
+                <a href="{{ hero_secondary_url }}" class="btn btn-secondary">
+                  {{ hero_secondary_text }}
+                </a>
               </div>
             {% endif %}
             {% if metrics and metrics.size > 0 %}
               <div class="hero-metrics">
                 {% for metric in metrics %}
-                  <div><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div>
+                  <div>
+                    <strong>{{ metric.value }}</strong>
+                    <span>{{ metric.label }}</span>
+                  </div>
                 {% endfor %}
               </div>
             {% endif %}
@@ -82,91 +131,201 @@
           <div class="hero-stage">
             {% if slides and slides.size > 0 %}
               <div class="hero-slider" data-hero-slides data-slider-variant="{{ layout }}">
-                {% if layout == "banner-single" or layout == "static-hero" %}
+                {% if layout == 'banner-single' or layout == 'static-hero' %}
                   {% for slide in slides limit: 1 %}
-                  <article class="hero-card {% if forloop.first %}is-active{% endif %}" data-hero-slide data-slide>
-                    <a href="{{ slide.url | default: slide.cta1_url | default: '#' }}" class="hero-card-link" aria-label="{{ slide.title | default: hero.title }}">
-                      <div class="hero-card-media">
-                        {% if slide.is_direct_video == true %}
-                          <video class="hero-card-video" autoplay muted loop playsinline poster="{{ slide.image }}">
-                            {% if slide.is_mobile_direct_video == true and slide.mobile_video_url %}<source src="{{ slide.mobile_video_url }}" media="(max-width: 767.98px)">{% endif %}
-                            <source src="{{ slide.video_url }}">
-                          </video>
-                        {% elsif slide.video_embed_url %}
-                          <iframe src="{{ slide.video_embed_url }}" title="{{ slide.title | default: hero.title }}" loading="lazy" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                        {% elsif slide.image %}
-                          <picture>
-                            {% if slide.mobile_image %}<source media="(max-width: 767.98px)" srcset="{{ slide.mobile_image }}">{% endif %}
-                            <img src="{{ slide.image }}" alt="{{ slide.title | default: hero.title }}">
-                          </picture>
-                        {% else %}
-                          <div class="hero-fallback"></div>
-                        {% endif %}
-                        {% if slide.show_overlay_content == true or slide.title != blank or slide.subtitle != blank or slide.description != blank %}
-                          <div class="hero-slide-overlay">
-                            {% if slide.subtitle != blank %}<span class="eyebrow">{{ slide.subtitle }}</span>{% endif %}
-                            {% if slide.title != blank %}<h2>{{ slide.title }}</h2>{% endif %}
-                            {% if slide.description != blank %}<div class="hero-slide-description">{{ slide.description }}</div>{% endif %}
-                            {% if slide.cta1_title != blank or slide.cta2_title != blank %}
-                              <div class="hero-actions">
-                                {% if slide.cta1_title != blank %}<span class="btn btn-primary">{{ slide.cta1_title }}</span>{% endif %}
-                                {% if slide.cta2_title != blank %}<span class="btn btn-secondary">{{ slide.cta2_title }}</span>{% endif %}
-                              </div>
-                            {% endif %}
-                          </div>
-                        {% endif %}
-                      </div>
-                    </a>
-                  </article>
+                    <article
+                      class="hero-card {% if forloop.first %}is-active{% endif %}"
+                      data-hero-slide
+                      data-slide
+                    >
+                      <a
+                        href="{{ slide.url | default: slide.cta1_url | default: '#' }}"
+                        class="hero-card-link"
+                        aria-label="{{ slide.title | default: hero.title }}"
+                      >
+                        <div class="hero-card-media">
+                          {% if slide.is_direct_video == true %}
+                            <video
+                              class="hero-card-video"
+                              autoplay
+                              muted
+                              loop
+                              playsinline
+                              poster="{{ slide.image }}"
+                            >
+                              {% if slide.is_mobile_direct_video == true
+                                and slide.mobile_video_url
+                              %}
+                                <source
+                                  src="{{ slide.mobile_video_url }}"
+                                  media="(max-width: 767.98px)"
+                                >
+                              {% endif %}
+                              <source src="{{ slide.video_url }}">
+                            </video>
+                          {% elsif slide.video_embed_url %}
+                            <iframe
+                              src="{{ slide.video_embed_url }}"
+                              title="{{ slide.title | default: hero.title }}"
+                              loading="lazy"
+                              allow="autoplay; encrypted-media"
+                              allowfullscreen
+                            ></iframe>
+                          {% elsif slide.image %}
+                            <picture>
+                              {% if slide.mobile_image %}
+                                <source
+                                  media="(max-width: 767.98px)"
+                                  srcset="{{ slide.mobile_image }}"
+                                >
+                              {% endif %}
+                              <img
+                                src="{{ slide.image }}"
+                                alt="{{ slide.title | default: hero.title }}"
+                              >
+                            </picture>
+                          {% else %}
+                            <div class="hero-fallback"></div>
+                          {% endif %}
+                          {% if slide.show_overlay_content == true
+                            or slide.title != blank
+                            or slide.subtitle != blank
+                            or slide.description != blank
+                          %}
+                            <div class="hero-slide-overlay">
+                              {% if slide.subtitle != blank %}
+                                <span class="eyebrow">{{ slide.subtitle }}</span>
+                              {% endif %}
+                              {% if slide.title != blank %}
+                                <h2>{{ slide.title }}</h2>
+                              {% endif %}
+                              {% if slide.description != blank %}
+                                <div class="hero-slide-description">{{ slide.description }}</div>
+                              {% endif %}
+                              {% if slide.cta1_title != blank or slide.cta2_title != blank %}
+                                <div class="hero-actions">
+                                  {% if slide.cta1_title != blank %}
+                                    <span class="btn btn-primary">{{ slide.cta1_title }}</span>
+                                  {% endif %}
+                                  {% if slide.cta2_title != blank %}
+                                    <span class="btn btn-secondary">{{ slide.cta2_title }}</span>
+                                  {% endif %}
+                                </div>
+                              {% endif %}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </a>
+                    </article>
                   {% endfor %}
                 {% else %}
                   {% for slide in slides %}
-                  <article class="hero-card {% if forloop.first %}is-active{% endif %}" data-hero-slide data-slide>
-                    <a href="{{ slide.url | default: slide.cta1_url | default: '#' }}" class="hero-card-link" aria-label="{{ slide.title | default: hero.title }}">
-                      <div class="hero-card-media">
-                        {% if slide.is_direct_video == true %}
-                          <video class="hero-card-video" autoplay muted loop playsinline poster="{{ slide.image }}">
-                            {% if slide.is_mobile_direct_video == true and slide.mobile_video_url %}<source src="{{ slide.mobile_video_url }}" media="(max-width: 767.98px)">{% endif %}
-                            <source src="{{ slide.video_url }}">
-                          </video>
-                        {% elsif slide.video_embed_url %}
-                          <iframe src="{{ slide.video_embed_url }}" title="{{ slide.title | default: hero.title }}" loading="lazy" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                        {% elsif slide.image %}
-                          <picture>
-                            {% if slide.mobile_image %}<source media="(max-width: 767.98px)" srcset="{{ slide.mobile_image }}">{% endif %}
-                            <img src="{{ slide.image }}" alt="{{ slide.title | default: hero.title }}">
-                          </picture>
-                        {% else %}
-                          <div class="hero-fallback"></div>
-                        {% endif %}
-                        {% if slide.show_overlay_content == true or slide.title != blank or slide.subtitle != blank or slide.description != blank %}
-                          <div class="hero-slide-overlay">
-                            {% if slide.subtitle != blank %}<span class="eyebrow">{{ slide.subtitle }}</span>{% endif %}
-                            {% if slide.title != blank %}<h2>{{ slide.title }}</h2>{% endif %}
-                            {% if slide.description != blank %}<div class="hero-slide-description">{{ slide.description }}</div>{% endif %}
-                            {% if slide.cta1_title != blank or slide.cta2_title != blank %}
-                              <div class="hero-actions">
-                                {% if slide.cta1_title != blank %}<span class="btn btn-primary">{{ slide.cta1_title }}</span>{% endif %}
-                                {% if slide.cta2_title != blank %}<span class="btn btn-secondary">{{ slide.cta2_title }}</span>{% endif %}
-                              </div>
-                            {% endif %}
-                          </div>
-                        {% endif %}
-                      </div>
-                    </a>
-                  </article>
+                    <article
+                      class="hero-card {% if forloop.first %}is-active{% endif %}"
+                      data-hero-slide
+                      data-slide
+                    >
+                      <a
+                        href="{{ slide.url | default: slide.cta1_url | default: '#' }}"
+                        class="hero-card-link"
+                        aria-label="{{ slide.title | default: hero.title }}"
+                      >
+                        <div class="hero-card-media">
+                          {% if slide.is_direct_video == true %}
+                            <video
+                              class="hero-card-video"
+                              autoplay
+                              muted
+                              loop
+                              playsinline
+                              poster="{{ slide.image }}"
+                            >
+                              {% if slide.is_mobile_direct_video == true
+                                and slide.mobile_video_url
+                              %}
+                                <source
+                                  src="{{ slide.mobile_video_url }}"
+                                  media="(max-width: 767.98px)"
+                                >
+                              {% endif %}
+                              <source src="{{ slide.video_url }}">
+                            </video>
+                          {% elsif slide.video_embed_url %}
+                            <iframe
+                              src="{{ slide.video_embed_url }}"
+                              title="{{ slide.title | default: hero.title }}"
+                              loading="lazy"
+                              allow="autoplay; encrypted-media"
+                              allowfullscreen
+                            ></iframe>
+                          {% elsif slide.image %}
+                            <picture>
+                              {% if slide.mobile_image %}
+                                <source
+                                  media="(max-width: 767.98px)"
+                                  srcset="{{ slide.mobile_image }}"
+                                >
+                              {% endif %}
+                              <img
+                                src="{{ slide.image }}"
+                                alt="{{ slide.title | default: hero.title }}"
+                              >
+                            </picture>
+                          {% else %}
+                            <div class="hero-fallback"></div>
+                          {% endif %}
+                          {% if slide.show_overlay_content == true
+                            or slide.title != blank
+                            or slide.subtitle != blank
+                            or slide.description != blank
+                          %}
+                            <div class="hero-slide-overlay">
+                              {% if slide.subtitle != blank %}
+                                <span class="eyebrow">{{ slide.subtitle }}</span>
+                              {% endif %}
+                              {% if slide.title != blank %}
+                                <h2>{{ slide.title }}</h2>
+                              {% endif %}
+                              {% if slide.description != blank %}
+                                <div class="hero-slide-description">{{ slide.description }}</div>
+                              {% endif %}
+                              {% if slide.cta1_title != blank or slide.cta2_title != blank %}
+                                <div class="hero-actions">
+                                  {% if slide.cta1_title != blank %}
+                                    <span class="btn btn-primary">{{ slide.cta1_title }}</span>
+                                  {% endif %}
+                                  {% if slide.cta2_title != blank %}
+                                    <span class="btn btn-secondary">{{ slide.cta2_title }}</span>
+                                  {% endif %}
+                                </div>
+                              {% endif %}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </a>
+                    </article>
                   {% endfor %}
                 {% endif %}
                 {% if slides.size > 1 %}
                   <div class="hero-dots">
                     {% for slide in slides %}
-                      <button type="button" class="hero-dot {% if forloop.first %}is-active{% endif %}" data-hero-dot="{{ forloop.index0 }}" data-slide-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
+                      <button
+                        type="button"
+                        class="hero-dot {% if forloop.first %}is-active{% endif %}"
+                        data-hero-dot="{{ forloop.index0 }}"
+                        data-slide-dot="{{ forloop.index0 }}"
+                        aria-label="Go to slide {{ forloop.index }}"
+                      ></button>
                     {% endfor %}
                   </div>
                 {% endif %}
               </div>
             {% else %}
-              <div class="hero-slider hero-slider-fallback" data-hero-slides data-slider-variant="static-hero">
+              <div
+                class="hero-slider hero-slider-fallback"
+                data-hero-slides
+                data-slider-variant="static-hero"
+              >
                 <article class="hero-card is-active" data-hero-slide data-slide>
                   <div class="hero-card-link">
                     <div class="hero-card-media">
@@ -199,30 +358,72 @@
       {% if slides and slides.size > 0 %}
         <div class="dynamic-hero-slides" data-hero-slides data-slider-variant="{{ layout }}">
           {% for slide in slides %}
-            <article class="dynamic-hero-slide {% if forloop.first %}is-active{% endif %}" data-hero-slide data-slide>
+            <article
+              class="dynamic-hero-slide {% if forloop.first %}is-active{% endif %}"
+              data-hero-slide
+              data-slide
+            >
               <div class="dynamic-hero-media">
                 {% if slide.is_direct_video == true %}
-                  <video class="dynamic-hero-video" autoplay muted loop playsinline poster="{{ slide.image }}">
-                    {% if slide.is_mobile_direct_video == true and slide.mobile_video_url %}<source src="{{ slide.mobile_video_url }}" media="(max-width: 767.98px)">{% endif %}
+                  <video
+                    class="dynamic-hero-video"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    poster="{{ slide.image }}"
+                  >
+                    {% if slide.is_mobile_direct_video == true and slide.mobile_video_url %}
+                      <source src="{{ slide.mobile_video_url }}" media="(max-width: 767.98px)">
+                    {% endif %}
                     <source src="{{ slide.video_url }}">
                   </video>
                 {% elsif slide.video_embed_url %}
-                  <iframe src="{{ slide.video_embed_url }}" title="{{ slide.title | default: hero.title }}" loading="lazy" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                  <iframe
+                    src="{{ slide.video_embed_url }}"
+                    title="{{ slide.title | default: hero.title }}"
+                    loading="lazy"
+                    allow="autoplay; encrypted-media"
+                    allowfullscreen
+                  ></iframe>
                 {% elsif slide.image %}
                   <picture>
-                    {% if slide.mobile_image %}<source media="(max-width: 767.98px)" srcset="{{ slide.mobile_image }}">{% endif %}
+                    {% if slide.mobile_image %}
+                      <source media="(max-width: 767.98px)" srcset="{{ slide.mobile_image }}">
+                    {% endif %}
                     <img src="{{ slide.image }}" alt="{{ slide.title | default: hero.title }}">
                   </picture>
                 {% endif %}
-                {% if slide.show_overlay_content == true or slide.title != blank or slide.subtitle != blank or slide.description != blank %}
-                  <div class="hero-slide-overlay" style="--hero-overlay-opacity: {{ slide.overlay_opacity | default: 45 }}%;">
-                    {% if slide.subtitle != blank %}<span class="eyebrow">{{ slide.subtitle }}</span>{% endif %}
-                    {% if slide.title != blank %}<h2>{{ slide.title }}</h2>{% endif %}
-                    {% if slide.description != blank %}<div class="hero-slide-description">{{ slide.description }}</div>{% endif %}
+                {% if slide.show_overlay_content == true
+                  or slide.title != blank
+                  or slide.subtitle != blank
+                  or slide.description != blank
+                %}
+                  <div
+                    class="hero-slide-overlay"
+                    style="--hero-overlay-opacity: {{ slide.overlay_opacity | default: 45 }}%;"
+                  >
+                    {% if slide.subtitle != blank %}
+                      <span class="eyebrow">{{ slide.subtitle }}</span>
+                    {% endif %}
+                    {% if slide.title != blank %}
+                      <h2>{{ slide.title }}</h2>
+                    {% endif %}
+                    {% if slide.description != blank %}
+                      <div class="hero-slide-description">{{ slide.description }}</div>
+                    {% endif %}
                     {% if slide.cta1_title != blank or slide.cta2_title != blank %}
                       <div class="hero-actions">
-                        {% if slide.cta1_title != blank %}<a href="{{ slide.cta1_url | default: '#' }}" class="btn btn-primary">{{ slide.cta1_title }}</a>{% endif %}
-                        {% if slide.cta2_title != blank %}<a href="{{ slide.cta2_url | default: '#' }}" class="btn btn-secondary">{{ slide.cta2_title }}</a>{% endif %}
+                        {% if slide.cta1_title != blank %}
+                          <a href="{{ slide.cta1_url | default: '#' }}" class="btn btn-primary">
+                            {{ slide.cta1_title }}
+                          </a>
+                        {% endif %}
+                        {% if slide.cta2_title != blank %}
+                          <a href="{{ slide.cta2_url | default: '#' }}" class="btn btn-secondary">
+                            {{ slide.cta2_title }}
+                          </a>
+                        {% endif %}
                       </div>
                     {% endif %}
                   </div>
@@ -232,12 +433,26 @@
           {% endfor %}
         </div>
       {% else %}
-        <div class="dynamic-hero-slides dynamic-hero-slides-fallback" data-hero-slides data-slider-variant="static-hero">
+        <div
+          class="dynamic-hero-slides dynamic-hero-slides-fallback"
+          data-hero-slides
+          data-slider-variant="static-hero"
+        >
           <article class="dynamic-hero-slide is-active" data-hero-slide data-slide>
             <div class="dynamic-hero-media">
               <div class="hero-fallback hero-fallback--dashboard">
-                <div class="hero-fallback-bars"><span></span><span></span><span></span></div>
-                <div class="hero-fallback-board"><div class="hero-fallback-window"><div class="hero-fallback-panel hero-fallback-panel-large"></div><div class="hero-fallback-panel hero-fallback-panel-small"></div><div class="hero-fallback-panel hero-fallback-panel-small-alt"></div></div></div>
+                <div class="hero-fallback-bars">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="hero-fallback-board">
+                  <div class="hero-fallback-window">
+                    <div class="hero-fallback-panel hero-fallback-panel-large"></div>
+                    <div class="hero-fallback-panel hero-fallback-panel-small"></div>
+                    <div class="hero-fallback-panel hero-fallback-panel-small-alt"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </article>

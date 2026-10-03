@@ -1,2 +1,32 @@
 {% assign items = auxiliaries.items %}
-{% if items and items.size > 0 %}<section class="{{ auxiliaries.section_class | default: 'section-inner-page' }}" data-section="general" data-reveal><div class="shell"><div class="section-head">{% if auxiliaries.kicker %}<span class="eyebrow">{{ auxiliaries.kicker }}</span>{% endif %}{% if auxiliaries.subtitle %}<h2>{{ auxiliaries.subtitle }}</h2>{% endif %}</div><div class="{{ auxiliaries.grid_class | default: 'trust-grid' }}">{% for item in items limit: auxiliaries.count %}<article class="marketing-card" data-section-item="general" data-reveal><h3>{{ item.name }}</h3>{% if item.comment %}<div>{{ item.comment | raw }}</div>{% endif %}{% if item.designation %}<p>{{ item.designation }}</p>{% endif %}</article>{% endfor %}</div></div></section>{% endif %}
+{% if items and items.size > 0 %}
+  <section
+    class="{{ auxiliaries.section_class | default: 'section-inner-page' }}"
+    data-section="general"
+    data-reveal
+  >
+    <div class="shell">
+      <div class="section-head">
+        {% if auxiliaries.kicker %}
+          <span class="eyebrow">{{ auxiliaries.kicker }}</span>
+        {% endif %}
+        {% if auxiliaries.subtitle %}
+          <h2>{{ auxiliaries.subtitle }}</h2>
+        {% endif %}
+      </div>
+      <div class="{{ auxiliaries.grid_class | default: 'trust-grid' }}">
+        {% for item in items limit: auxiliaries.count %}
+          <article class="marketing-card" data-section-item="general" data-reveal>
+            <h3>{{ item.name }}</h3>
+            {% if item.comment %}
+              <div>{{ item.comment | raw }}</div>
+            {% endif %}
+            {% if item.designation %}
+              <p>{{ item.designation }}</p>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}

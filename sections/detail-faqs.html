@@ -2,8 +2,12 @@
   <div class="shell">
     <div class="section-head compact faq-section-head">
       <div>
-        {% if section.title %}<span class="eyebrow">{{ section.title }}</span>{% endif %}
-        {% if section.subtitle %}<h2>{{ section.subtitle }}</h2>{% endif %}
+        {% if section.title %}
+          <span class="eyebrow">{{ section.title }}</span>
+        {% endif %}
+        {% if section.subtitle %}
+          <h2>{{ section.subtitle }}</h2>
+        {% endif %}
       </div>
     </div>
     <div class="faq-list faq-list-detail" data-accordion>

@@ -1,34 +1,53 @@
 {% assign items = teams.items | default: teams %}
 {% if items and items.size > 0 or teams.title or teams.subtitle %}
-<section class="section" data-reveal>
-  <div class="shell">
-    {% if teams.title != blank or teams.subtitle != blank %}
-      <div class="section-head">
-        <div>
-          {% if teams.title != blank %}<span class="eyebrow">{{ teams.title }}</span>{% endif %}
-          {% if teams.subtitle != blank %}<h2>{{ teams.subtitle }}</h2>{% endif %}
-        </div>
-      </div>
-    {% endif %}
-    <div class="team-grid">
-      {% for member in items %}
-        <article class="team-card" data-reveal>
-          <div class="team-media-wrap">
-            {% if member.image != blank %}
-              <img src="{{ member.image }}" alt="{{ member.name }}" class="team-media" />
+  <section class="section" data-reveal>
+    <div class="shell">
+      {% if teams.title != blank or teams.subtitle != blank %}
+        <div class="section-head">
+          <div>
+            {% if teams.title != blank %}
+              <span class="eyebrow">{{ teams.title }}</span>
             {% endif %}
-            <div class="team-social">
-              {% if member.linkedin_link != blank %}<a href="{{ member.linkedin_link }}" aria-label="{{ member.name }} LinkedIn"><i class="fab fa-linkedin-in"></i></a>{% endif %}
-              {% if member.twitter_link != blank %}<a href="{{ member.twitter_link }}" aria-label="{{ member.name }} Twitter"><i class="fab fa-twitter"></i></a>{% endif %}
-            </div>
+            {% if teams.subtitle != blank %}
+              <h2>{{ teams.subtitle }}</h2>
+            {% endif %}
           </div>
-          <h3>{{ member.name }}</h3>
-          <p>{{ member.designation }}</p>
-          {% if member.description != blank %}<p class="team-card-copy">{{ member.description | truncate: 120 }}</p>{% endif %}
-          <a href="{{ member.url | default: '/teams/' | append: member.id }}" class="btn btn-link p-0 mt-2">Read more</a>
-        </article>
-      {% endfor %}
+        </div>
+      {% endif %}
+      <div class="team-grid">
+        {% for member in items %}
+          <article class="team-card" data-reveal>
+            <div class="team-media-wrap">
+              {% if member.image != blank %}
+                <img src="{{ member.image }}" alt="{{ member.name }}" class="team-media" />
+              {% endif %}
+              <div class="team-social">
+                {% if member.linkedin_link != blank %}
+                  <a href="{{ member.linkedin_link }}" aria-label="{{ member.name }} LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                  </a>
+                {% endif %}
+                {% if member.twitter_link != blank %}
+                  <a href="{{ member.twitter_link }}" aria-label="{{ member.name }} Twitter">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+            <h3>{{ member.name }}</h3>
+            <p>{{ member.designation }}</p>
+            {% if member.description != blank %}
+              <p class="team-card-copy">{{ member.description | truncate: 120 }}</p>
+            {% endif %}
+            <a
+              href="{{ member.url | default: '/teams/' | append: member.id }}"
+              class="btn btn-link p-0 mt-2"
+            >
+              Read more
+            </a>
+          </article>
+        {% endfor %}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endif %}

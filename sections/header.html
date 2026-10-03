@@ -1,53 +1,87 @@
-{% assign site_name = site.name | default: "LaysanX" %}
-{% assign site_logo = site.logo | default: "" %}
-{% assign base_path = site.base_path | default: "" %}
+{% assign site_name = site.name | default: 'LaysanX' %}
+{% assign site_logo = site.logo | default: '' %}
+{% assign base_path = site.base_path | default: '' %}
 {% assign header_cta_text = settings.header_cta_text %}
 {% assign header_cta_url = settings.header_cta_url %}
 {% assign topbar_data = topbar | default: site.topbar %}
 {% if topbar_data.status == true %}
-<div class="topbar" style="background: {{ topbar_data.background_color | default: '#17253a' }};">
-  <div class="container-fluid px-3 px-lg-4">
-    <div class="row topbar-inner">
-      <div class="col-12 col-lg-4 topbar-block topbar-block-start">
-        {% if topbar_data.left_html != blank or topbar_data.section_1_html != blank %}
-          {{ topbar_data.left_html | default: topbar_data.section_1_html }}
-        {% endif %}
-      </div>
-      <div class="col-12 col-lg-4 topbar-block topbar-block-center">
-        {% if topbar_data.show_social == true and social.show_social_links == true %}
-          <div class="topbar-social">
-          {% if social.links and social.links.size > 0 %}
-              {% for link in social.links %}
-                <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ link.label }}">
-                  <i class="{{ link.icon }}"></i>
-                </a>
-              {% endfor %}
-            {% endif %}
-          </div>
-        {% endif %}
-      </div>
-      <div class="col-12 col-lg-4 topbar-block topbar-block-end">
-        {% if currency %}
-          <form method="post" action="{{ base_path }}/currency" class="d-inline-flex align-items-center gap-2" style="margin:0 0 0 12px;">
-            {{ forms.antiforgery_field | raw }}
-            <input type="hidden" name="returnUrl" value="{{ request.path }}{{ request.query_string }}" />
-            <select name="currencyCode" class="form-control form-control-sm" style="width:auto;min-width:92px;" onchange="this.form.submit()" aria-label="Currency">
-              {% for active_currency in currencies %}
-                <option value="{{ active_currency.code }}"{% if active_currency.code == currency.code %} selected{% endif %}>{{ active_currency.symbol }} {{ active_currency.code }}</option>
-              {% endfor %}
-            </select>
-          </form>
-        {% endif %}
-        {% if topbar_data.right_html != blank or topbar_data.section_3_html != blank %}
-          {{ topbar_data.right_html | default: topbar_data.section_3_html }}
-        {% endif %}
+  <div class="topbar" style="background: {{ topbar_data.background_color | default: '#17253a' }};">
+    <div class="container-fluid px-3 px-lg-4">
+      <div class="row topbar-inner">
+        <div class="col-12 col-lg-4 topbar-block topbar-block-start">
+          {% if topbar_data.left_html != blank or topbar_data.section_1_html != blank %}
+            {{ topbar_data.left_html | default: topbar_data.section_1_html }}
+          {% endif %}
+        </div>
+        <div class="col-12 col-lg-4 topbar-block topbar-block-center">
+          {% if topbar_data.show_social == true and social.show_social_links == true %}
+            <div class="topbar-social">
+              {% if social.links and social.links.size > 0 %}
+                {% for link in social.links %}
+                  <a
+                    href="{{ link.url }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="{{ link.label }}"
+                  >
+                    <i class="{{ link.icon }}"></i>
+                  </a>
+                {% endfor %}
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+        <div class="col-12 col-lg-4 topbar-block topbar-block-end">
+          {% if currency %}
+            <form
+              method="post"
+              action="{{ base_path }}/currency"
+              class="d-inline-flex align-items-center gap-2"
+              style="margin:0 0 0 12px;"
+            >
+              {{ forms.antiforgery_field | raw }}
+              <input
+                type="hidden"
+                name="returnUrl"
+                value="{{ request.path }}{{ request.query_string }}"
+              />
+              <select
+                name="currencyCode"
+                class="form-control form-control-sm"
+                style="width:auto;min-width:92px;"
+                onchange="this.form.submit()"
+                aria-label="Currency"
+              >
+                {% for active_currency in currencies %}
+                  <option
+                    value="{{ active_currency.code }}"
+                    {% if active_currency.code == currency.code %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ active_currency.symbol }}
+                    {{ active_currency.code }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+          {% endif %}
+          {% if topbar_data.right_html != blank or topbar_data.section_3_html != blank %}
+            {{ topbar_data.right_html | default: topbar_data.section_3_html }}
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endif %}
 
-<header class="site-header header-layout-{{ settings.header_layout_type | default: 'header-above-hero' }} site-header--{{ settings.header_layout_type | default: 'header-above-hero' }}{% if settings.header_transparent_on_hero == true %} header-transparent-on-hero site-header--transparent-hero{% endif %}{% if settings.header_sticky != false %} header-is-sticky{% endif %}" id="siteHeader" data-header-layout="{{ settings.header_layout_type | default: 'header-above-hero' }}" data-slider-layout="{{ settings.slider_layout_type | default: 'text-left-slider-right' }}" data-transparent-on-hero="{{ settings.header_transparent_on_hero }}">
+<header
+  class="site-header header-layout-{{ settings.header_layout_type | default: 'header-above-hero' }} site-header--{{ settings.header_layout_type | default: 'header-above-hero' }}{% if settings.header_transparent_on_hero == true %} header-transparent-on-hero site-header--transparent-hero{% endif %}{% if settings.header_sticky != false %} header-is-sticky{% endif %}"
+  id="siteHeader"
+  data-header-layout="{{ settings.header_layout_type | default: 'header-above-hero' }}"
+  data-slider-layout="{{ settings.slider_layout_type | default: 'text-left-slider-right' }}"
+  data-transparent-on-hero="{{ settings.header_transparent_on_hero }}"
+>
   <div class="container-fluid px-3 px-lg-4">
     <div class="row header-row align-items-center">
       <div class="col-auto">
@@ -55,15 +89,27 @@
           {% if site_logo != blank %}
             <img src="{{ site_logo }}" alt="{{ site_name }}" class="site-logo" />
           {% else %}
-            {% if site.logo == blank %}<span class="brand-token">{{ site.name }}</span>{% endif %}
-            <span class="brand-copy"><strong>{{ site_name }}</strong></span>
+            {% if site.logo == blank %}
+              <span class="brand-token">{{ site.name }}</span>
+            {% endif %}
+            <span class="brand-copy">
+              <strong>{{ site_name }}</strong>
+            </span>
           {% endif %}
         </a>
       </div>
 
       <div class="col-auto ms-auto d-lg-none">
-        <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteMenu">
-          <span></span><span></span><span></span>
+        <button
+          class="menu-toggle"
+          id="menuToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="siteMenu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
 
@@ -71,40 +117,56 @@
         <nav class="main-nav" aria-label="Primary navigation">
           <ul class="nav-links">
             {% if menus.header and menus.header.size > 0 %}
-            {% for item in menus.header %}
-              <li class="nav-item{% if item.children and item.children.size > 0 %} has-dropdown{% endif %}">
-                <a href="{{ item.url }}" class="nav-link-item">
-                  {% if item.icon != blank %}<i class="{{ item.icon }}"></i>{% endif %}
-                  <span>{{ item.title }}</span>
-                </a>
-                {% if item.children and item.children.size > 0 %}
-                  <ul class="submenu{% if item.children.size > 10 %} submenu-mega submenu-mega-2{% endif %}">
-                    {% for child in item.children %}
-                      <li class="nav-item">
-                        <a href="{{ child.url }}" class="nav-link-item">
-                          {% if child.icon != blank %}<i class="{{ child.icon }}"></i>{% endif %}
-                          <span>{{ child.title }}</span>
-                        </a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-              </li>
-            {% endfor %}
+              {% for item in menus.header %}
+                <li class="nav-item{% if item.children and item.children.size > 0 %} has-dropdown{% endif %}">
+                  <a href="{{ item.url }}" class="nav-link-item">
+                    {% if item.icon != blank %}<i class="{{ item.icon }}"></i>{% endif %}
+                    <span>{{ item.title }}</span>
+                  </a>
+                  {% if item.children and item.children.size > 0 %}
+                    <ul class="submenu{% if item.children.size > 10 %} submenu-mega submenu-mega-2{% endif %}">
+                      {% for child in item.children %}
+                        <li class="nav-item">
+                          <a href="{{ child.url }}" class="nav-link-item">
+                            {% if child.icon != blank %}<i class="{{ child.icon }}"></i>{% endif %}
+                            <span>{{ child.title }}</span>
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endfor %}
             {% endif %}
           </ul>
         </nav>
 
         {% if ecommerce.enabled %}
           <div class="header-store-actions">
-            <a href="{{ ecommerce.urls.cart }}" class="header-store-action header-store-cart" aria-label="{{ ecommerce.labels.cart | default: 'Cart' }}">
+            <a
+              href="{{ ecommerce.urls.cart }}"
+              class="header-store-action header-store-cart"
+              aria-label="{{ ecommerce.labels.cart | default: 'Cart' }}"
+            >
               <i class="fas fa-shopping-bag"></i>
               <span class="header-store-count">{{ ecommerce.cart_count | default: 0 }}</span>
             </a>
             {% if ecommerce.signed_in %}
-              <a href="{{ ecommerce.urls.account }}" class="header-store-action" aria-label="{{ ecommerce.labels.account | default: 'Account' }}"><i class="fas fa-user-circle"></i></a>
+              <a
+                href="{{ ecommerce.urls.account }}"
+                class="header-store-action"
+                aria-label="{{ ecommerce.labels.account | default: 'Account' }}"
+              >
+                <i class="fas fa-user-circle"></i>
+              </a>
             {% else %}
-              <a href="{{ ecommerce.urls.login }}" class="header-store-action" aria-label="{{ ecommerce.labels.login | default: 'Sign in' }}"><i class="fas fa-user-circle"></i></a>
+              <a
+                href="{{ ecommerce.urls.login }}"
+                class="header-store-action"
+                aria-label="{{ ecommerce.labels.login | default: 'Sign in' }}"
+              >
+                <i class="fas fa-user-circle"></i>
+              </a>
             {% endif %}
           </div>
         {% endif %}

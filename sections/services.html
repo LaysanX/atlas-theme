@@ -1,36 +1,66 @@
 {% assign section_data = section | default: section_controls.services %}
 {% assign items = services | default: service_items %}
 {% assign card_variant = variant | default: 'showcase' %}
-{% if items and items.size > 0 or section_data.kicker or section_data.title or section_data.subtitle %}
-<section class="section" data-reveal>
-  <div class="shell">
-    <div class="section-head">
-      {% if section_data.kicker or section_data.title %}
-        <span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>
-      {% endif %}
-      {% if section_data.subtitle or section_data.title %}<h2>{{ section_data.subtitle | default: section_data.title }}</h2>{% endif %}
-      {% if link_text and link_url %}<a href="{{ link_url }}" class="text-link">{{ link_text }}</a>{% endif %}
-    </div>
-    <div class="card-grid card-grid-3"{% if section_data.columns %} style="grid-template-columns: repeat({{ section_data.columns }}, minmax(0, 1fr));"{% endif %}>
-      {% for service in items limit: section_data.count %}
-        <article class="{% if card_variant == 'simple' %}service-tile{% else %}service-showcase-card home-catalog-card{% endif %}" data-reveal>
-          <a href="{{ service.url | default: service.slug | default: '/' }}" class="card-link-wrap{% if card_variant == 'simple' %} service-tile-link{% endif %}">
-            {% if service.image %}
-              <img src="{{ service.image }}" alt="{{ service.title }}" class="{% if card_variant == 'simple' %}service-tile-media{% else %}service-showcase-media home-catalog-media{% endif %}">
-            {% else %}
-              <div class="{% if card_variant == 'simple' %}service-tile-icon{% else %}service-showcase-media service-showcase-fallback home-catalog-media{% endif %}">
-                <div class="service-tile-icon"><i class="{{ service.icon | default: 'fas fa-layer-group' }}"></i></div>
+{% if items
+  and items.size > 0
+  or section_data.kicker
+  or section_data.title
+  or section_data.subtitle
+%}
+  <section class="section" data-reveal>
+    <div class="shell">
+      <div class="section-head">
+        {% if section_data.kicker or section_data.title %}
+          <span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>
+        {% endif %}
+        {% if section_data.subtitle or section_data.title %}
+          <h2>{{ section_data.subtitle | default: section_data.title }}</h2>
+        {% endif %}
+        {% if link_text and link_url %}
+          <a href="{{ link_url }}" class="text-link">{{ link_text }}</a>
+        {% endif %}
+      </div>
+      <div
+        class="card-grid card-grid-3"
+        {% if section_data.columns %}
+          style="grid-template-columns: repeat({{ section_data.columns }}, minmax(0, 1fr));"
+        {% endif %}
+      >
+        {% for service in items limit: section_data.count %}
+          <article
+            class="{% if card_variant == 'simple' %}service-tile{% else %}service-showcase-card home-catalog-card{% endif %}"
+            data-reveal
+          >
+            <a
+              href="{{ service.url | default: service.slug | default: '/' }}"
+              class="card-link-wrap{% if card_variant == 'simple' %} service-tile-link{% endif %}"
+            >
+              {% if service.image %}
+                <img
+                  src="{{ service.image }}"
+                  alt="{{ service.title }}"
+                  class="{% if card_variant == 'simple' %}service-tile-media{% else %}service-showcase-media home-catalog-media{% endif %}"
+                >
+              {% else %}
+                <div class="{% if card_variant == 'simple' %}service-tile-icon{% else %}service-showcase-media service-showcase-fallback home-catalog-media{% endif %}">
+                  <div class="service-tile-icon">
+                    <i class="{{ service.icon | default: 'fas fa-layer-group' }}"></i>
+                  </div>
+                </div>
+              {% endif %}
+              <div class="{% if card_variant == 'simple' %}{% else %}service-showcase-body home-catalog-body{% endif %}">
+                <h3>{{ service.title }}</h3>
+                <div class="service-copy{% if card_variant != 'simple' %} home-catalog-copy{% endif %}">
+                  {{ service.short_description | raw }}
+                </div>
+                {% if card_variant == 'simple' %}
+                  <span class="tile-link">{{ service.cta_text | default: 'View more' }}</span>
+                {% endif %}
               </div>
-            {% endif %}
-            <div class="{% if card_variant == 'simple' %}{% else %}service-showcase-body home-catalog-body{% endif %}">
-              <h3>{{ service.title }}</h3>
-              <div class="service-copy{% if card_variant != 'simple' %} home-catalog-copy{% endif %}">{{ service.short_description | raw }}</div>
-              {% if card_variant == 'simple' %}<span class="tile-link">{{ service.cta_text | default: 'View more' }}</span>{% endif %}
-            </div>
-          </a>
-        </article>
-      {% endfor %}
+            </a>
+          </article>
+        {% endfor %}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endif %}

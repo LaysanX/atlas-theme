@@ -4,28 +4,57 @@
       <div class="col-12 col-lg-6 order-lg-1">
         <div class="content-card conversion-form-card">
           <h3>{{ assigned_form.heading | default: assigned_form.name }}</h3>
-          <form method="post" action="{{ assigned_form.submit_url }}" class="conversion-form-grid" enctype="multipart/form-data">
+          <form
+            method="post"
+            action="{{ assigned_form.submit_url }}"
+            class="conversion-form-grid"
+            enctype="multipart/form-data"
+          >
             {{ forms.antiforgery_field | raw }}
             <input type="hidden" name="formId" value="{{ assigned_form.id }}">
             <input type="hidden" name="pageName" value="{{ page.title }}">
             {% for field in assigned_form.fields %}
-              <div class="conversion-field"><label>{{ field.label }}{% if field.required %}*{% endif %}</label>{{ field.input_html | raw }}</div>
+              <div class="conversion-field">
+                <label>
+                  {{ field.label }}
+                  {% if field.required %}*{% endif %}
+                </label>
+                {{ field.input_html | raw }}
+              </div>
             {% endfor %}
-            {% if assigned_form.captcha_enabled == true %}{{ assigned_form.captcha_html | raw }}{% endif %}
-            <button type="submit" class="btn btn-primary">{{ assigned_form.cta_text | default: 'Submit' }}</button>
+            {% if assigned_form.captcha_enabled == true %}
+              {{ assigned_form.captcha_html | raw }}
+            {% endif %}
+            <button type="submit" class="btn btn-primary">
+              {{ assigned_form.cta_text | default: 'Submit' }}
+            </button>
           </form>
         </div>
       </div>
       <div class="col-12 col-lg-6 order-lg-2">
         <div class="content-card assigned-plan-card">
-          {% if assigned_plan.title != blank %}<span class="eyebrow">{{ assigned_plan.title }}</span>{% endif %}
-          {% if assigned_plan.description != blank %}<div class="rich-content">{{ assigned_plan.description | raw }}</div>{% endif %}
-          {% if assigned_plan.primary_price_formatted != blank %}<div class="price-emphasis">{{ assigned_plan.primary_price_formatted }}</div>{% endif %}
-          {% if instruction_html != blank %}<div class="rich-content mt-3">{{ instruction_html | raw }}</div>{% endif %}
-          {% if assigned_plan.checkout_url != blank %}<a href="{{ assigned_plan.checkout_url }}" class="btn btn-secondary mt-3">{{ assigned_plan.cta_text | default: 'Choose plan' }}</a>{% endif %}
+          {% if assigned_plan.title != blank %}
+            <span class="eyebrow">{{ assigned_plan.title }}</span>
+          {% endif %}
+          {% if assigned_plan.description != blank %}
+            <div class="rich-content">{{ assigned_plan.description | raw }}</div>
+          {% endif %}
+          {% if assigned_plan.primary_price_formatted != blank %}
+            <div class="price-emphasis">{{ assigned_plan.primary_price_formatted }}</div>
+          {% endif %}
+          {% if instruction_html != blank %}
+            <div class="rich-content mt-3">{{ instruction_html | raw }}</div>
+          {% endif %}
+          {% if assigned_plan.checkout_url != blank %}
+            <a href="{{ assigned_plan.checkout_url }}" class="btn btn-secondary mt-3">
+              {{ assigned_plan.cta_text | default: 'Choose plan' }}
+            </a>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
 </section>
-{% if assigned_form.captcha_enabled == true %}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{% endif %}
+{% if assigned_form.captcha_enabled == true %}
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endif %}

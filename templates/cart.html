@@ -1,74 +1,236 @@
 <!doctype html>
 <html lang="{{ site.language | default: 'en' }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ seo.title | default: 'Cart' }}</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
-</head>
-<body class="theme-theliaison atlas-page atlas-commerce-page atlas-cart-page {% if site.topbar.status %}has-topbar{% endif %}">
-  {% render 'sections/header.html' %}
-  <main>
-    <section class="commerce-hero">
-      <div class="container-fluid px-3 px-lg-5">
-        <nav class="commerce-breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.home }}">Home</a><i class="ri-arrow-right-s-line"></i><span>Cart</span></nav>
-        <div class="commerce-hero-row">
-          <div><span class="eyebrow">Shopping cart</span><h1>Your selection</h1><p>Review your items, apply any offer, and continue when you are ready.</p></div>
-          <a class="commerce-quiet-link" href="{{ routes.products }}"><i class="ri-arrow-left-line"></i> Continue shopping</a>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ seo.title | default: 'Cart' }}</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+    <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
+  </head>
+  <body class="theme-theliaison atlas-page atlas-commerce-page atlas-cart-page {% if site.topbar.status %}has-topbar{% endif %}">
+    {% render 'sections/header.html' %}
+    <main>
+      <section class="commerce-hero">
+        <div class="container-fluid px-3 px-lg-5">
+          <nav class="commerce-breadcrumb" aria-label="Breadcrumb">
+            <a href="{{ routes.home }}">Home</a>
+            <i class="ri-arrow-right-s-line"></i>
+            <span>Cart</span>
+          </nav>
+          <div class="commerce-hero-row">
+            <div>
+              <span class="eyebrow">Shopping cart</span>
+              <h1>Your selection</h1>
+              <p>Review your items, apply any offer, and continue when you are ready.</p>
+            </div>
+            <a class="commerce-quiet-link" href="{{ routes.products }}">
+              <i class="ri-arrow-left-line"></i>
+              Continue shopping
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="commerce-section">
-      <div class="container-fluid px-3 px-lg-5">
-        {% if cart.items and cart.items.size > 0 %}
-          <div class="row g-4 g-xxl-5 align-items-start">
-            <div class="col-12 col-xl-8">
-              <div class="commerce-panel commerce-items-panel">
-                <div class="commerce-panel-heading"><div><span class="commerce-kicker">Your order</span><h2>Cart items</h2></div><span class="commerce-count">{{ cart.item_count }} item(s)</span></div>
-                <div class="commerce-item-list">
-                  {% for item in cart.items %}
-                    <article class="commerce-line-item">
-                      <div class="commerce-item-media"><img src="{{ item.image }}" alt="{{ item.product_title }}" loading="lazy"></div>
-                      <div class="commerce-item-main">
-                        <div class="commerce-item-topline"><div><h3>{{ item.product_title }}</h3>{% if item.variant_title != blank %}<p>{{ item.variant_title }}</p>{% endif %}{% if item.sku != blank %}<small>SKU: {{ item.sku }}</small>{% endif %}</div><strong class="commerce-item-total">{{ item.line_total_formatted }}</strong></div>
-                        <div class="commerce-item-actions">
-                          <form method="post" action="{{ item.update_url }}" class="commerce-quantity-form">
-                            {{ forms.antiforgery_field | raw }}<label for="quantity-{{ item.id }}">Quantity</label><input id="quantity-{{ item.id }}" type="number" name="quantity" min="0" value="{{ item.quantity }}"><input type="hidden" name="itemId" value="{{ item.id }}"><button type="submit" class="commerce-text-button"><i class="ri-refresh-line"></i> Update</button>
-                          </form>
-                          <span class="commerce-unit-price">{{ item.unit_price_formatted }} each</span>
-                          <form method="post" action="{{ item.remove_url }}">{{ forms.antiforgery_field | raw }}<input type="hidden" name="itemId" value="{{ item.id }}"><button type="submit" class="commerce-remove-button"><i class="ri-delete-bin-6-line"></i> Remove</button></form>
+      <section class="commerce-section">
+        <div class="container-fluid px-3 px-lg-5">
+          {% if cart.items and cart.items.size > 0 %}
+            <div class="row g-4 g-xxl-5 align-items-start">
+              <div class="col-12 col-xl-8">
+                <div class="commerce-panel commerce-items-panel">
+                  <div class="commerce-panel-heading">
+                    <div>
+                      <span class="commerce-kicker">Your order</span>
+                      <h2>Cart items</h2>
+                    </div>
+                    <span class="commerce-count">{{ cart.item_count }} item(s)</span>
+                  </div>
+                  <div class="commerce-item-list">
+                    {% for item in cart.items %}
+                      <article class="commerce-line-item">
+                        <div class="commerce-item-media">
+                          <img src="{{ item.image }}" alt="{{ item.product_title }}" loading="lazy">
                         </div>
-                      </div>
-                    </article>
-                  {% endfor %}
+                        <div class="commerce-item-main">
+                          <div class="commerce-item-topline">
+                            <div>
+                              <h3>{{ item.product_title }}</h3>
+                              {% if item.variant_title != blank %}
+                                <p>{{ item.variant_title }}</p>
+                              {% endif %}
+                              {% if item.sku != blank %}
+                                <small>SKU: {{ item.sku }}</small>
+                              {% endif %}
+                            </div>
+                            <strong class="commerce-item-total">
+                              {{ item.line_total_formatted }}
+                            </strong>
+                          </div>
+                          <div class="commerce-item-actions">
+                            <form
+                              method="post"
+                              action="{{ item.update_url }}"
+                              class="commerce-quantity-form"
+                            >
+                              {{ forms.antiforgery_field | raw }}
+                              <label for="quantity-{{ item.id }}">Quantity</label>
+                              <input
+                                id="quantity-{{ item.id }}"
+                                type="number"
+                                name="quantity"
+                                min="0"
+                                value="{{ item.quantity }}"
+                              >
+                              <input type="hidden" name="itemId" value="{{ item.id }}">
+                              <button type="submit" class="commerce-text-button">
+                                <i class="ri-refresh-line"></i>
+                                Update
+                              </button>
+                            </form>
+                            <span class="commerce-unit-price">
+                              {{ item.unit_price_formatted }} each
+                            </span>
+                            <form method="post" action="{{ item.remove_url }}">
+                              {{ forms.antiforgery_field | raw }}
+                              <input type="hidden" name="itemId" value="{{ item.id }}">
+                              <button type="submit" class="commerce-remove-button">
+                                <i class="ri-delete-bin-6-line"></i>
+                                Remove
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+                      </article>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="commerce-benefits-row">
+                  <div>
+                    <i class="ri-shield-check-line"></i>
+                    <span>Secure checkout</span>
+                  </div>
+                  <div>
+                    <i class="ri-customer-service-2-line"></i>
+                    <span>Support when you need it</span>
+                  </div>
+                  <div>
+                    <i class="ri-loop-left-line"></i>
+                    <span>Transparent order tracking</span>
+                  </div>
                 </div>
               </div>
-              <div class="commerce-benefits-row"><div><i class="ri-shield-check-line"></i><span>Secure checkout</span></div><div><i class="ri-customer-service-2-line"></i><span>Support when you need it</span></div><div><i class="ri-loop-left-line"></i><span>Transparent order tracking</span></div></div>
+              <div class="col-12 col-xl-4">
+                <aside class="commerce-panel commerce-summary-panel">
+                  <div class="commerce-panel-heading">
+                    <div>
+                      <span class="commerce-kicker">Order total</span>
+                      <h2>Summary</h2>
+                    </div>
+                  </div>
+                  <div class="commerce-summary-lines">
+                    <div>
+                      <span>Subtotal</span>
+                      <strong>{{ cart.subtotal_formatted }}</strong>
+                    </div>
+                    {% if cart.manual_discount_amount != '0' %}
+                      <div class="commerce-discount">
+                        <span>
+                          Discount
+                          {% if cart.coupon_code != blank %}({{ cart.coupon_code }}){% endif %}
+                        </span>
+                        <strong>- {{ cart.manual_discount_amount_formatted }}</strong>
+                      </div>
+                    {% endif %}
+                    {% if cart.auto_discount_amount != '0' %}
+                      <div class="commerce-discount">
+                        <span>Automatic offer</span>
+                        <strong>- {{ cart.auto_discount_amount_formatted }}</strong>
+                      </div>
+                    {% endif %}
+                    <div>
+                      <span>Shipping</span>
+                      <strong>{{ cart.shipping_amount_formatted }}</strong>
+                    </div>
+                    <div>
+                      <span>Tax</span>
+                      <strong>{{ cart.tax_amount_formatted }}</strong>
+                    </div>
+                  </div>
+                  <div class="commerce-total-line">
+                    <span>Total</span>
+                    <strong>{{ cart.grand_total_formatted }}</strong>
+                  </div>
+                  {% if cart.coupon_code == blank %}
+                    <form
+                      method="post"
+                      action="{{ ecommerce.urls.cart }}?handler=ApplyCoupon"
+                      class="commerce-coupon-form"
+                    >
+                      {{ forms.antiforgery_field | raw }}
+                      <label for="couponCode">Have a coupon?</label>
+                      <div>
+                        <input
+                          id="couponCode"
+                          name="couponCode"
+                          type="text"
+                          placeholder="Enter promo code"
+                        >
+                        <button type="submit">Apply</button>
+                      </div>
+                    </form>
+                  {% else %}
+                    <form method="post" action="{{ ecommerce.urls.cart }}?handler=RemoveCoupon">
+                      {{ forms.antiforgery_field | raw }}
+                      <button type="submit" class="commerce-text-button">
+                        Remove coupon {{ cart.coupon_code }}
+                      </button>
+                    </form>
+                  {% endif %}
+                  <a class="commerce-primary-button" href="{{ ecommerce.urls.checkout }}">
+                    Proceed to checkout
+                    <i class="ri-arrow-right-line"></i>
+                  </a>
+                  <p class="commerce-secure-note">
+                    <i class="ri-lock-2-line"></i>
+                    Your information is handled securely.
+                  </p>
+                </aside>
+              </div>
             </div>
-            <div class="col-12 col-xl-4">
-              <aside class="commerce-panel commerce-summary-panel">
-                <div class="commerce-panel-heading"><div><span class="commerce-kicker">Order total</span><h2>Summary</h2></div></div>
-                <div class="commerce-summary-lines"><div><span>Subtotal</span><strong>{{ cart.subtotal_formatted }}</strong></div>{% if cart.manual_discount_amount != '0' %}<div class="commerce-discount"><span>Discount{% if cart.coupon_code != blank %} ({{ cart.coupon_code }}){% endif %}</span><strong>- {{ cart.manual_discount_amount_formatted }}</strong></div>{% endif %}{% if cart.auto_discount_amount != '0' %}<div class="commerce-discount"><span>Automatic offer</span><strong>- {{ cart.auto_discount_amount_formatted }}</strong></div>{% endif %}<div><span>Shipping</span><strong>{{ cart.shipping_amount_formatted }}</strong></div><div><span>Tax</span><strong>{{ cart.tax_amount_formatted }}</strong></div></div>
-                <div class="commerce-total-line"><span>Total</span><strong>{{ cart.grand_total_formatted }}</strong></div>
-                {% if cart.coupon_code == blank %}<form method="post" action="{{ ecommerce.urls.cart }}?handler=ApplyCoupon" class="commerce-coupon-form">{{ forms.antiforgery_field | raw }}<label for="couponCode">Have a coupon?</label><div><input id="couponCode" name="couponCode" type="text" placeholder="Enter promo code"><button type="submit">Apply</button></div></form>{% else %}<form method="post" action="{{ ecommerce.urls.cart }}?handler=RemoveCoupon">{{ forms.antiforgery_field | raw }}<button type="submit" class="commerce-text-button">Remove coupon {{ cart.coupon_code }}</button></form>{% endif %}
-                <a class="commerce-primary-button" href="{{ ecommerce.urls.checkout }}">Proceed to checkout <i class="ri-arrow-right-line"></i></a>
-                <p class="commerce-secure-note"><i class="ri-lock-2-line"></i> Your information is handled securely.</p>
-              </aside>
+          {% else %}
+            <div class="commerce-empty-state">
+              <div class="commerce-empty-icon"><i class="ri-shopping-bag-3-line"></i></div>
+              <span class="commerce-kicker">Nothing here yet</span>
+              <h2>Your cart is empty</h2>
+              <p>Explore the catalog and add something that fits your needs.</p>
+              <a
+                class="commerce-primary-button commerce-button-inline"
+                href="{{ routes.products }}"
+              >
+                Explore products
+                <i class="ri-arrow-right-line"></i>
+              </a>
             </div>
-          </div>
-        {% else %}
-          <div class="commerce-empty-state"><div class="commerce-empty-icon"><i class="ri-shopping-bag-3-line"></i></div><span class="commerce-kicker">Nothing here yet</span><h2>Your cart is empty</h2><p>Explore the catalog and add something that fits your needs.</p><a class="commerce-primary-button commerce-button-inline" href="{{ routes.products }}">Explore products <i class="ri-arrow-right-line"></i></a></div>
-        {% endif %}
-      </div>
-    </section>
-  </main>
-  {% render 'sections/footer.html' %}
-  {% render 'sections/auxiliaries.html' %}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
-</body>
+          {% endif %}
+        </div>
+      </section>
+    </main>
+    {% render 'sections/footer.html' %}
+    {% render 'sections/auxiliaries.html' %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+    <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
+  </body>
 </html>

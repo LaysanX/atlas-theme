@@ -1,195 +1,433 @@
 <!doctype html>
 <html lang="{{ site.language | default: 'en' }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ seo.title | default: page.title | default: site.name }}</title>
-  <meta name="description" content="{{ seo.description | default: page.description | default: site.description }}">
-  <meta name="keywords" content="{{ seo.keywords | default: page.meta_keywords }}">
-  <link rel="canonical" href="{{ seo.canonical_url | default: page.url | default: site.url }}">
-  <meta property="og:title" content="{{ seo.title | default: page.title | default: site.name }}">
-  <meta property="og:description" content="{{ seo.description | default: page.description | default: site.description }}">
-  <meta property="og:image" content="{{ seo.image | default: site.og_image }}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
-</head>
-<body class="theme-theliaison atlas-page atlas-page-default{% if site.topbar.status or topbar.status %} has-topbar{% endif %}">
-  {% render 'sections/header.html' %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ seo.title | default: page.title | default: site.name }}</title>
+    <meta
+      name="description"
+      content="{{ seo.description | default: page.description | default: site.description }}"
+    >
+    <meta name="keywords" content="{{ seo.keywords | default: page.meta_keywords }}">
+    <link rel="canonical" href="{{ seo.canonical_url | default: page.url | default: site.url }}">
+    <meta property="og:title" content="{{ seo.title | default: page.title | default: site.name }}">
+    <meta
+      property="og:description"
+      content="{{ seo.description | default: page.description | default: site.description }}"
+    >
+    <meta property="og:image" content="{{ seo.image | default: site.og_image }}">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+    <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
+  </head>
+  <body class="theme-theliaison atlas-page atlas-page-default{% if site.topbar.status or topbar.status %} has-topbar{% endif %}">
+    {% render 'sections/header.html' %}
 
-  {% assign page_content_html = page.content | default: content %}
-  {% assign page_ordered_sections = page.ordered_sections %}
-  {% assign page_hero = page.hero_section | default: section_controls.page_hero | default: section_controls.marketing %}
-  {% assign page_intro = page.introduction | default: page.introduction_section %}
-  {% assign page_intro_control = page.introduction_section | default: section_controls.about %}
-  {% assign page_services = page.services %}
-  {% assign page_products = page.products %}
-  {% assign page_projects = page.projects %}
-  {% assign page_teams = page.teams %}
-  {% assign page_blogs = page.blogs %}
-  {% assign page_gallery = page.gallery %}
-  {% assign page_faqs = page.faqs %}
-  {% assign page_clients = page.clients %}
-  {% assign page_partners = page.partners %}
-  {% assign page_testimonials = page.testimonials %}
-  {% assign page_client_reviews = page.client_reviews %}
-  {% assign page_trust_badges = page.trust_badges %}
-  {% assign page_general = page.general_auxiliaries %}
+    {% assign page_content_html = page.content | default: content %}
+    {% assign page_ordered_sections = page.ordered_sections %}
+    {% assign page_hero = page.hero_section
+      | default: section_controls.page_hero
+      | default: section_controls.marketing
+    %}
+    {% assign page_intro = page.introduction | default: page.introduction_section %}
+    {% assign page_intro_control = page.introduction_section | default: section_controls.about %}
+    {% assign page_services = page.services %}
+    {% assign page_products = page.products %}
+    {% assign page_projects = page.projects %}
+    {% assign page_teams = page.teams %}
+    {% assign page_blogs = page.blogs %}
+    {% assign page_gallery = page.gallery %}
+    {% assign page_faqs = page.faqs %}
+    {% assign page_clients = page.clients %}
+    {% assign page_partners = page.partners %}
+    {% assign page_testimonials = page.testimonials %}
+    {% assign page_client_reviews = page.client_reviews %}
+    {% assign page_trust_badges = page.trust_badges %}
+    {% assign page_general = page.general_auxiliaries %}
 
-  <main>
-    {% if page.title != blank %}
-      <section class="page-hero atlas-dynamic-hero" data-reveal>
-        <div class="container-fluid px-3 px-lg-4">
-          <div class="row page-hero-shell">
-            <div class="col-12 page-hero-copy">
-              {% if page_hero.kicker != blank or page.subheading != blank %}<span class="eyebrow">{{ page_hero.kicker | default: page.subheading }}</span>{% endif %}
-              <h1>{{ page_hero.subtitle | default: page.title }}</h1>
+    <main>
+      {% if page.title != blank %}
+        <section class="page-hero atlas-dynamic-hero" data-reveal>
+          <div class="container-fluid px-3 px-lg-4">
+            <div class="row page-hero-shell">
+              <div class="col-12 page-hero-copy">
+                {% if page_hero.kicker != blank or page.subheading != blank %}
+                  <span class="eyebrow">{{ page_hero.kicker | default: page.subheading }}</span>
+                {% endif %}
+                <h1>{{ page_hero.subtitle | default: page.title }}</h1>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    {% endif %}
+        </section>
+      {% endif %}
 
-    {% if page_content_html != blank and page.has_split_form_only != true %}
-      <section class="atlas-dynamic-content" data-reveal>
-        <div class="shell">
-          <div class="prose-card rich-content">
-            {% for segment in page.content_segments %}
-              {% if segment.type == 'form' %}
-                {% if page.has_active_form_section == true and forms.contact.id > 0 %}{% render 'sections/inline-form.html', assigned_form: forms.contact %}{% endif %}
-              {% else %}{{ segment.html | raw }}{% endif %}
-            {% endfor %}
+      {% if page_content_html != blank and page.has_split_form_only != true %}
+        <section class="atlas-dynamic-content" data-reveal>
+          <div class="shell">
+            <div class="prose-card rich-content">
+              {% for segment in page.content_segments %}
+                {% if segment.type == 'form' %}
+                  {% if page.has_active_form_section == true and forms.contact.id > 0 %}
+                    {% render 'sections/inline-form.html', assigned_form: forms.contact %}
+                  {% endif %}
+                {% else %}
+                  {{ segment.html | raw }}
+                {% endif %}
+              {% endfor %}
+            </div>
           </div>
-        </div>
-      </section>
-    {% endif %}
+        </section>
+      {% endif %}
 
-    {% if page_ordered_sections and page_ordered_sections.size > 0 %}
-      {% for ordered_section in page_ordered_sections %}
-        {% if ordered_section.type == 'introduction' %}
-          {% if page.render_content_under_title != true and page.has_split_form_only != true %}
-            <section class="section surface-strip" data-reveal>
-              <div class="container-fluid px-3 px-lg-4">
-                <div class="row intro-panel">
-                  <div class="col-12 col-xl-5">
-                    {% if page_intro_control.kicker != blank or page_intro_control.title != blank %}<span class="eyebrow">{{ page_intro_control.kicker | default: page_intro_control.title }}</span>{% endif %}
-                    {% if page_intro_control.subtitle != blank or page_intro_control.title != blank %}<h2>{{ page_intro_control.subtitle | default: page_intro_control.title }}</h2>{% endif %}
+      {% if page_ordered_sections and page_ordered_sections.size > 0 %}
+        {% for ordered_section in page_ordered_sections %}
+          {% if ordered_section.type == 'introduction' %}
+            {% if page.render_content_under_title != true and page.has_split_form_only != true %}
+              <section class="section surface-strip" data-reveal>
+                <div class="container-fluid px-3 px-lg-4">
+                  <div class="row intro-panel">
+                    <div class="col-12 col-xl-5">
+                      {% if page_intro_control.kicker != blank
+                        or page_intro_control.title != blank
+                      %}
+                        <span class="eyebrow">
+                          {{ page_intro_control.kicker | default: page_intro_control.title }}
+                        </span>
+                      {% endif %}
+                      {% if page_intro_control.subtitle != blank
+                        or page_intro_control.title != blank
+                      %}
+                        <h2>
+                          {{ page_intro_control.subtitle | default: page_intro_control.title }}
+                        </h2>
+                      {% endif %}
+                    </div>
+                    <div class="col-12 col-xl-7 intro-copy">
+                      {{
+                        page_intro.html
+                        | default: page_intro.description_html
+                        | default: page_intro.content
+                        | default: page.description
+                        | raw
+                      }}
+                    </div>
                   </div>
-                  <div class="col-12 col-xl-7 intro-copy">{{ page_intro.html | default: page_intro.description_html | default: page_intro.content | default: page.description | raw }}</div>
+                </div>
+              </section>
+            {% endif %}
+          {% elsif ordered_section.type == 'features' or ordered_section.type == 'feature' %}
+            {% render 'sections/feature.html',
+              items: page.marketing_features,
+              section: page.section_controls.feature,
+              section_class: 'section-inner-page',
+              grid_class: 'trust-grid'
+            %}
+          {% elsif ordered_section.type == 'whychooseus'
+            or ordered_section.type == 'why_choose_us'
+            or ordered_section.type == 'benefit'
+            or ordered_section.type == 'benefits'
+            or ordered_section.type == 'benefitsection'
+          %}
+            {% if page.marketing_benefits and page.marketing_benefits.size > 0 %}
+              <section class="section surface-strip" data-reveal>
+                <div class="shell">
+                  {% if page.section_controls.benefit.title != blank
+                    or page.section_controls.benefit.subtitle != blank
+                  %}
+                    <div class="section-head">
+                      <span class="eyebrow">{{ page.section_controls.benefit.title }}</span>
+                      <h2>
+                        {{
+                          page.section_controls.benefit.subtitle
+                          | default: page.section_controls.benefit.title
+                        }}
+                      </h2>
+                    </div>
+                  {% endif %}
+                  <div class="trust-grid">
+                    {% for item in page.marketing_benefits
+                      limit: page.section_controls.benefit.count
+                    %}
+                      {% if item.type == 'benefit' %}
+                        <article class="marketing-card" data-reveal>
+                          {% if item.icon != blank %}<i class="{{ item.icon }}"></i>{% endif %}
+                          {% if item.title != blank %}
+                            <h3>{{ item.title }}</h3>
+                          {% endif %}
+                          {% if item.subheading != blank %}
+                            <p>{{ item.subheading }}</p>
+                          {% elsif item.description != blank %}
+                            <div>{{ item.description | raw }}</div>
+                          {% endif %}
+                          {% if item.cta_text != blank and item.cta_url != blank %}
+                            <a href="{{ item.cta_url }}" class="tile-link">{{ item.cta_text }}</a>
+                          {% endif %}
+                        </article>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </section>
+            {% endif %}
+          {% elsif ordered_section.type == 'services' %}
+            {% if page_services and page_services.size > 0 %}
+              {% render 'sections/services.html',
+                services: page_services,
+                section: page.section_controls.services,
+                variant: 'simple'
+              %}
+            {% endif %}
+          {% elsif ordered_section.type == 'products' %}
+            {% if page_products and page_products.size > 0 %}
+              {% render 'sections/products.html',
+                listing_products: page_products,
+                section: page.section_controls.products
+              %}
+            {% endif %}
+          {% elsif ordered_section.type == 'projects' %}
+            {% if page_projects and page_projects.size > 0 %}
+              {% render 'sections/projects.html',
+                projects: page_projects,
+                section: page.section_controls.projects,
+                variant: 'simple',
+                section_class: 'section section-dark'
+              %}
+            {% endif %}
+          {% elsif ordered_section.type == 'clients'
+            and page.render_client_logos_from_dynamic_module != true
+          %}
+            {% render 'sections/clients.html',
+              clients: page_clients,
+              section: page.section_controls.clients
+            %}
+          {% elsif ordered_section.type == 'client_logo' %}
+            {% render 'sections/client-logo.html',
+              clients: page_clients,
+              section: page.section_controls.clients
+            %}
+          {% elsif ordered_section.type == 'team' or ordered_section.type == 'teams' %}
+            {% render 'sections/team.html',
+              team: page_teams,
+              section: page.section_controls.team,
+              detail_base_url: routes.teams
+            %}
+          {% elsif ordered_section.type == 'faqs' %}
+            {% render 'sections/faqs.html',
+              faqs: page_faqs,
+              section: page.section_controls.faqs,
+              section_class: 'section-inner-page'
+            %}
+          {% elsif ordered_section.type == 'gallery' %}
+            {% render 'sections/gallery.html',
+              gallery: page_gallery,
+              section: page.section_controls.gallery,
+              section_class: 'section partner-strip'
+            %}
+          {% elsif ordered_section.type == 'blogs' %}
+            {% render 'sections/blogs.html',
+              blogs: page_blogs,
+              section: page.section_controls.blogs
+            %}
+          {% elsif ordered_section.type == 'contact_form'
+            or ordered_section.type == 'contactform'
+          %}
+            {% if page.has_inline_form_token != true
+              and page.has_active_form_section == true
+              and forms.contact.id > 0
+            %}
+              {% if page.has_combined_form_and_plan == true
+                and page.assigned_pricing_plan != blank
+              %}
+                {% render 'sections/assigned-conversion.html',
+                  assigned_form: forms.contact,
+                  assigned_plan: page.assigned_pricing_plan
+                %}
+              {% elsif page.has_combined_form_and_plan != true %}
+                {% render 'sections/contact-form.html',
+                  contact: contact,
+                  assigned_form: forms.contact,
+                  section: page.section_controls.cta
+                %}
+              {% endif %}
+            {% endif %}
+          {% elsif ordered_section.type == 'pricing_plans'
+            or ordered_section.type == 'pricingplans'
+          %}
+            {% if page.has_combined_form_and_plan != true
+              and page.has_active_pricing_section == true
+              and page.pricing_plans.size > 0
+            %}
+              {% render 'sections/pricing.html',
+                pricing: page.pricing_plans,
+                section: page.section_controls.pricing_plans
+              %}
+            {% endif %}
+          {% elsif ordered_section.type == 'collections' %}
+            {% if page.collections and page.collections.size > 0 %}
+              {% render 'sections/collections.html',
+                collections: page.collections,
+                section: page.section_controls.collections
+              %}
+            {% endif %}
+          {% elsif ordered_section.type == 'hero_stat' %}
+            {% render 'sections/hero-stat.html',
+              items: page.marketing_hero_stats,
+              section: page_hero,
+              section_class: 'section surface-strip',
+              grid_class: 'trust-grid'
+            %}
+          {% elsif ordered_section.type == 'counter'
+            or ordered_section.type == 'counters'
+            or ordered_section.type == 'countersection'
+          %}
+            {% if page.marketing_counters and page.marketing_counters.size > 0 %}
+              <section class="section section-dark" data-reveal>
+                <div class="container-fluid px-3 px-lg-4">
+                  <div class="row split-panel">
+                    <div class="col-12 col-xl-5 split-copy">
+                      {% if page.section_controls.counter.title != blank %}
+                        <span class="eyebrow">{{ page.section_controls.counter.title }}</span>
+                      {% endif %}
+                      {% if page.section_controls.counter.subtitle != blank %}
+                        <h2>{{ page.section_controls.counter.subtitle }}</h2>
+                      {% endif %}
+                    </div>
+                    <div class="col-12 col-xl-7">
+                      <div class="row g-4 value-stack">
+                        {% for item in page.marketing_counters
+                          limit: page.section_controls.counter.count
+                        %}
+                          {% if item.type == 'counter' %}
+                            <div class="col-12 col-sm-6">
+                              <article>
+                                <span>{{ item.counter | default: item.title }}</span>
+                                <h3>{{ item.title | default: item.subheading }}</h3>
+                                {% if item.description != blank %}
+                                  <div>{{ item.description | raw }}</div>
+                                {% endif %}
+                              </article>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            {% endif %}
+          {% elsif ordered_section.type == 'highlight' %}
+            {% render 'sections/highlight.html',
+              items: page.marketing_highlights,
+              section: page.section_controls.highlight,
+              section_class: 'section section-dark',
+              grid_class: 'trust-grid'
+            %}
+          {% elsif ordered_section.type == 'cta' %}
+            {% assign page_cta = page.marketing_ctas | first %}
+            <section class="section cta-band" data-reveal>
+              <div class="shell cta-panel">
+                <div>
+                  {% if page_cta.title != blank or page.section_controls.cta.title != blank %}
+                    <span class="eyebrow">
+                      {{
+                        page_cta.title
+                        | default: page.section_controls.cta.kicker
+                        | default: page.section_controls.cta.title
+                      }}
+                    </span>
+                  {% endif %}
+                  {% if page_cta.subheading != blank
+                    or page.section_controls.cta.subtitle != blank
+                  %}
+                    <h2>
+                      {{
+                        page_cta.subheading
+                        | default: page.section_controls.cta.subtitle
+                        | default: page.section_controls.cta.title
+                      }}
+                    </h2>
+                  {% endif %}
+                </div>
+                <div class="cta-panel-actions">
+                  {% if page_cta.cta_text != blank
+                    or page_cta.cta_title != blank
+                    or page.form_title != blank
+                  %}
+                    <a
+                      href="{{ page_cta.cta_url | default: routes.contact }}"
+                      class="btn btn-primary"
+                    >
+                      {{
+                        page_cta.cta_text
+                        | default: page_cta.cta_title
+                        | default: page.form_title
+                      }}
+                    </a>
+                  {% endif %}
+                  {% if page.form_title != blank %}
+                    <a href="{{ routes.contact }}" class="btn btn-secondary">
+                      Use {{ page.form_title }}
+                    </a>
+                  {% endif %}
                 </div>
               </div>
             </section>
+          {% elsif ordered_section.type == 'testimonial' %}
+            {% render 'sections/testimonial.html',
+              testimonials: page_testimonials,
+              section: page.section_controls.testimonials
+            %}
+          {% elsif ordered_section.type == 'partner' %}
+            {% render 'sections/partner-logo.html',
+              clients: page_partners,
+              section: page.section_controls.partners
+            %}
+          {% elsif ordered_section.type == 'client_review' %}
+            {% render 'sections/client-review.html',
+              testimonials: page_client_reviews,
+              section: page.section_controls.client_review
+            %}
+          {% elsif ordered_section.type == 'trust_badge' %}
+            {% render 'sections/trust-badge.html',
+              trust_badges: page_trust_badges,
+              section: page.section_controls.trust_badge
+            %}
+          {% elsif ordered_section.type == 'general' %}
+            {% render 'sections/general.html', auxiliaries: { items: page_general, section_class: 'section-inner-page', grid_class: 'trust-grid', count: page.section_controls.general.count, subtitle: page.section_controls.general.subtitle, kicker: page.section_controls.general.kicker } %}
+          {% elsif ordered_section.type == 'custom_html' and ordered_section.html != blank %}
+            <section class="section section-inner-page" data-section="custom-html">
+              <div class="container-fluid px-3 px-lg-4">{{ ordered_section.html | raw }}</div>
+            </section>
           {% endif %}
-        {% elsif ordered_section.type == 'features' or ordered_section.type == 'feature' %}
-          {% render 'sections/feature.html', items: page.marketing_features, section: page.section_controls.feature, section_class: 'section-inner-page', grid_class: 'trust-grid' %}
-        {% elsif ordered_section.type == 'whychooseus' or ordered_section.type == 'why_choose_us' or ordered_section.type == 'benefit' or ordered_section.type == 'benefits' or ordered_section.type == 'benefitsection' %}
-          {% if page.marketing_benefits and page.marketing_benefits.size > 0 %}<section class="section surface-strip" data-reveal>
-            <div class="shell">
-              {% if page.section_controls.benefit.title != blank or page.section_controls.benefit.subtitle != blank %}<div class="section-head"><span class="eyebrow">{{ page.section_controls.benefit.title }}</span><h2>{{ page.section_controls.benefit.subtitle | default: page.section_controls.benefit.title }}</h2></div>{% endif %}
-              <div class="trust-grid">
-                {% for item in page.marketing_benefits limit: page.section_controls.benefit.count %}
-                  {% if item.type == 'benefit' %}<article class="marketing-card" data-reveal>
-                    {% if item.icon != blank %}<i class="{{ item.icon }}"></i>{% endif %}
-                    {% if item.title != blank %}<h3>{{ item.title }}</h3>{% endif %}
-                    {% if item.subheading != blank %}<p>{{ item.subheading }}</p>{% elsif item.description != blank %}<div>{{ item.description | raw }}</div>{% endif %}
-                    {% if item.cta_text != blank and item.cta_url != blank %}<a href="{{ item.cta_url }}" class="tile-link">{{ item.cta_text }}</a>{% endif %}
-                  </article>{% endif %}
-                {% endfor %}
-              </div>
-            </div>
-          </section>{% endif %}
-        {% elsif ordered_section.type == 'services' %}
-          {% if page_services and page_services.size > 0 %}{% render 'sections/services.html', services: page_services, section: page.section_controls.services, variant: 'simple' %}{% endif %}
-        {% elsif ordered_section.type == 'products' %}
-          {% if page_products and page_products.size > 0 %}{% render 'sections/products.html', listing_products: page_products, section: page.section_controls.products %}{% endif %}
-        {% elsif ordered_section.type == 'projects' %}
-          {% if page_projects and page_projects.size > 0 %}{% render 'sections/projects.html', projects: page_projects, section: page.section_controls.projects, variant: 'simple', section_class: 'section section-dark' %}{% endif %}
-        {% elsif ordered_section.type == 'clients' and page.render_client_logos_from_dynamic_module != true %}
-          {% render 'sections/clients.html', clients: page_clients, section: page.section_controls.clients %}
-        {% elsif ordered_section.type == 'client_logo' %}
-          {% render 'sections/client-logo.html', clients: page_clients, section: page.section_controls.clients %}
-        {% elsif ordered_section.type == 'team' or ordered_section.type == 'teams' %}
-          {% render 'sections/team.html', team: page_teams, section: page.section_controls.team, detail_base_url: routes.teams %}
-        {% elsif ordered_section.type == 'faqs' %}
-          {% render 'sections/faqs.html', faqs: page_faqs, section: page.section_controls.faqs, section_class: 'section-inner-page' %}
-        {% elsif ordered_section.type == 'gallery' %}
-          {% render 'sections/gallery.html', gallery: page_gallery, section: page.section_controls.gallery, section_class: 'section partner-strip' %}
-        {% elsif ordered_section.type == 'blogs' %}
-          {% render 'sections/blogs.html', blogs: page_blogs, section: page.section_controls.blogs %}
-        {% elsif ordered_section.type == 'contact_form' or ordered_section.type == 'contactform' %}
-          {% if page.has_inline_form_token != true and page.has_active_form_section == true and forms.contact.id > 0 %}
-            {% if page.has_combined_form_and_plan == true and page.assigned_pricing_plan != blank %}
-              {% render 'sections/assigned-conversion.html', assigned_form: forms.contact, assigned_plan: page.assigned_pricing_plan %}
-            {% elsif page.has_combined_form_and_plan != true %}
-              {% render 'sections/contact-form.html', contact: contact, assigned_form: forms.contact, section: page.section_controls.cta %}
-            {% endif %}
-          {% endif %}
-        {% elsif ordered_section.type == 'pricing_plans' or ordered_section.type == 'pricingplans' %}
-          {% if page.has_combined_form_and_plan != true and page.has_active_pricing_section == true and page.pricing_plans.size > 0 %}{% render 'sections/pricing.html', pricing: page.pricing_plans, section: page.section_controls.pricing_plans %}{% endif %}
-        {% elsif ordered_section.type == 'collections' %}
-          {% if page.collections and page.collections.size > 0 %}{% render 'sections/collections.html', collections: page.collections, section: page.section_controls.collections %}{% endif %}
-        {% elsif ordered_section.type == 'hero_stat' %}
-          {% render 'sections/hero-stat.html', items: page.marketing_hero_stats, section: page_hero, section_class: 'section surface-strip', grid_class: 'trust-grid' %}
-        {% elsif ordered_section.type == 'counter' or ordered_section.type == 'counters' or ordered_section.type == 'countersection' %}
-          {% if page.marketing_counters and page.marketing_counters.size > 0 %}<section class="section section-dark" data-reveal>
-            <div class="container-fluid px-3 px-lg-4">
-              <div class="row split-panel">
-                <div class="col-12 col-xl-5 split-copy">
-                  {% if page.section_controls.counter.title != blank %}<span class="eyebrow">{{ page.section_controls.counter.title }}</span>{% endif %}
-                  {% if page.section_controls.counter.subtitle != blank %}<h2>{{ page.section_controls.counter.subtitle }}</h2>{% endif %}
-                </div>
-                <div class="col-12 col-xl-7"><div class="row g-4 value-stack">
-                  {% for item in page.marketing_counters limit: page.section_controls.counter.count %}
-                    {% if item.type == 'counter' %}<div class="col-12 col-sm-6"><article><span>{{ item.counter | default: item.title }}</span><h3>{{ item.title | default: item.subheading }}</h3>{% if item.description != blank %}<div>{{ item.description | raw }}</div>{% endif %}</article></div>{% endif %}
-                  {% endfor %}
-                </div></div>
-              </div>
-            </div>
-          </section>{% endif %}
-        {% elsif ordered_section.type == 'highlight' %}
-          {% render 'sections/highlight.html', items: page.marketing_highlights, section: page.section_controls.highlight, section_class: 'section section-dark', grid_class: 'trust-grid' %}
-        {% elsif ordered_section.type == 'cta' %}
-          {% assign page_cta = page.marketing_ctas | first %}
-          <section class="section cta-band" data-reveal>
-            <div class="shell cta-panel">
-              <div>
-                {% if page_cta.title != blank or page.section_controls.cta.title != blank %}<span class="eyebrow">{{ page_cta.title | default: page.section_controls.cta.kicker | default: page.section_controls.cta.title }}</span>{% endif %}
-                {% if page_cta.subheading != blank or page.section_controls.cta.subtitle != blank %}<h2>{{ page_cta.subheading | default: page.section_controls.cta.subtitle | default: page.section_controls.cta.title }}</h2>{% endif %}
-              </div>
-              <div class="cta-panel-actions">
-                {% if page_cta.cta_text != blank or page_cta.cta_title != blank or page.form_title != blank %}<a href="{{ page_cta.cta_url | default: routes.contact }}" class="btn btn-primary">{{ page_cta.cta_text | default: page_cta.cta_title | default: page.form_title }}</a>{% endif %}
-                {% if page.form_title != blank %}<a href="{{ routes.contact }}" class="btn btn-secondary">Use {{ page.form_title }}</a>{% endif %}
-              </div>
-            </div>
-          </section>
-        {% elsif ordered_section.type == 'testimonial' %}
-          {% render 'sections/testimonial.html', testimonials: page_testimonials, section: page.section_controls.testimonials %}
-        {% elsif ordered_section.type == 'partner' %}
-          {% render 'sections/partner-logo.html', clients: page_partners, section: page.section_controls.partners %}
-        {% elsif ordered_section.type == 'client_review' %}
-          {% render 'sections/client-review.html', testimonials: page_client_reviews, section: page.section_controls.client_review %}
-        {% elsif ordered_section.type == 'trust_badge' %}
-          {% render 'sections/trust-badge.html', trust_badges: page_trust_badges, section: page.section_controls.trust_badge %}
-        {% elsif ordered_section.type == 'general' %}
-          {% render 'sections/general.html', auxiliaries: { items: page_general, section_class: 'section-inner-page', grid_class: 'trust-grid', count: page.section_controls.general.count, subtitle: page.section_controls.general.subtitle, kicker: page.section_controls.general.kicker } %}
-        {% elsif ordered_section.type == 'custom_html' and ordered_section.html != blank %}
-          <section class="section section-inner-page" data-section="custom-html"><div class="container-fluid px-3 px-lg-4">{{ ordered_section.html | raw }}</div></section>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
+        {% endfor %}
+      {% endif %}
 
-    {% if page.custom_html != blank and page.section_order_has_custom_html != true %}
-      <section class="section section-inner-page" data-section="custom-html"><div class="container-fluid px-3 px-lg-4">{{ page.custom_html | raw }}</div></section>
-    {% endif %}
-    {% render 'sections/auxiliaries.html' %}
-  </main>
-  {% render 'sections/footer.html' %}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.17/dist/lenis.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-  <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
-</body>
+      {% if page.custom_html != blank and page.section_order_has_custom_html != true %}
+        <section class="section section-inner-page" data-section="custom-html">
+          <div class="container-fluid px-3 px-lg-4">{{ page.custom_html | raw }}</div>
+        </section>
+      {% endif %}
+      {% render 'sections/auxiliaries.html' %}
+    </main>
+    {% render 'sections/footer.html' %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.17/dist/lenis.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+    <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
+  </body>
 </html>

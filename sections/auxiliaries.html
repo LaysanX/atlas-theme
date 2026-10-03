@@ -1,41 +1,110 @@
 {% if welcome_popup.enabled == true %}
-<div class="welcome-popup-overlay d-none" id="welcomePopupOverlay"
-     data-delay-seconds="{{ welcome_popup.delay_seconds }}"
-     data-display-frequency="{{ welcome_popup.display_frequency }}"
-     data-once-key="welcome-popup-{{ welcome_popup.id }}-{{ welcome_popup.updated_ticks }}">
-  <div class="welcome-popup-dialog" role="dialog" aria-modal="true" aria-labelledby="welcomePopupTitle">
-    <button type="button" class="welcome-popup-close" id="welcomePopupClose" aria-label="Close popup"><i class="fas fa-times"></i></button>
-    {% if welcome_popup.image != blank %}<div class="welcome-popup-media"><img src="{{ welcome_popup.image }}" alt="{{ welcome_popup.title }}" class="welcome-popup-image" loading="lazy"></div>{% endif %}
-    <div class="welcome-popup-content">
-      {% if welcome_popup.subtitle != blank %}<div class="welcome-popup-subtitle">{{ welcome_popup.subtitle }}</div>{% endif %}
-      {% if welcome_popup.title != blank %}<h3 class="welcome-popup-title" id="welcomePopupTitle">{{ welcome_popup.title }}</h3>{% endif %}
-      {% if welcome_popup.description != blank %}<div class="welcome-popup-description">{{ welcome_popup.description }}</div>{% endif %}
-      {% if welcome_popup.form %}
-        <form method="post" action="{{ welcome_popup.form.submit_url }}" class="welcome-popup-form" id="welcomePopupForm">
-          {{ forms.antiforgery_field | raw }}
-          <input type="hidden" name="formId" value="{{ welcome_popup.form.id }}">
-          <input type="hidden" name="pageName" value="{{ request.path }}">
-          {% for field in welcome_popup.form.fields %}
-            <div class="mb-3"><label class="welcome-popup-label">{{ field.label }}{% if field.required %}*{% endif %}</label>{{ field.input_html | raw }}</div>
-          {% endfor %}
-          <button type="submit" class="btn btn-primary">{{ welcome_popup.cta_text | default: welcome_popup.form.cta_text }}</button>
-        </form>
-      {% elsif welcome_popup.redirect_url != blank and welcome_popup.cta_text != blank %}
-        <a href="{{ welcome_popup.redirect_url }}" class="btn btn-primary">{{ welcome_popup.cta_text }}</a>
+  <div
+    class="welcome-popup-overlay d-none"
+    id="welcomePopupOverlay"
+    data-delay-seconds="{{ welcome_popup.delay_seconds }}"
+    data-display-frequency="{{ welcome_popup.display_frequency }}"
+    data-once-key="welcome-popup-{{ welcome_popup.id }}-{{ welcome_popup.updated_ticks }}"
+  >
+    <div
+      class="welcome-popup-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="welcomePopupTitle"
+    >
+      <button
+        type="button"
+        class="welcome-popup-close"
+        id="welcomePopupClose"
+        aria-label="Close popup"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+      {% if welcome_popup.image != blank %}
+        <div class="welcome-popup-media">
+          <img
+            src="{{ welcome_popup.image }}"
+            alt="{{ welcome_popup.title }}"
+            class="welcome-popup-image"
+            loading="lazy"
+          >
+        </div>
       {% endif %}
+      <div class="welcome-popup-content">
+        {% if welcome_popup.subtitle != blank %}
+          <div class="welcome-popup-subtitle">{{ welcome_popup.subtitle }}</div>
+        {% endif %}
+        {% if welcome_popup.title != blank %}
+          <h3 class="welcome-popup-title" id="welcomePopupTitle">{{ welcome_popup.title }}</h3>
+        {% endif %}
+        {% if welcome_popup.description != blank %}
+          <div class="welcome-popup-description">{{ welcome_popup.description }}</div>
+        {% endif %}
+        {% if welcome_popup.form %}
+          <form
+            method="post"
+            action="{{ welcome_popup.form.submit_url }}"
+            class="welcome-popup-form"
+            id="welcomePopupForm"
+          >
+            {{ forms.antiforgery_field | raw }}
+            <input type="hidden" name="formId" value="{{ welcome_popup.form.id }}">
+            <input type="hidden" name="pageName" value="{{ request.path }}">
+            {% for field in welcome_popup.form.fields %}
+              <div class="mb-3">
+                <label class="welcome-popup-label">
+                  {{ field.label }}
+                  {% if field.required %}*{% endif %}
+                </label>
+                {{ field.input_html | raw }}
+              </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">
+              {{ welcome_popup.cta_text | default: welcome_popup.form.cta_text }}
+            </button>
+          </form>
+        {% elsif welcome_popup.redirect_url != blank and welcome_popup.cta_text != blank %}
+          <a href="{{ welcome_popup.redirect_url }}" class="btn btn-primary">
+            {{ welcome_popup.cta_text }}
+          </a>
+        {% endif %}
+      </div>
     </div>
   </div>
-</div>
 {% endif %}
 
 {% if gallery.size > 0 or page.gallery.size > 0 or product.gallery.size > 0 %}
-<div class="gallery-lightbox" data-gallery-lightbox aria-hidden="true">
-  <button type="button" class="gallery-lightbox-close" data-gallery-close aria-label="Close gallery"><i class="fas fa-times"></i></button>
-  <button type="button" class="gallery-lightbox-nav is-prev" data-gallery-prev aria-label="Previous image"><i class="fas fa-chevron-left"></i></button>
-  <div class="gallery-lightbox-dialog" role="dialog" aria-modal="true" aria-label="Gallery image">
-    <img class="gallery-lightbox-image" data-gallery-image src="" alt="">
-    <div class="gallery-lightbox-caption"><span class="gallery-lightbox-category" data-gallery-category></span><h2 data-gallery-title></h2></div>
+  <div class="gallery-lightbox" data-gallery-lightbox aria-hidden="true">
+    <button
+      type="button"
+      class="gallery-lightbox-close"
+      data-gallery-close
+      aria-label="Close gallery"
+    >
+      <i class="fas fa-times"></i>
+    </button>
+    <button
+      type="button"
+      class="gallery-lightbox-nav is-prev"
+      data-gallery-prev
+      aria-label="Previous image"
+    >
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="gallery-lightbox-dialog" role="dialog" aria-modal="true" aria-label="Gallery image">
+      <img class="gallery-lightbox-image" data-gallery-image src="" alt="">
+      <div class="gallery-lightbox-caption">
+        <span class="gallery-lightbox-category" data-gallery-category></span>
+        <h2 data-gallery-title></h2>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="gallery-lightbox-nav is-next"
+      data-gallery-next
+      aria-label="Next image"
+    >
+      <i class="fas fa-chevron-right"></i>
+    </button>
   </div>
-  <button type="button" class="gallery-lightbox-nav is-next" data-gallery-next aria-label="Next image"><i class="fas fa-chevron-right"></i></button>
-</div>
 {% endif %}

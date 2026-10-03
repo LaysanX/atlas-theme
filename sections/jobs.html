@@ -2,8 +2,12 @@
   <div class="shell">
     <div class="section-head">
       <div>
-        {% if section.title %}<span class="eyebrow">{{ section.title }}</span>{% endif %}
-        {% if section.subtitle %}<h2>{{ section.subtitle }}</h2>{% endif %}
+        {% if section.title %}
+          <span class="eyebrow">{{ section.title }}</span>
+        {% endif %}
+        {% if section.subtitle %}
+          <h2>{{ section.subtitle }}</h2>
+        {% endif %}
       </div>
     </div>
     <div class="jobs-stack jobs-stack-clean">
@@ -11,17 +15,35 @@
         <article class="job-card">
           <div class="job-card-head">
             <div class="job-card-head-copy">
-              {% if job.category_title != blank %}<span class="job-label">{{ job.category_title }}</span>{% endif %}
+              {% if job.category_title != blank %}
+                <span class="job-label">{{ job.category_title }}</span>
+              {% endif %}
               <h3>{{ job.title }}</h3>
             </div>
-            <a href="{{ site.base_path }}/careers/{{ job.slug }}" class="btn btn-secondary" aria-label="{{ job.title }}"><i class="fas fa-arrow-right"></i></a>
+            <a
+              href="{{ site.base_path }}/careers/{{ job.slug }}"
+              class="btn btn-secondary"
+              aria-label="{{ job.title }}"
+            >
+              <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
           <div class="job-meta-grid">
-            {% if job.company_name != blank %}<span>{{ job.company_name }}</span>{% endif %}
-            {% if job.job_location != blank %}<span>{{ job.job_location }}</span>{% endif %}
-            {% if job.workplace_type != blank %}<span>{{ job.workplace_type }}</span>{% endif %}
-            {% if job.job_type != blank %}<span>{{ job.job_type }}</span>{% endif %}
-            {% if job.experience != blank %}<span>{{ job.experience }}</span>{% endif %}
+            {% if job.company_name != blank %}
+              <span>{{ job.company_name }}</span>
+            {% endif %}
+            {% if job.job_location != blank %}
+              <span>{{ job.job_location }}</span>
+            {% endif %}
+            {% if job.workplace_type != blank %}
+              <span>{{ job.workplace_type }}</span>
+            {% endif %}
+            {% if job.job_type != blank %}
+              <span>{{ job.job_type }}</span>
+            {% endif %}
+            {% if job.experience != blank %}
+              <span>{{ job.experience }}</span>
+            {% endif %}
           </div>
         </article>
       {% endfor %}

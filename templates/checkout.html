@@ -1,306 +1,515 @@
 <!doctype html>
 <html lang="{{ site.language | default: 'en' }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ seo.title | default: 'Checkout' }}</title>
-  <meta name="description" content="{{ seo.description }}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
-</head>
-<body class="theme-theliaison atlas-page atlas-commerce-page atlas-checkout-page">
-  {% render 'sections/header.html' %}
-  <main>
-    <section class="commerce-hero atlas-checkout-hero">
-      <div class="container-fluid px-3 px-lg-5">
-        <nav class="commerce-breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.home }}">Home</a><i class="fas fa-chevron-right" aria-hidden="true"></i><a href="{{ ecommerce.urls.cart }}">Cart</a><i class="fas fa-chevron-right" aria-hidden="true"></i><span>Checkout</span></nav>
-        <div class="commerce-hero-row"><div><span class="eyebrow">Secure checkout</span><h1>Complete your order</h1><p>Enter your details, choose a payment method, and review your total.</p></div><div class="atlas-checkout-step"><i class="fas fa-lock" aria-hidden="true"></i> Secure payment</div></div>
-      </div>
-    </section>
-    <section class="commerce-section atlas-checkout-section">
-      <div class="container-fluid px-3 px-lg-5 commerce-shell">
-        <form class="commerce-card commerce-form-panel atlas-checkout-form" method="post" action="{{ checkout.start_payment_url }}" id="checkout-form">
-          {{ forms.antiforgery_field | raw }}
-          <div class="atlas-checkout-panel-heading"><span class="atlas-checkout-panel-icon"><i class="fas fa-user" aria-hidden="true"></i></span><div><span class="eyebrow">Step 01</span><h2>Contact details</h2></div></div>
-          <div class="commerce-grid atlas-checkout-fields">
-            <label><span>Full name</span><input type="text" id="customerName" name="CustomerName" value="{{ checkout.customer_name }}" autocomplete="name" required></label>
-            <label><span>Email address</span><input type="email" id="customerEmail" name="CustomerEmail" value="{{ checkout.customer_email }}" autocomplete="email" required></label>
-            <label><span>Phone number</span><input type="tel" id="customerPhone" name="CustomerPhone" value="{{ checkout.customer_phone }}" autocomplete="tel" required></label>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ seo.title | default: 'Checkout' }}</title>
+    <meta name="description" content="{{ seo.description }}">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+    <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+  </head>
+  <body class="theme-theliaison atlas-page atlas-commerce-page atlas-checkout-page">
+    {% render 'sections/header.html' %}
+    <main>
+      <section class="commerce-hero atlas-checkout-hero">
+        <div class="container-fluid px-3 px-lg-5">
+          <nav class="commerce-breadcrumb" aria-label="Breadcrumb">
+            <a href="{{ routes.home }}">Home</a>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+            <a href="{{ ecommerce.urls.cart }}">Cart</a>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+            <span>Checkout</span>
+          </nav>
+          <div class="commerce-hero-row">
+            <div>
+              <span class="eyebrow">Secure checkout</span>
+              <h1>Complete your order</h1>
+              <p>Enter your details, choose a payment method, and review your total.</p>
+            </div>
+            <div class="atlas-checkout-step">
+              <i class="fas fa-lock" aria-hidden="true"></i>
+              Secure payment
+            </div>
           </div>
-          <div class="atlas-checkout-panel-heading atlas-checkout-panel-divider"><span class="atlas-checkout-panel-icon"><i class="fas fa-location-dot" aria-hidden="true"></i></span><div><span class="eyebrow">Step 02</span><h2>Delivery &amp; billing</h2></div></div>
-          {% if checkout.addresses %}
-            <label>
-              <span>Saved Shipping Address</span>
-              <select id="savedShippingAddress">
-                <option value="">Use manual address</option>
-                {% for address in checkout.addresses %}
-                  <option value="{{ address.id }}" data-address="{{ address.single_line }}" data-recipient="{{ address.recipient_name }}" data-phone="{{ address.phone }}" {% if address.is_default_shipping %}selected{% endif %}>{{ address.label }} - {{ address.city }}</option>
-                {% endfor %}
-              </select>
-            </label>
-            <label class="commerce-check">
-              <input type="checkbox" id="useShippingForBilling">
-              <span>Use shipping address for billing too</span>
-            </label>
-            <label>
-              <span>Saved Billing Address</span>
-              <select id="savedBillingAddress">
-                <option value="">Use manual address</option>
-                {% for address in checkout.addresses %}
-                  <option value="{{ address.id }}" data-address="{{ address.single_line }}" {% if address.is_default_billing %}selected{% endif %}>{{ address.label }} - {{ address.city }}</option>
-                {% endfor %}
-              </select>
-            </label>
-          {% endif %}
-
-          <div class="commerce-grid atlas-checkout-fields">
-            <label><span>Shipping address</span><textarea id="shippingAddress" name="ShippingAddress" rows="4" required>{{ checkout.shipping_address }}</textarea></label>
-            <label><span>Billing address <small>(optional; defaults to shipping)</small></span><textarea id="billingAddress" name="BillingAddress" rows="4">{{ checkout.billing_address }}</textarea></label>
-          </div>
-          <label class="atlas-checkout-notes"><span>Order notes <small>(optional)</small></span><textarea id="notes" name="Notes" rows="3">{{ checkout.notes }}</textarea></label>
-
-          <div class="atlas-checkout-panel-heading atlas-checkout-panel-divider"><span class="atlas-checkout-panel-icon"><i class="fas fa-credit-card" aria-hidden="true"></i></span><div><span class="eyebrow">Step 03</span><h2>Payment method</h2></div></div>
-          <div class="commerce-option-grid">
-            {% for gateway in checkout.available_gateways %}
-              <label class="commerce-option gateway-card" data-gateway-code="{{ gateway.code }}" data-fee="{{ gateway.fee_amount }}">
-                <input type="radio" name="SelectedGateway" value="{{ gateway.code }}" {% if gateway.selected %}checked{% endif %}>
-                <span class="atlas-gateway-copy"><strong>{{ gateway.title }}</strong><small>{{ gateway.mode_label }}</small></span>
-              </label>
-            {% endfor %}
-          </div>
-
-          <label class="commerce-check">
-            <input type="checkbox" id="createAccountAfterPurchase" name="CreateAccountAfterPurchase" value="true" {% if checkout.create_account_after_purchase %}checked{% endif %}>
-            <span>Create customer account after purchase</span>
-          </label>
-
-          <button class="btn btn-primary atlas-pay-button" type="submit" id="payNowButton">Pay Now <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
-        </form>
-
-        <aside class="commerce-card commerce-summary atlas-checkout-summary">
-          <div class="atlas-checkout-panel-heading"><span class="atlas-checkout-panel-icon"><i class="fas fa-bag-shopping" aria-hidden="true"></i></span><div><span class="eyebrow">Your purchase</span><h2>Order summary</h2></div></div>
-          {% for item in checkout.items %}
-            <div class="commerce-summary-line">
+        </div>
+      </section>
+      <section class="commerce-section atlas-checkout-section">
+        <div class="container-fluid px-3 px-lg-5 commerce-shell">
+          <form
+            class="commerce-card commerce-form-panel atlas-checkout-form"
+            method="post"
+            action="{{ checkout.start_payment_url }}"
+            id="checkout-form"
+          >
+            {{ forms.antiforgery_field | raw }}
+            <div class="atlas-checkout-panel-heading">
+              <span class="atlas-checkout-panel-icon">
+                <i class="fas fa-user" aria-hidden="true"></i>
+              </span>
               <div>
-                <strong>{{ item.product_title }}</strong>
-                {% if item.variant_title %}<p>{{ item.variant_title }}</p>{% endif %}
-                <small>Qty {{ item.quantity }}</small>
+                <span class="eyebrow">Step 01</span>
+                <h2>Contact details</h2>
               </div>
-              <strong>{{ item.line_total_formatted }}</strong>
             </div>
-          {% endfor %}
-
-          <div class="commerce-summary-row"><span>Subtotal</span><strong>{{ checkout.subtotal_formatted }}</strong></div>
-
-          {% if checkout.coupon_code %}
-            <div class="commerce-summary-row">
-              <span>Manual Promo ({{ checkout.coupon_code }})</span>
-              <form method="post" action="{{ checkout.remove_coupon_url }}">
-                {{ forms.antiforgery_field | raw }}
-                <button type="submit" class="btn btn-light">Remove</button>
-              </form>
+            <div class="commerce-grid atlas-checkout-fields">
+              <label>
+                <span>Full name</span>
+                <input
+                  type="text"
+                  id="customerName"
+                  name="CustomerName"
+                  value="{{ checkout.customer_name }}"
+                  autocomplete="name"
+                  required
+                >
+              </label>
+              <label>
+                <span>Email address</span>
+                <input
+                  type="email"
+                  id="customerEmail"
+                  name="CustomerEmail"
+                  value="{{ checkout.customer_email }}"
+                  autocomplete="email"
+                  required
+                >
+              </label>
+              <label>
+                <span>Phone number</span>
+                <input
+                  type="tel"
+                  id="customerPhone"
+                  name="CustomerPhone"
+                  value="{{ checkout.customer_phone }}"
+                  autocomplete="tel"
+                  required
+                >
+              </label>
             </div>
-            {% if checkout.manual_discount_amount != '0' %}
-              <div class="commerce-summary-row"><span>Manual Discount</span><strong>-{{ checkout.manual_discount_amount_formatted }}</strong></div>
+            <div class="atlas-checkout-panel-heading atlas-checkout-panel-divider">
+              <span class="atlas-checkout-panel-icon">
+                <i class="fas fa-location-dot" aria-hidden="true"></i>
+              </span>
+              <div>
+                <span class="eyebrow">Step 02</span>
+                <h2>Delivery &amp; billing</h2>
+              </div>
+            </div>
+            {% if checkout.addresses %}
+              <label>
+                <span>Saved Shipping Address</span>
+                <select id="savedShippingAddress">
+                  <option value="">Use manual address</option>
+                  {% for address in checkout.addresses %}
+                    <option
+                      value="{{ address.id }}"
+                      data-address="{{ address.single_line }}"
+                      data-recipient="{{ address.recipient_name }}"
+                      data-phone="{{ address.phone }}"
+                      {% if address.is_default_shipping %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ address.label }} - {{ address.city }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </label>
+              <label class="commerce-check">
+                <input type="checkbox" id="useShippingForBilling">
+                <span>Use shipping address for billing too</span>
+              </label>
+              <label>
+                <span>Saved Billing Address</span>
+                <select id="savedBillingAddress">
+                  <option value="">Use manual address</option>
+                  {% for address in checkout.addresses %}
+                    <option
+                      value="{{ address.id }}"
+                      data-address="{{ address.single_line }}"
+                      {% if address.is_default_billing %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ address.label }} - {{ address.city }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </label>
             {% endif %}
-          {% else %}
-            <form class="commerce-coupon-form" method="post" action="{{ checkout.apply_coupon_url }}">
-              {{ forms.antiforgery_field | raw }}
-              <label><span>Manual Coupon</span><input type="text" name="couponCode" placeholder="Enter coupon code"></label>
-              <input type="hidden" name="SelectedGateway" value="{{ checkout.selected_gateway }}">
-              <button type="submit" class="btn btn-light">Apply Coupon</button>
-            </form>
-          {% endif %}
 
-          {% if checkout.auto_coupon_code %}
-            <div class="commerce-summary-row"><span>Auto Promo ({{ checkout.auto_coupon_code }})</span><strong>-{{ checkout.auto_discount_amount_formatted }}</strong></div>
-          {% endif %}
+            <div class="commerce-grid atlas-checkout-fields">
+              <label>
+                <span>Shipping address</span>
+                <textarea
+                  id="shippingAddress"
+                  name="ShippingAddress"
+                  rows="4"
+                  required
+                >{{ checkout.shipping_address }}</textarea>
+              </label>
+              <label>
+                <span>
+                  Billing address
+                  <small>(optional; defaults to shipping)</small>
+                </span>
+                <textarea
+                  id="billingAddress"
+                  name="BillingAddress"
+                  rows="4"
+                >{{ checkout.billing_address }}</textarea>
+              </label>
+            </div>
+            <label class="atlas-checkout-notes">
+              <span>
+                Order notes
+                <small>(optional)</small>
+              </span>
+              <textarea id="notes" name="Notes" rows="3">{{ checkout.notes }}</textarea>
+            </label>
 
-          <div class="commerce-summary-row"><span>Shipping</span><strong>{{ checkout.shipping_amount_formatted }}</strong></div>
-          <div class="commerce-summary-row" id="codFeeLine" style="display:none"><span>Payment Fee</span><strong id="codFeeValue">{{ checkout.payment_fee_amount_formatted }}</strong></div>
-          <div class="commerce-summary-row"><span>Tax</span><strong id="taxValue">{{ checkout.tax_amount_formatted }}</strong></div>
-          <div class="commerce-summary-row total"><span>Total</span><strong id="grandTotalValue">{{ checkout.grand_total_formatted }}</strong></div>
-        </aside>
-      </div>
-    </section>
-  </main>
-  {% render 'sections/footer.html' %}
-  {% render 'sections/auxiliaries.html' %}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
-  <script>
-    (function () {
-      var form = document.getElementById('checkout-form');
-      var payButton = document.getElementById('payNowButton');
-      var state = {
-        currency: '{{ checkout.currency_symbol }}',
-        discountedSubtotal: parseFloat('{{ checkout.subtotal }}') - parseFloat('{{ checkout.discount_amount }}'),
-        shipping: parseFloat('{{ checkout.shipping_amount }}'),
-        taxRate: parseFloat('{{ checkout.tax_rate_percent }}') || 0,
-        taxInclusive: '{{ checkout.tax_inclusive_pricing }}' === 'True' || '{{ checkout.tax_inclusive_pricing }}' === 'true'
-      };
+            <div class="atlas-checkout-panel-heading atlas-checkout-panel-divider">
+              <span class="atlas-checkout-panel-icon">
+                <i class="fas fa-credit-card" aria-hidden="true"></i>
+              </span>
+              <div>
+                <span class="eyebrow">Step 03</span>
+                <h2>Payment method</h2>
+              </div>
+            </div>
+            <div class="commerce-option-grid">
+              {% for gateway in checkout.available_gateways %}
+                <label
+                  class="commerce-option gateway-card"
+                  data-gateway-code="{{ gateway.code }}"
+                  data-fee="{{ gateway.fee_amount }}"
+                >
+                  <input
+                    type="radio"
+                    name="SelectedGateway"
+                    value="{{ gateway.code }}"
+                    {% if gateway.selected %}
+                      checked
+                    {% endif %}
+                  >
+                  <span class="atlas-gateway-copy">
+                    <strong>{{ gateway.title }}</strong>
+                    <small>{{ gateway.mode_label }}</small>
+                  </span>
+                </label>
+              {% endfor %}
+            </div>
 
-      function money(value) {
-        var rounded = Math.round((value + Number.EPSILON) * 100) / 100;
-        return String(rounded).replace(/\.00$/, '');
-      }
+            <label class="commerce-check">
+              <input
+                type="checkbox"
+                id="createAccountAfterPurchase"
+                name="CreateAccountAfterPurchase"
+                value="true"
+                {% if checkout.create_account_after_purchase %}
+                  checked
+                {% endif %}
+              >
+              <span>Create customer account after purchase</span>
+            </label>
 
-      function selectedGateway() {
-        return document.querySelector('input[name="SelectedGateway"]:checked');
-      }
+            <button class="btn btn-primary atlas-pay-button" type="submit" id="payNowButton">
+              Pay Now
+              <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </button>
+          </form>
 
-      function updateGatewaySummary() {
-        var gateway = selectedGateway();
-        var card = gateway ? gateway.closest('.gateway-card') : null;
-        var code = gateway ? String(gateway.value || '').toLowerCase() : '';
-        var fee = code === 'cod' ? (parseFloat(card && card.dataset ? card.dataset.fee : '0') || 0) : 0;
-        var tax = state.taxInclusive ? parseFloat('{{ checkout.tax_amount }}') : ((Math.max(0, state.discountedSubtotal) + fee) * (state.taxRate / 100));
-        var total = Math.max(0, state.discountedSubtotal) + state.shipping + fee + tax;
-        var feeLine = document.getElementById('codFeeLine');
-        var feeValue = document.getElementById('codFeeValue');
-        var totalValue = document.getElementById('grandTotalValue');
-        var taxValue = document.getElementById('taxValue');
-        if (feeLine && feeValue) {
-          feeLine.style.display = fee > 0 ? 'flex' : 'none';
-          feeValue.textContent = state.currency + money(fee);
-        }
-        if (totalValue) totalValue.textContent = state.currency + money(total);
-        if (taxValue) taxValue.textContent = state.currency + money(tax);
-        if (payButton) payButton.textContent = code === 'cod' ? 'Place COD Order' : 'Pay Now';
-      }
+          <aside class="commerce-card commerce-summary atlas-checkout-summary">
+            <div class="atlas-checkout-panel-heading">
+              <span class="atlas-checkout-panel-icon">
+                <i class="fas fa-bag-shopping" aria-hidden="true"></i>
+              </span>
+              <div>
+                <span class="eyebrow">Your purchase</span>
+                <h2>Order summary</h2>
+              </div>
+            </div>
+            {% for item in checkout.items %}
+              <div class="commerce-summary-line">
+                <div>
+                  <strong>{{ item.product_title }}</strong>
+                  {% if item.variant_title %}
+                    <p>{{ item.variant_title }}</p>
+                  {% endif %}
+                  <small>Qty {{ item.quantity }}</small>
+                </div>
+                <strong>{{ item.line_total_formatted }}</strong>
+              </div>
+            {% endfor %}
 
-      document.querySelectorAll('.gateway-card').forEach(function (card) {
-        card.addEventListener('click', function () {
-          var input = card.querySelector('input[type="radio"]');
-          if (input) input.checked = true;
-          updateGatewaySummary();
-        });
-      });
+            <div class="commerce-summary-row">
+              <span>Subtotal</span>
+              <strong>{{ checkout.subtotal_formatted }}</strong>
+            </div>
 
-      function applyAddress(selectId, targetId, useIdentity) {
-        var select = document.getElementById(selectId);
-        var target = document.getElementById(targetId);
-        if (!select || !target) return;
-        var sync = function () {
-          var option = select.options[select.selectedIndex];
-          if (!option || !option.value) return;
-          var address = option.getAttribute('data-address');
-          if (address) target.value = address;
-          if (useIdentity) {
-            var recipient = option.getAttribute('data-recipient');
-            var phone = option.getAttribute('data-phone');
-            if (recipient && !document.getElementById('customerName').value) document.getElementById('customerName').value = recipient;
-            if (phone && !document.getElementById('customerPhone').value) document.getElementById('customerPhone').value = phone;
-          }
+            {% if checkout.coupon_code %}
+              <div class="commerce-summary-row">
+                <span>Manual Promo ({{ checkout.coupon_code }})</span>
+                <form method="post" action="{{ checkout.remove_coupon_url }}">
+                  {{ forms.antiforgery_field | raw }}
+                  <button type="submit" class="btn btn-light">Remove</button>
+                </form>
+              </div>
+              {% if checkout.manual_discount_amount != '0' %}
+                <div class="commerce-summary-row">
+                  <span>Manual Discount</span>
+                  <strong>-{{ checkout.manual_discount_amount_formatted }}</strong>
+                </div>
+              {% endif %}
+            {% else %}
+              <form
+                class="commerce-coupon-form"
+                method="post"
+                action="{{ checkout.apply_coupon_url }}"
+              >
+                {{ forms.antiforgery_field | raw }}
+                <label>
+                  <span>Manual Coupon</span>
+                  <input type="text" name="couponCode" placeholder="Enter coupon code">
+                </label>
+                <input type="hidden" name="SelectedGateway" value="{{ checkout.selected_gateway }}">
+                <button type="submit" class="btn btn-light">Apply Coupon</button>
+              </form>
+            {% endif %}
+
+            {% if checkout.auto_coupon_code %}
+              <div class="commerce-summary-row">
+                <span>Auto Promo ({{ checkout.auto_coupon_code }})</span>
+                <strong>-{{ checkout.auto_discount_amount_formatted }}</strong>
+              </div>
+            {% endif %}
+
+            <div class="commerce-summary-row">
+              <span>Shipping</span>
+              <strong>{{ checkout.shipping_amount_formatted }}</strong>
+            </div>
+            <div class="commerce-summary-row" id="codFeeLine" style="display:none">
+              <span>Payment Fee</span>
+              <strong id="codFeeValue">{{ checkout.payment_fee_amount_formatted }}</strong>
+            </div>
+            <div class="commerce-summary-row">
+              <span>Tax</span>
+              <strong id="taxValue">{{ checkout.tax_amount_formatted }}</strong>
+            </div>
+            <div class="commerce-summary-row total">
+              <span>Total</span>
+              <strong id="grandTotalValue">{{ checkout.grand_total_formatted }}</strong>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+    {% render 'sections/footer.html' %}
+    {% render 'sections/auxiliaries.html' %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+    <script src="{{ 'assets/js/main.js' | asset_url }}" defer></script>
+    <script>
+      (function () {
+        var form = document.getElementById('checkout-form');
+        var payButton = document.getElementById('payNowButton');
+        var state = {
+          currency: '{{ checkout.currency_symbol }}',
+          discountedSubtotal:
+            parseFloat('{{ checkout.subtotal }}') - parseFloat('{{ checkout.discount_amount }}'),
+          shipping: parseFloat('{{ checkout.shipping_amount }}'),
+          taxRate: parseFloat('{{ checkout.tax_rate_percent }}') || 0,
+          taxInclusive:
+            '{{ checkout.tax_inclusive_pricing }}' === 'True' ||
+            '{{ checkout.tax_inclusive_pricing }}' === 'true'
         };
-        select.addEventListener('change', sync);
-        if (select.value) sync();
-      }
 
-      applyAddress('savedShippingAddress', 'shippingAddress', true);
-      applyAddress('savedBillingAddress', 'billingAddress', false);
-      var sameAddress = document.getElementById('useShippingForBilling');
-      if (sameAddress) {
-        sameAddress.addEventListener('change', function () {
-          var shipping = document.getElementById('shippingAddress');
-          var billing = document.getElementById('billingAddress');
-          if (sameAddress.checked && shipping && billing) billing.value = shipping.value;
-        });
-      }
+        function money(value) {
+          var rounded = Math.round((value + Number.EPSILON) * 100) / 100;
+          return String(rounded).replace(/\.00$/, '');
+        }
 
-      if (form && payButton) {
-        form.addEventListener('submit', async function (event) {
-          event.preventDefault();
-          payButton.disabled = true;
-          payButton.textContent = 'Preparing payment...';
-          try {
-            var data = new FormData(form);
-            var response = await fetch(form.action, { method: 'POST', credentials: 'same-origin', body: data });
-            var result = await response.json();
-            if (!response.ok || !result.success) {
-              alert('Failed, Please try again later.');
-              return;
-            }
-            if (result.mode === 'cod') {
-              window.location.href = result.redirectUrl;
-              return;
-            }
-            if (result.mode === 'razorpay' && window.Razorpay) {
-              new Razorpay({
-                key: result.keyId,
-                amount: Math.round(parseFloat(result.amount) * 100),
-                currency: result.currency,
-                name: '{{ site.name }}',
-                order_id: result.orderId,
-                handler: function (paymentResponse) {
-                  var verify = document.createElement('form');
-                  verify.method = 'post';
-                  verify.action = '{{ checkout.verify_url }}';
-                  var antiforgery = form.querySelector('input[name="__RequestVerificationToken"]');
-                  if (antiforgery) verify.appendChild(antiforgery.cloneNode(true));
-                  var fields = {
-                    paymentId: paymentResponse.razorpay_payment_id,
-                    orderId: paymentResponse.razorpay_order_id,
-                    signature: paymentResponse.razorpay_signature,
-                    CustomerName: document.getElementById('customerName').value,
-                    CustomerEmail: document.getElementById('customerEmail').value,
-                    CustomerPhone: document.getElementById('customerPhone').value,
-                    ShippingAddress: document.getElementById('shippingAddress').value,
-                    BillingAddress: document.getElementById('billingAddress').value,
-                    Notes: document.getElementById('notes').value
-                  };
-                  Object.keys(fields).forEach(function (key) {
-                    var input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = key;
-                    input.value = fields[key] || '';
-                    verify.appendChild(input);
-                  });
-                  document.body.appendChild(verify);
-                  verify.submit();
-                }
-              }).open();
-              return;
-            }
-            if (result.mode === 'cashfree' && result.paymentSessionId && window.Cashfree) {
-              Cashfree({ mode: result.isSandbox ? 'sandbox' : 'production' }).checkout({ paymentSessionId: result.paymentSessionId, redirectTarget: '_self' });
-              return;
-            }
-            if (result.mode === 'form_post' && result.formActionUrl && result.formFields) {
-              var postForm = document.createElement('form');
-              postForm.method = 'post';
-              postForm.action = result.formActionUrl;
-              Object.keys(result.formFields).forEach(function (key) {
-                var input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = result.formFields[key] || '';
-                postForm.appendChild(input);
-              });
-              document.body.appendChild(postForm);
-              postForm.submit();
-              return;
-            }
-            if (result.redirectUrl) {
-              window.location.href = result.redirectUrl;
-              return;
-            }
-            alert('Failed, Please try again later.');
-          } catch (error) {
-            alert('Failed, Please try again later.');
-          } finally {
-            payButton.disabled = false;
-            updateGatewaySummary();
+        function selectedGateway() {
+          return document.querySelector('input[name="SelectedGateway"]:checked');
+        }
+
+        function updateGatewaySummary() {
+          var gateway = selectedGateway();
+          var card = gateway ? gateway.closest('.gateway-card') : null;
+          var code = gateway ? String(gateway.value || '').toLowerCase() : '';
+          var fee =
+            code === 'cod' ? parseFloat(card && card.dataset ? card.dataset.fee : '0') || 0 : 0;
+          var tax = state.taxInclusive
+            ? parseFloat('{{ checkout.tax_amount }}')
+            : (Math.max(0, state.discountedSubtotal) + fee) * (state.taxRate / 100);
+          var total = Math.max(0, state.discountedSubtotal) + state.shipping + fee + tax;
+          var feeLine = document.getElementById('codFeeLine');
+          var feeValue = document.getElementById('codFeeValue');
+          var totalValue = document.getElementById('grandTotalValue');
+          var taxValue = document.getElementById('taxValue');
+          if (feeLine && feeValue) {
+            feeLine.style.display = fee > 0 ? 'flex' : 'none';
+            feeValue.textContent = state.currency + money(fee);
           }
-        });
-      }
+          if (totalValue) totalValue.textContent = state.currency + money(total);
+          if (taxValue) taxValue.textContent = state.currency + money(tax);
+          if (payButton) payButton.textContent = code === 'cod' ? 'Place COD Order' : 'Pay Now';
+        }
 
-      updateGatewaySummary();
-    })();
-  </script>
-</body>
+        document.querySelectorAll('.gateway-card').forEach(function (card) {
+          card.addEventListener('click', function () {
+            var input = card.querySelector('input[type="radio"]');
+            if (input) input.checked = true;
+            updateGatewaySummary();
+          });
+        });
+
+        function applyAddress(selectId, targetId, useIdentity) {
+          var select = document.getElementById(selectId);
+          var target = document.getElementById(targetId);
+          if (!select || !target) return;
+          var sync = function () {
+            var option = select.options[select.selectedIndex];
+            if (!option || !option.value) return;
+            var address = option.getAttribute('data-address');
+            if (address) target.value = address;
+            if (useIdentity) {
+              var recipient = option.getAttribute('data-recipient');
+              var phone = option.getAttribute('data-phone');
+              if (recipient && !document.getElementById('customerName').value)
+                document.getElementById('customerName').value = recipient;
+              if (phone && !document.getElementById('customerPhone').value)
+                document.getElementById('customerPhone').value = phone;
+            }
+          };
+          select.addEventListener('change', sync);
+          if (select.value) sync();
+        }
+
+        applyAddress('savedShippingAddress', 'shippingAddress', true);
+        applyAddress('savedBillingAddress', 'billingAddress', false);
+        var sameAddress = document.getElementById('useShippingForBilling');
+        if (sameAddress) {
+          sameAddress.addEventListener('change', function () {
+            var shipping = document.getElementById('shippingAddress');
+            var billing = document.getElementById('billingAddress');
+            if (sameAddress.checked && shipping && billing) billing.value = shipping.value;
+          });
+        }
+
+        if (form && payButton) {
+          form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            payButton.disabled = true;
+            payButton.textContent = 'Preparing payment...';
+            try {
+              var data = new FormData(form);
+              var response = await fetch(form.action, {
+                method: 'POST',
+                credentials: 'same-origin',
+                body: data
+              });
+              var result = await response.json();
+              if (!response.ok || !result.success) {
+                alert('Failed, Please try again later.');
+                return;
+              }
+              if (result.mode === 'cod') {
+                window.location.href = result.redirectUrl;
+                return;
+              }
+              if (result.mode === 'razorpay' && window.Razorpay) {
+                new Razorpay({
+                  key: result.keyId,
+                  amount: Math.round(parseFloat(result.amount) * 100),
+                  currency: result.currency,
+                  name: '{{ site.name }}',
+                  order_id: result.orderId,
+                  handler: function (paymentResponse) {
+                    var verify = document.createElement('form');
+                    verify.method = 'post';
+                    verify.action = '{{ checkout.verify_url }}';
+                    var antiforgery = form.querySelector(
+                      'input[name="__RequestVerificationToken"]'
+                    );
+                    if (antiforgery) verify.appendChild(antiforgery.cloneNode(true));
+                    var fields = {
+                      paymentId: paymentResponse.razorpay_payment_id,
+                      orderId: paymentResponse.razorpay_order_id,
+                      signature: paymentResponse.razorpay_signature,
+                      CustomerName: document.getElementById('customerName').value,
+                      CustomerEmail: document.getElementById('customerEmail').value,
+                      CustomerPhone: document.getElementById('customerPhone').value,
+                      ShippingAddress: document.getElementById('shippingAddress').value,
+                      BillingAddress: document.getElementById('billingAddress').value,
+                      Notes: document.getElementById('notes').value
+                    };
+                    Object.keys(fields).forEach(function (key) {
+                      var input = document.createElement('input');
+                      input.type = 'hidden';
+                      input.name = key;
+                      input.value = fields[key] || '';
+                      verify.appendChild(input);
+                    });
+                    document.body.appendChild(verify);
+                    verify.submit();
+                  }
+                }).open();
+                return;
+              }
+              if (result.mode === 'cashfree' && result.paymentSessionId && window.Cashfree) {
+                Cashfree({ mode: result.isSandbox ? 'sandbox' : 'production' }).checkout({
+                  paymentSessionId: result.paymentSessionId,
+                  redirectTarget: '_self'
+                });
+                return;
+              }
+              if (result.mode === 'form_post' && result.formActionUrl && result.formFields) {
+                var postForm = document.createElement('form');
+                postForm.method = 'post';
+                postForm.action = result.formActionUrl;
+                Object.keys(result.formFields).forEach(function (key) {
+                  var input = document.createElement('input');
+                  input.type = 'hidden';
+                  input.name = key;
+                  input.value = result.formFields[key] || '';
+                  postForm.appendChild(input);
+                });
+                document.body.appendChild(postForm);
+                postForm.submit();
+                return;
+              }
+              if (result.redirectUrl) {
+                window.location.href = result.redirectUrl;
+                return;
+              }
+              alert('Failed, Please try again later.');
+            } catch (error) {
+              alert('Failed, Please try again later.');
+            } finally {
+              payButton.disabled = false;
+              updateGatewaySummary();
+            }
+          });
+        }
+
+        updateGatewaySummary();
+      })();
+    </script>
+  </body>
 </html>

@@ -1,3 +1,34 @@
 {% assign section_data = section | default: section_controls.highlight %}
 {% assign items = items | default: marketing.items %}
-{% if items and items.size > 0 %}<section class="{{ section_class | default: 'section section-dark' }}" data-section="highlight" data-reveal><div class="shell"><div class="section-head">{% if section_data.kicker or section_data.title %}<span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>{% endif %}{% if section_data.subtitle or section_data.title %}<h2>{{ section_data.subtitle | default: section_data.title }}</h2>{% endif %}</div><div class="{{ grid_class | default: 'trust-grid' }}">{% for item in items limit: section_data.count %}<article class="marketing-card" data-section-item="highlight" data-reveal>{% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}<h3>{{ item.title }}</h3>{% if item.subheading %}<p>{{ item.subheading }}</p>{% endif %}{% if item.description %}<div>{{ item.description | raw }}</div>{% endif %}</article>{% endfor %}</div></div></section>{% endif %}
+{% if items and items.size > 0 %}
+  <section
+    class="{{ section_class | default: 'section section-dark' }}"
+    data-section="highlight"
+    data-reveal
+  >
+    <div class="shell">
+      <div class="section-head">
+        {% if section_data.kicker or section_data.title %}
+          <span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>
+        {% endif %}
+        {% if section_data.subtitle or section_data.title %}
+          <h2>{{ section_data.subtitle | default: section_data.title }}</h2>
+        {% endif %}
+      </div>
+      <div class="{{ grid_class | default: 'trust-grid' }}">
+        {% for item in items limit: section_data.count %}
+          <article class="marketing-card" data-section-item="highlight" data-reveal>
+            {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
+            <h3>{{ item.title }}</h3>
+            {% if item.subheading %}
+              <p>{{ item.subheading }}</p>
+            {% endif %}
+            {% if item.description %}
+              <div>{{ item.description | raw }}</div>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}

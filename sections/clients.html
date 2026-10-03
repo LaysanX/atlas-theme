@@ -3,8 +3,12 @@
   <div class="shell">
     <div class="section-head">
       <div>
-        {% if section_data.kicker or section_data.title %}<span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>{% endif %}
-        {% if section_data.subtitle or section_data.title %}<h2>{{ section_data.subtitle | default: section_data.title }}</h2>{% endif %}
+        {% if section_data.kicker or section_data.title %}
+          <span class="eyebrow">{{ section_data.kicker | default: section_data.title }}</span>
+        {% endif %}
+        {% if section_data.subtitle or section_data.title %}
+          <h2>{{ section_data.subtitle | default: section_data.title }}</h2>
+        {% endif %}
       </div>
     </div>
     <div class="partner-marquee auto-slider is-animated">
@@ -12,7 +16,13 @@
         {% for loop in (1..2) %}
           {% for item in clients limit: section_data.count %}
             <div class="partner-logo" data-reveal>
-              {% if item.logo != blank %}<img src="{{ item.logo }}" alt="{{ item.name }}" />{% elsif item.image != blank %}<img src="{{ item.image }}" alt="{{ item.name }}" />{% else %}<span>{{ item.name }}</span>{% endif %}
+              {% if item.logo != blank %}
+                <img src="{{ item.logo }}" alt="{{ item.name }}" />
+              {% elsif item.image != blank %}
+                <img src="{{ item.image }}" alt="{{ item.name }}" />
+              {% else %}
+                <span>{{ item.name }}</span>
+              {% endif %}
             </div>
           {% endfor %}
         {% endfor %}
