@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+    {% if settings.header_script != blank %}
+      {{ settings.header_script | raw }}
+    {% endif %}
   </head>
   <body class="theme-theliaison atlas-page atlas-commerce-page atlas-checkout-page">
     {% render 'sections/header.html' %}

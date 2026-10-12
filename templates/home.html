@@ -24,6 +24,9 @@
     >
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
+    {% if settings.header_script != blank %}
+      {{ settings.header_script | raw }}
+    {% endif %}
   </head>
   <body class="theme-theliaison header-layout-text-left-slider-right slider-layout-text-left-slider-right header-transparent-on-hero {% if site.topbar.status or topbar.status %}has-topbar {% endif %}atlas-page atlas-page-home">
     {% render 'sections/header.html' %}

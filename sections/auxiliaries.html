@@ -44,6 +44,7 @@
           <form
             method="post"
             action="{{ welcome_popup.form.submit_url }}"
+            enctype="multipart/form-data"
             class="welcome-popup-form"
             id="welcomePopupForm"
           >
@@ -59,7 +60,13 @@
                 {{ field.input_html | raw }}
               </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">
+            <div
+              class="welcome-popup-feedback conversion-alert d-none"
+              id="welcomePopupFeedback"
+              role="status"
+              aria-live="polite"
+            ></div>
+            <button type="submit" class="btn btn-primary" id="welcomePopupSubmitButton">
               {{ welcome_popup.cta_text | default: welcome_popup.form.cta_text }}
             </button>
           </form>

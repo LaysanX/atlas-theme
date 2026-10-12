@@ -175,3 +175,17 @@
     </div>
   </footer>
 {% endif %}
+
+{% if settings.footer_script != blank %}
+  {{ settings.footer_script | raw }}
+{% endif %}
+
+{% if chat_widget.enabled == true %}
+  <script
+    src="{{ chat_widget.script_url | escape }}"
+    data-client-id="{{ chat_widget.client_id | escape }}"
+    data-widget-key="{{ chat_widget.widget_key | escape }}"
+    data-widget-domain="{{ chat_widget.domain | escape }}"
+    defer
+  ></script>
+{% endif %}

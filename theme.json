@@ -1,7 +1,7 @@
 {
   "name": "LaysanX Atlas",
   "handle": "laysanx-atlas",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "status": "draft",
   "author": "Laysan Technologies",
   "type": "standalone-html",
@@ -47,6 +47,7 @@
     "pricing": "templates/pricing.html",
     "pricing-list": "templates/pricing-list.html",
     "contact": "templates/contact.html",
+    "thank-you": "templates/thank-you.html",
     "cart": "templates/cart.html",
     "checkout": "templates/checkout.html",
     "order-success": "templates/order-success.html",

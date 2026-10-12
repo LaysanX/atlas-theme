@@ -1,78 +1,69 @@
 # LaysanX Atlas
 
 Atlas is a free, MIT-licensed reference theme from Laysan Technologies for
-LaysanX tenant websites and storefronts. It demonstrates how to build an
-uploaded theme using HTML templates, reusable sections, CSS, JavaScript, and
-backend-provided content. You can restyle or extend it without editing the
-LaysanX application.
-
-Atlas is **not** a standalone static website. The LaysanX theme renderer fills
-its Liquid-like placeholders, chooses the page template, supplies tenant data,
-and handles forms, accounts, cart, checkout, and payments. Opening an HTML file
-directly in a browser will not show a working site. The syntax is a supported
-Liquid-like subset, not a promise of full Liquid compatibility.
+LaysanX tenant websites and storefronts. It demonstrates uploadable HTML
+templates, reusable sections, CSS, JavaScript, and backend-driven content.
+It is not a standalone static site: LaysanX chooses templates, supplies data,
+and handles forms, accounts, cart, checkout, payments, and chat.
 
 ## Quick start
 
-1. Choose **Code > Download ZIP** here. The GitHub archive is import-ready.
-2. In LaysanX Client Admin, open **Appearance & Themes** and upload the ZIP
-   directly. Do not unpack or repackage the GitHub ZIP.
-3. Review the theme security audit, preview the theme, and publish it when
-   ready. Commerce and customer-account pages also need their respective
-   theme-page options enabled if you want Atlas to render those routes.
-4. Configure content, menus, forms, section visibility/order, and commerce in
-   Client Admin. The theme displays that data; it does not create it.
+1. Select **Code > Download ZIP** on the [Atlas repository](https://github.com/LaysanX/atlas-theme).
+   Upload that ZIP directly; do not unpack or repackage it. LaysanX accepts
+   the single enclosing folder in GitHub's archive.
+2. In Client Admin, open **Appearance & Themes**, upload the ZIP, review the
+   security audit, preview, and publish. Enable the theme commerce/customer
+   page options if Atlas should render those routes.
+3. Configure content, menus, section visibility/order, forms, commerce, and
+   chat in Client Admin. Disabled or empty modules must stay hidden.
+
+The LaysanX renderer supports a Liquid-like subset, not full Liquid. Opening
+an HTML file directly in a browser will not show a working tenant website.
 
 ## Package layout
 
 ```text
 atlas-theme/
-  theme.json                 # name, version, template map, section schemas
-  README.md                  # developer guide
-  LICENSE.md                 # MIT license; .md is accepted by the uploader
-  templates/                # complete page layouts
-  sections/                 # shared and page-specific partials
-  assets/css/style.css      # visual styles
-  assets/js/main.js         # interactive behavior
+  theme.json             # manifest, template map, section schemas
+  README.md              # developer guide
+  LICENSE.md             # MIT license; .md is accepted by the uploader
+  templates/             # complete page layouts
+  sections/              # reusable partials
+  assets/css/style.css   # visual styles
+  assets/js/main.js      # interactive behavior
 ```
 
-The [manifest](theme.json) is the source of truth for the 39 registered page
-templates and 31 declared section schemas. There are additional helper
-partials in `sections/`. Keep manifest paths and files in sync if you rename
-or add templates.
+The [manifest](theme.json) registers 40 page templates and 31 section schemas.
+Keep manifest paths and files synchronized. The shared
+`sections/auxiliaries.html` partial is included by every template.
 
-## Page coverage
+## Page and module coverage
 
 | Area | Atlas templates |
 | --- | --- |
-| Website | `home`, `page`, `custom-section-detail`, `contact`, dedicated `clients` (`/client` or `/clients`) |
-| Content | service, product, project, blog, news, event, job, and team list/detail pages; career, FAQ, gallery, pricing, and notifications |
-| Commerce | `cart`, `checkout`, `order-success`, `orders`, `returns` |
-| Customer | `customer-account`, `customer-profile`, `customer-orders`, `customer-addresses`, `customer-wishlist`, `customer-change-password` |
+| Website | Home, dynamic pages, custom-section detail, contact, dedicated clients page, thank-you page |
+| Content | Service, product, project, blog, news, event, job, and team list/detail pages; career, FAQ, gallery, pricing, notifications |
+| Commerce | Cart, checkout, order success, orders, returns |
+| Customer | Account, profile, orders, addresses, wishlist, change password |
 
-Product collections use `templates/product-list.html` with collection/filter
-data from the backend. Login, registration, password recovery, and logout are
-platform-managed routes rather than Atlas template files. Use supplied URLs
-such as `ecommerce.urls.login` and `ecommerce.urls.register`; do not hard-code
-tenant paths. The commerce and customer templates are selected only when the
-corresponding theme-page options are enabled in LaysanX.
+Product collections use `templates/product-list.html` with backend collection
+and filter data. Login, registration, password recovery, and logout are
+platform-managed routes, not Atlas templates. Use backend URLs such as
+`ecommerce.urls.login`; do not hard-code tenant path prefixes.
 
-## Runtime data and placeholders
-
-The renderer supplies shared objects plus route-specific data. Read the
-existing templates for field names and null/empty guards before adding a new
-section. Common objects include:
+## Runtime objects and placeholders
 
 | Object | Purpose |
 | --- | --- |
-| `site`, `seo`, `settings` | Tenant identity, metadata, layout/settings |
+| `site`, `seo`, `settings` | Tenant identity, metadata, layout, and settings, including admin header/footer code |
 | `menus.header`, `menus.footer`, `routes` | Navigation and tenant-aware URLs |
-| `home`, `page`, `section_controls` | Enabled sections, order, headings, counts, page content |
-| `listing_products`, `product`, `product_filters` | Product cards, detail/variants, collection filters |
-| `ecommerce`, `cart`, `checkout`, `customer_orders` | Storefront state and actions on relevant routes |
+| `home`, `page`, `section_controls` | Active sections, order, content and headings |
+| `product`, `listing_products`, `product_filters` | Images, variants, listings and filters |
+| `ecommerce`, `cart`, `checkout`, `customer_orders` | Storefront state and actions |
 | `forms.contact`, `forms.antiforgery_field` | Assigned forms and POST protection |
-
-Examples already used in Atlas:
+| `form_submission` | Submitted form message on the thank-you page |
+| `welcome_popup` | Enabled popup, assigned form and display settings |
+| `chat_widget` | Active widget embed details, when configured |
 
 ```liquid
 {{ seo.title | default: site.name }}
@@ -89,21 +80,18 @@ Examples already used in Atlas:
 {% endfor %}
 ```
 
-Keep `home.ordered_sections` and `page.ordered_sections` when changing layouts.
-These collections reflect admin ordering and enabled sections, including
-marketing/auxiliary sections and dynamic-page blocks. Check the relevant
-active flag and data collection before rendering. Do not add hard-coded sample
-cards or show a section merely because its data exists: disabled content must
-remain hidden. Use the backend-provided image URLs, labels, links, and
-formatted prices instead of fixed demo values.
+Keep `home.ordered_sections` and `page.ordered_sections` when changing
+layouts. They reflect admin ordering and enabled marketing, auxiliary, and
+dynamic-page sections. Do not show a section just because its data exists.
+Use backend image URLs, labels, links, currency values, and product data.
 
 ## Forms and secure actions
 
-For assigned contact/inline forms, keep the backend-supplied `submit_url`,
-`fields`, generated `input_html`, `formId`, and conditional CAPTCHA. See
-`sections/contact-form.html` and `sections/inline-form.html`; do not replace
-dynamic fields with a hard-coded contact form. POST forms must retain the
-existing antiforgery field:
+Assigned contact and inline forms must keep the backend `submit_url`, fields,
+generated `input_html`, form ID, conditional CAPTCHA, and antiforgery field.
+The shared submission handler redirects successful enquiries to the dedicated
+thank-you page. The welcome-popup form uses a separate JSON handler and shows
+its response inside the popup.
 
 ```liquid
 <form method="post" action="{{ forms.contact.submit_url }}" enctype="multipart/form-data">
@@ -116,81 +104,73 @@ existing antiforgery field:
 ```
 
 Cart, coupon, checkout, wishlist, address, profile, and other POST actions
-also need their existing action URLs, input names, hidden IDs, and antiforgery
-field. Use `| raw` only for HTML intentionally supplied by the trusted
-LaysanX renderer (such as the token or generated form controls); escape
-ordinary text and attribute values as appropriate. Never put API secret keys,
-payment secrets, or tenant credentials in theme files or browser JavaScript.
+likewise need their supplied action URLs, input names, hidden IDs, and
+antiforgery field. Use `| raw` only for trusted HTML generated by LaysanX;
+escape ordinary text and attribute values. Never put API secret keys,
+payment secrets, or tenant credentials in browser code.
 
-## Ecommerce and interactions
+## Ecommerce and interaction contracts
 
-- Product listing and collections share `product-list.html`; keep search,
-  sort, category/brand/attribute filters, and query field names working.
-- Product images, galleries, variants, swatches, prices, and availability come
-  from backend product data. Preserve `product.variant_groups`,
-  `product.variant_payload_json`, variant IDs, and the `data-atlas-product-form`
-  hooks used by `assets/js/main.js`.
-- Keep `ecommerce.enabled` checks, `ecommerce.urls.*` links, cart actions,
-  formatted currency values, and checkout gateway data. Do not show purchase
-  controls when commerce is disabled.
-- Keep gallery category/filter and lightbox hooks, navigation behavior, and
-  accessible button labels when restyling interactive components.
-- Payment selection and order totals are backend-driven. Never calculate a
-  trusted checkout total or embed gateway credentials in the theme.
+- Preserve product filters, collection data, gallery images, variant groups,
+  swatches, prices, availability, and `data-atlas-product-form` hooks.
+- Keep `ecommerce.enabled` checks, `ecommerce.urls.*`, formatted currency,
+  cart actions, checkout gateway data, and customer-account behavior.
+- Keep gallery category/filter and lightbox hooks plus keyboard-accessible
+  controls. Hide disabled or empty modules.
+- Payment selection and totals are backend-driven. Do not calculate trusted
+  checkout totals or embed gateway credentials in the theme.
 
-Templates load Bootstrap, icon fonts, and selected UI/payment scripts from
-external CDNs. If your deployment requires offline assets or a stricter
-content-security policy, vendor approved dependencies under `assets/` and
-update their references; test the affected checkout and UI flows afterward.
+Templates load Bootstrap and icon fonts from CDNs. If deploying offline or
+with stricter content-security rules, vendor approved assets under `assets/`
+and test the affected pages.
 
-## Safe customization
+## Live chat
 
-Change layout, typography, colors, spacing, images, card styles, and section
-composition in `templates/`, `sections/`, `assets/css/style.css`, and
-`assets/js/main.js`. When changing behavior, preserve:
+Every template renders `sections/footer.html`. When a widget is active,
+that section loads the existing LaysanX widget script using the backend's
+`chat_widget.client_id`, `widget_key`, `script_url`, and current `domain`.
+The widget API validates the exact hostname against **Client Admin > Chat
+Widget > Allowed Domains**. Add both root and `www` hostnames when both are
+used. Do not hard-code a widget key in a theme or bypass domain validation.
+The widget requires the corresponding client-app runtime to be deployed.
 
-- template and partial paths referenced by `theme.json` or `{% render %}`;
-- object names, loop variables, section visibility/order checks, and
-  tenant-aware route/asset URLs;
-- form actions, antiforgery tokens, field names, IDs, and CAPTCHA handling;
-- variant, gallery, cart, checkout, and customer-account JavaScript hooks;
-- responsive layout, keyboard access, alt text, and visible focus styles.
+## Header and footer code
 
-HTML templates use two-space indentation. Keep Liquid tags as written: the
-LaysanX renderer does not support whitespace-control delimiters such as
-`{%-`, `-%}`, `{{-`, or `-}}`. A generic Liquid formatter may add them, so
-check formatted templates before publishing.
+The theme renders `settings.header_script` inside `<head>` and
+`settings.footer_script` after the shared footer. These values come from the
+client admin's Header Code and Footer Code settings. Footer code still renders
+when the visual footer section is disabled, so floating buttons and other
+site-wide integrations remain available on every page. Add only trusted code
+in these administrator-controlled fields; external resources must also be
+allowed by the uploaded-theme content security policy.
 
-Test both an empty module and a populated module. A missing image, section,
-variant, or form may reflect missing backend data or a disabled admin setting,
-not just CSS.
+## Safe customization and packaging
 
-## Packaging and checks
+You may change structure, styles, and interactions in `templates/`,
+`sections/`, and `assets/`. Preserve manifest paths, object names, enabled
+checks, tenant-aware URLs, form and commerce actions, JavaScript hooks, alt
+text, and visible focus styles. HTML uses two-space indentation. Avoid
+generic Liquid formatters that insert unsupported whitespace-control tags
+such as `{%-`, `-%}`, `{{-`, and `-}}`.
 
-GitHub's **Code > Download ZIP** is directly uploadable: LaysanX accepts its
-single enclosing folder and finds `theme.json` inside it. The release ZIP is
-also ready to upload. To package a local checkout yourself, run this in the
-repository root:
+The theme uploader accepts HTML, CSS, JavaScript, JSON, Markdown/text, common
+web images, and fonts. It rejects extensionless files, server-side code,
+executables, and unsafe paths. Do not include `.git`, `.DS_Store`, generated
+downloads, or credentials. GitHub's source ZIP is directly uploadable when
+the repository contains only these supported files. For a local checkout,
+package from the repository root:
 
 ```bash
-zip -r atlas-theme.zip theme.json README.md LICENSE.md templates sections assets
-unzip -t atlas-theme.zip
+zip -r laysanx-atlas.zip theme.json README.md LICENSE.md templates sections assets
+unzip -t laysanx-atlas.zip
 ```
 
-Keep only supported theme files. The uploader accepts HTML, CSS, JavaScript,
-JSON, Markdown/text, common web images, and font files. It rejects files with
-no extension (which is why the license is `LICENSE.md`), server-side code,
-executables, and unsafe paths. Do not include `.git`, local configuration,
-credentials, or generated downloads in the package.
-
-Before sharing a change, preview at desktop and mobile widths and check: home
-and dynamic-page section visibility/order; menus and CTAs; content listings
-and detail images; gallery filters/lightbox; assigned forms and CAPTCHA;
-product filters/variants; cart, coupon, checkout and payment; customer pages;
-and empty/disabled states. Availability depends on the tenant's enabled
-modules and configured backend data.
+Before publishing, test desktop and mobile layouts, disabled and populated
+sections, menus and CTAs, product images and variants, cart and checkout,
+customer pages, dynamic forms and CAPTCHA, popup and thank-you routes, gallery
+filters/lightbox, and chat on each allowed domain. A missing item may be
+caused by backend settings, not the template.
 
 ## License
 
-Copyright (c) 2026 Laysan Technologies. Licensed under the
-[MIT License](LICENSE.md).
+Copyright (c) 2026 Laysan Technologies. Licensed under the [MIT License](LICENSE.md).

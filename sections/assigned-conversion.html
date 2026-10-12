@@ -4,6 +4,11 @@
       <div class="col-12 col-lg-6 order-lg-1">
         <div class="content-card conversion-form-card">
           <h3>{{ assigned_form.heading | default: assigned_form.name }}</h3>
+          {% if assigned_form.error_message != blank %}
+            <div class="conversion-alert conversion-alert-error" role="alert">
+              {{ assigned_form.error_message }}
+            </div>
+          {% endif %}
           <form
             method="post"
             action="{{ assigned_form.submit_url }}"

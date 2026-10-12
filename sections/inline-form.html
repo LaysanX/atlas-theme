@@ -1,6 +1,11 @@
 {% if assigned_form.id > 0 %}
   <div class="content-card conversion-form-card inline-form" data-section="inline-form">
     <h3>{{ assigned_form.heading | default: assigned_form.name }}</h3>
+    {% if assigned_form.error_message != blank %}
+      <div class="conversion-alert conversion-alert-error" role="alert">
+        {{ assigned_form.error_message }}
+      </div>
+    {% endif %}
     <form
       method="post"
       action="{{ assigned_form.submit_url }}"

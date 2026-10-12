@@ -22,6 +22,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
     <link rel="stylesheet" href="{{ 'assets/css/style.css' | asset_url }}">
+    {% if settings.header_script != blank %}
+      {{ settings.header_script | raw }}
+    {% endif %}
   </head>
   <body class="theme-theliaison header-layout-text-left-slider-right slider-layout-text-left-slider-right {% if site.topbar.status or topbar.status %}has-topbar {% endif %}atlas-page atlas-page-job-detail">
     {% render 'sections/header.html' %}

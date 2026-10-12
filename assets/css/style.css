@@ -2600,6 +2600,12 @@ p {
     border: 1px solid rgba(15, 118, 110, 0.18);
 }
 
+.conversion-alert-error {
+    background: rgba(185, 28, 28, 0.08);
+    color: #991b1b;
+    border: 1px solid rgba(185, 28, 28, 0.2);
+}
+
 .conversion-form-actions {
     display: flex;
     flex-wrap: wrap;
@@ -4860,62 +4866,105 @@ p {
     height: 400px;
 }
 
-.thankyou-page {
-    padding-top: 24px;
+.atlas-page-thank-you .thankyou-page {
+    min-height: min(760px, 85svh);
+    padding: clamp(32px, 5vw, 64px) 0 clamp(72px, 9vw, 120px);
+    background: radial-gradient(circle at 50% 42%, #fff 0, #f7f9fa 78%);
 }
 
-.thankyou-card {
+.atlas-page-thank-you .thankyou-card {
     width: min(100%, 760px);
     margin: 0 auto;
     display: grid;
     justify-items: center;
-    gap: 18px;
-    padding: clamp(30px, 5vw, 54px);
+    gap: clamp(20px, 2.5vw, 28px);
+    padding: clamp(48px, 6vw, 72px) clamp(24px, 5vw, 64px);
     text-align: center;
-    border-radius: 26px;
-    background: rgba(255, 255, 255, 0.96);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(15, 23, 42, 0.09);
+    border-radius: clamp(22px, 3vw, 28px);
+    background: #fff;
+    box-shadow: 0 30px 75px rgba(15, 23, 42, 0.1);
 }
 
-.thankyou-icon {
+.atlas-page-thank-you .thankyou-icon {
     width: 82px;
     height: 82px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     border-radius: 50%;
     background: rgba(15, 118, 110, 0.12);
     color: var(--theme-primary);
-    font-size: 2rem;
+    font-size: 2.25rem;
 }
 
-.thankyou-card h1 {
+.atlas-page-thank-you .thankyou-card .eyebrow {
+    margin-top: 2px;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+}
+
+.atlas-page-thank-you .thankyou-card h1 {
     margin: 0;
+    color: var(--text);
+    font-size: clamp(2.85rem, 5vw, 3.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
 }
 
-.thankyou-card p {
+.atlas-page-thank-you .thankyou-card p {
     max-width: 42ch;
+    margin: 0;
     color: var(--muted);
-    font-size: 1.04rem;
+    font-size: clamp(1rem, 1.8vw, 1.16rem);
+    line-height: 1.65;
 }
 
-.thankyou-context {
+.atlas-page-thank-you .thankyou-context {
     display: inline-flex;
     align-items: center;
-    min-height: 42px;
+    min-height: 38px;
     padding: 0 16px;
     border-radius: 999px;
     background: rgba(15, 118, 110, 0.08);
     color: var(--theme-primary);
+    font-size: 0.86rem;
     font-weight: 700;
 }
 
-.thankyou-actions {
+.atlas-page-thank-you .thankyou-actions {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 14px;
+    margin-top: 2px;
+}
+
+.atlas-page-thank-you .thankyou-actions .btn {
+    min-width: 146px;
+    min-height: 48px;
+    padding: 11px 24px;
+    border-radius: 11px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+@media (max-width: 575.98px) {
+    .atlas-page-thank-you .thankyou-page {
+        min-height: 0;
+        padding: 24px 0 64px;
+    }
+
+    .atlas-page-thank-you .thankyou-card {
+        padding: 42px 20px;
+    }
+
+    .atlas-page-thank-you .thankyou-actions {
+        width: 100%;
+    }
+
+    .atlas-page-thank-you .thankyou-actions .btn {
+        width: 100%;
+    }
 }
 
 .home-intro-section {

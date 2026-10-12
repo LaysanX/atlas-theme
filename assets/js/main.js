@@ -513,7 +513,12 @@ document.addEventListener("DOMContentLoaded", function () {
         var popupKey = welcomePopup.getAttribute("data-once-key") || "welcome-popup";
         var popupFrequency = (welcomePopup.getAttribute("data-display-frequency") || "once").toLowerCase();
         var popupDelay = Math.max(0, parseInt(welcomePopup.getAttribute("data-delay-seconds") || "0", 10)) * 1000;
-        var popupWasShown = popupFrequency === "once" && window.localStorage.getItem(popupKey) === "1";
+        var popupWasShown = false;
+        try {
+            popupWasShown = popupFrequency === "once" && window.localStorage.getItem(popupKey) === "1";
+        } catch (error) {
+            // Private browsing may block local storage; the popup should still work.
+        }
         var showWelcomePopup = function () {
             if (popupWasShown) {
                 return;
@@ -523,7 +528,11 @@ document.addEventListener("DOMContentLoaded", function () {
             welcomePopup.classList.add("is-open");
             welcomePopup.setAttribute("aria-hidden", "false");
             if (popupFrequency === "once") {
-                window.localStorage.setItem(popupKey, "1");
+                try {
+                    window.localStorage.setItem(popupKey, "1");
+                } catch (error) {
+                    // Storage is optional for this display preference.
+                }
             }
         };
         var closeWelcomePopup = function () {
@@ -543,5 +552,46 @@ document.addEventListener("DOMContentLoaded", function () {
                 closeWelcomePopup();
             }
         });
+
+        var popupForm = document.getElementById("welcomePopupForm");
+        var popupFeedback = document.getElementById("welcomePopupFeedback");
+        var popupSubmitButton = document.getElementById("welcomePopupSubmitButton");
+        if (popupForm) {
+            popupForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+                if (popupSubmitButton.disabled) {
+                    return;
+                }
+
+                popupSubmitButton.disabled = true;
+                popupFeedback.classList.add("d-none");
+                popupFeedback.classList.remove("conversion-alert-success", "conversion-alert-error");
+
+                try {
+                    var response = await fetch(popupForm.action, {
+                        method: "POST",
+                        body: new FormData(popupForm),
+                        credentials: "same-origin",
+                        headers: { "X-Requested-With": "XMLHttpRequest" }
+                    });
+                    var contentType = response.headers.get("content-type") || "";
+                    var result = contentType.includes("application/json") ? await response.json() : null;
+                    if (!response.ok || !result || !result.success) {
+                        throw new Error(result && result.message || "Something went wrong while submitting the popup form.");
+                    }
+
+                    popupFeedback.textContent = result.message || "Thanks. We have received your details.";
+                    popupFeedback.classList.add("conversion-alert-success");
+                    popupForm.reset();
+                    window.setTimeout(closeWelcomePopup, 1800);
+                } catch (error) {
+                    popupFeedback.textContent = error.message || "Something went wrong while submitting the popup form.";
+                    popupFeedback.classList.add("conversion-alert-error");
+                } finally {
+                    popupFeedback.classList.remove("d-none");
+                    popupSubmitButton.disabled = false;
+                }
+            });
+        }
     }
 });
