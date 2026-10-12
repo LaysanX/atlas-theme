@@ -51,14 +51,24 @@
                     {% if site.address != blank %}
                       <li>{{ site.address }}</li>
                     {% endif %}
-                    {% if site.phone != blank %}
+                    {% if site.phone1 != blank %}
                       <li>
-                        <a href="tel:{{ site.phone }}">{{ site.phone }}</a>
+                        <a href="tel:{{ site.phone1 | escape }}">{{ site.phone1 }}</a>
                       </li>
                     {% endif %}
-                    {% if site.email != blank %}
+                    {% if site.phone2 != blank %}
                       <li>
-                        <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+                        <a href="tel:{{ site.phone2 | escape }}">{{ site.phone2 }}</a>
+                      </li>
+                    {% endif %}
+                    {% if site.email1 != blank %}
+                      <li>
+                        <a href="mailto:{{ site.email1 | escape }}">{{ site.email1 }}</a>
+                      </li>
+                    {% endif %}
+                    {% if site.email2 != blank %}
+                      <li>
+                        <a href="mailto:{{ site.email2 | escape }}">{{ site.email2 }}</a>
                       </li>
                     {% endif %}
                   </ul>
@@ -131,18 +141,28 @@
                 {% if footer_data.address != blank or site.address != blank %}
                   <li>{{ footer_data.address | default: site.address }}</li>
                 {% endif %}
-                {% if footer_data.phone != blank or site.phone != blank %}
+                {% if footer_data.phone != blank or site.phone1 != blank %}
                   <li>
-                    <a href="tel:{{ footer_data.phone | default: site.phone }}">
-                      {{ footer_data.phone | default: site.phone }}
+                    <a href="tel:{{ footer_data.phone | default: site.phone1 | escape }}">
+                      {{ footer_data.phone | default: site.phone1 }}
                     </a>
                   </li>
                 {% endif %}
-                {% if footer_data.email != blank or site.email != blank %}
+                {% if site.phone2 != blank %}
                   <li>
-                    <a href="mailto:{{ footer_data.email | default: site.email }}">
-                      {{ footer_data.email | default: site.email }}
+                    <a href="tel:{{ site.phone2 | escape }}">{{ site.phone2 }}</a>
+                  </li>
+                {% endif %}
+                {% if footer_data.email != blank or site.email1 != blank %}
+                  <li>
+                    <a href="mailto:{{ footer_data.email | default: site.email1 | escape }}">
+                      {{ footer_data.email | default: site.email1 }}
                     </a>
+                  </li>
+                {% endif %}
+                {% if site.email2 != blank %}
+                  <li>
+                    <a href="mailto:{{ site.email2 | escape }}">{{ site.email2 }}</a>
                   </li>
                 {% endif %}
               </ul>
@@ -189,3 +209,11 @@
     defer
   ></script>
 {% endif %}
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/service-worker.js').catch(function () {});
+    });
+  }
+</script>

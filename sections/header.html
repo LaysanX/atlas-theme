@@ -1,8 +1,8 @@
 {% assign site_name = site.name | default: 'LaysanX' %}
 {% assign site_logo = site.logo | default: '' %}
 {% assign base_path = site.base_path | default: '' %}
-{% assign header_cta_text = settings.header_cta_text %}
-{% assign header_cta_url = settings.header_cta_url %}
+{% assign header_cta_text = settings.header_cta_text | default: 'Talk To Us' %}
+{% assign header_cta_url = settings.header_cta_url | default: routes.contact %}
 {% assign topbar_data = topbar | default: site.topbar %}
 {% if topbar_data.status == true %}
   <div class="topbar" style="background: {{ topbar_data.background_color | default: '#17253a' }};">
@@ -171,7 +171,7 @@
           </div>
         {% endif %}
 
-        {% if header_cta_text != blank and header_cta_url != blank %}
+        {% if settings.header_cta_text != blank or settings.header_cta_url != blank %}
           <div class="header-cta">
             <a href="{{ header_cta_url }}" class="btn btn-primary">{{ header_cta_text }}</a>
           </div>

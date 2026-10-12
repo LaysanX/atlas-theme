@@ -124,6 +124,38 @@ Templates load Bootstrap and icon fonts from CDNs. If deploying offline or
 with stricter content-security rules, vendor approved assets under `assets/`
 and test the affected pages.
 
+## SEO and PWA
+
+All templates render `sections/head-meta.html`. It uses backend page SEO fields
+for title, description, keywords, canonical URL, and sharing image, plus the
+site name, favicon, and primary color from Client Admin settings. Keep metadata
+in this shared section instead of duplicating it in individual templates.
+The Thank You template remains `noindex,follow`.
+
+The theme links a tenant-scoped `/atlas.webmanifest` and registers the client
+app's `/service-worker.js`. The manifest uses saved site name, primary color,
+favicon, and the correct path-based start URL. The service worker refreshes
+manifests online and uses its cached copy offline. These routes and assets
+belong to the client app, not the ZIP; deploy the matching client-app runtime
+before publishing Atlas 2.0.5. Verify favicon, canonical URL, social image,
+and manifest on both a custom domain and a path-based tenant.
+
+## Client Admin settings
+
+The shared `sections/site-settings.html` applies saved colors, font families,
+and font sizes on every template. Header layout, transparency, sticky behavior,
+slider layout, logo, and CTA come from Settings; product-detail layout also
+follows its saved choice. Contact text, both phone/email values, address,
+support hours, map address, footer content/logo/copyright, and the assigned
+contact form are backend-driven. Service and project listings honor their
+saved column, row/page-size, and sort settings; product sorting and limits are
+applied by the client app, with Atlas honoring the saved column count.
+
+Blog automation, domain/account details, CAPTCHA secrets, robots.txt, and
+sitemap.xml are handled by the client app rather than exposed as theme
+variables. Only the public CAPTCHA widget markup/key reaches a form when
+CAPTCHA is enabled. Do not copy these server-side fields into the theme.
+
 ## Live chat
 
 Every template renders `sections/footer.html`. When a widget is active,

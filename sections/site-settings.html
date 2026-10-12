@@ -1,0 +1,102 @@
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="{{ settings.font_url | escape }}">
+    <style>
+      :root {
+        --theme-primary: {{ settings.primary_color_css | raw }};
+        --theme-secondary: {{ settings.secondary_color_css | raw }};
+        --client-body-font-family: {{ settings.body_font_css | raw }};
+        --client-heading-font-family: {{ settings.heading_font_css | raw }};
+        --client-body-size: {{ settings.body_font_size }}px;
+        --client-heading-size: {{ settings.heading_font_size }}px;
+        --client-subheading-size: {{ settings.subheading_font_size }}px;
+      }
+
+      body.atlas-page,
+      body.atlas-page p,
+      body.atlas-page a,
+      body.atlas-page li,
+      body.atlas-page span,
+      body.atlas-page label,
+      body.atlas-page small,
+      body.atlas-page strong,
+      body.atlas-page button,
+      body.atlas-page input,
+      body.atlas-page select,
+      body.atlas-page textarea {
+        font-family: var(--client-body-font-family) !important;
+      }
+
+      body.atlas-page {
+        font-size: var(--client-body-size);
+      }
+
+      body.atlas-page :is(p, a, li, span, label, small, strong, button, input, select, textarea, .btn) {
+        font-size: var(--client-body-size) !important;
+      }
+
+      body.atlas-page h1,
+      body.atlas-page h2,
+      body.atlas-page h3,
+      body.atlas-page h4,
+      body.atlas-page h5,
+      body.atlas-page h6 {
+        font-family: var(--client-heading-font-family) !important;
+      }
+
+      body.atlas-page h1,
+      body.atlas-page .hero-title,
+      body.atlas-page .page-title {
+        font-size: clamp(1.9rem, 1.2rem + 2vw, var(--client-heading-size));
+      }
+
+      body.atlas-page h2,
+      body.atlas-page .section-title {
+        font-size: clamp(1.55rem, 1.05rem + 1.45vw, calc(var(--client-heading-size) * 0.82));
+      }
+
+      body.atlas-page .section-subtitle,
+      body.atlas-page .page-hero-subtitle,
+      body.atlas-page .lead {
+        font-size: clamp(0.95rem, 0.86rem + 0.45vw, var(--client-subheading-size));
+      }
+
+      body.atlas-page .site-header.header-is-sticky {
+        position: sticky;
+        top: 0;
+        z-index: 1100;
+      }
+
+      body.atlas-page.header-layout-overlay-header .site-header {
+        position: absolute;
+      }
+
+      @media (min-width: 1200px) {
+        body.atlas-page.header-layout-left-sidebar-header {
+          padding-left: 320px;
+        }
+
+        body.atlas-page.header-layout-left-sidebar-header .site-header {
+          position: fixed;
+          width: 320px;
+          height: 100vh;
+          overflow-y: auto;
+        }
+
+        body.atlas-page.header-layout-left-sidebar-header main {
+          margin-left: 0;
+        }
+      }
+
+      @media (max-width: 1199.98px) {
+        body.atlas-page.header-layout-left-sidebar-header .site-header {
+          position: relative;
+          width: 100%;
+          min-height: 0;
+        }
+
+        body.atlas-page.header-layout-left-sidebar-header main {
+          margin-left: 0;
+        }
+      }
+    </style>

@@ -20,6 +20,28 @@
     --shell: 100%;
 }
 
+.atlas-listing-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--atlas-columns, 3), minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .product-detail-layout-image-right-content-left .detail-hero-col-media { order: 2; }
+    .product-detail-layout-image-right-content-left .detail-hero-col-copy { order: 1; }
+    .product-detail-layout-full-slider-content-below .detail-hero-col { width: 100%; flex: 0 0 100%; }
+    .product-detail-layout-full-slider-content-below .detail-hero-col-media { order: 1; }
+    .product-detail-layout-full-slider-content-below .detail-hero-col-copy { order: 2; }
+}
+
+@media (max-width: 991.98px) {
+    .atlas-listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 575.98px) {
+    .atlas-listing-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* Editorial and storefront detail pages share the same restrained card system. */
 .atlas-directory { background: #f4f7fa; min-height: 34rem; }
 .atlas-editorial-card { display: flex; flex-direction: column; overflow: hidden; background: #fff; border: 1px solid #e1e9ef; border-radius: 1.1rem; box-shadow: 0 12px 34px rgba(23,45,67,.06); transition: transform .2s ease, box-shadow .2s ease; }

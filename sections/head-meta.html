@@ -1,0 +1,22 @@
+    <title>{{ seo.full_title | escape }}</title>
+    <meta name="description" content="{{ seo.description | escape }}">
+    <meta name="keywords" content="{{ seo.keywords | escape }}">
+    <meta name="theme-color" content="{{ settings.primary_color_css | escape }}">
+    <link rel="canonical" href="{{ seo.canonical_url | escape }}">
+    <meta property="og:title" content="{{ seo.title | escape }}">
+    <meta property="og:description" content="{{ seo.description | escape }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ seo.canonical_url | escape }}">
+    <meta name="twitter:title" content="{{ seo.title | escape }}">
+    <meta name="twitter:description" content="{{ seo.description | escape }}">
+    {% if seo.image != blank %}
+      <meta property="og:image" content="{{ seo.image | escape }}">
+      <meta name="twitter:image" content="{{ seo.image | escape }}">
+    {% endif %}
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="{{ site.favicon | escape }}">
+    <link rel="manifest" href="{{ site.manifest_url | escape }}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="{{ site.name | escape }}">

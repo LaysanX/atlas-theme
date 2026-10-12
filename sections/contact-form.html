@@ -4,12 +4,12 @@
   <section class="section atlas-contact-section" data-reveal>
     <div class="shell contact-layout atlas-contact-layout">
       <div class="content-card contact-panel">
-        {% assign contact_heading = contact.heading
+        {% assign contact_heading = contact.left_heading
           | default: contact.title
           | default: section_data.title
           | default: page.title
         %}
-        {% assign contact_subheading = contact.subheading
+        {% assign contact_subheading = contact.left_subheading
           | default: contact.subtitle
           | default: section_data.subtitle
           | default: page.subheading
@@ -25,16 +25,28 @@
           <div class="rich-content">{{ page.content | raw }}</div>
         {% endif %}
         <div class="contact-points">
-          {% if contact.phone != blank %}
-            <a href="tel:{{ contact.phone }}" class="contact-point">
+          {% if contact.phone1 != blank %}
+            <a href="tel:{{ contact.phone1 | escape }}" class="contact-point">
               <strong>Phone</strong>
-              <span>{{ contact.phone }}</span>
+              <span>{{ contact.phone1 }}</span>
             </a>
           {% endif %}
-          {% if contact.email != blank %}
-            <a href="mailto:{{ contact.email }}" class="contact-point">
+          {% if contact.phone2 != blank %}
+            <a href="tel:{{ contact.phone2 | escape }}" class="contact-point">
+              <strong>Phone</strong>
+              <span>{{ contact.phone2 }}</span>
+            </a>
+          {% endif %}
+          {% if contact.email1 != blank %}
+            <a href="mailto:{{ contact.email1 | escape }}" class="contact-point">
               <strong>Email</strong>
-              <span>{{ contact.email }}</span>
+              <span>{{ contact.email1 }}</span>
+            </a>
+          {% endif %}
+          {% if contact.email2 != blank %}
+            <a href="mailto:{{ contact.email2 | escape }}" class="contact-point">
+              <strong>Email</strong>
+              <span>{{ contact.email2 }}</span>
             </a>
           {% endif %}
           {% if contact.address != blank %}
@@ -42,6 +54,12 @@
               <strong>Address</strong>
               <span>{{ contact.address }}</span>
             </div>
+          {% endif %}
+          {% if contact.map_url != blank %}
+            <a href="{{ contact.map_url | escape }}" class="contact-point" target="_blank" rel="noopener noreferrer">
+              <strong>Location</strong>
+              <span>View on map</span>
+            </a>
           {% endif %}
           {% if contact.hours != blank %}
             <div class="contact-point">
@@ -65,10 +83,10 @@
         <div class="content-card contact-form-placeholder atlas-contact-form-card">
           <span class="eyebrow">Send a message</span>
           <h3>
-            {{ contact.form_title | default: contact_form.heading | default: contact_form.name }}
+            {{ contact.right_heading | default: contact.form_title | default: contact_form.heading | default: contact_form.name }}
           </h3>
-          {% if contact.form_subtitle != blank %}
-            <p>{{ contact.form_subtitle }}</p>
+          {% if contact.right_subheading != blank or contact.form_subtitle != blank %}
+            <p>{{ contact.right_subheading | default: contact.form_subtitle }}</p>
           {% endif %}
           {% if contact_form.error_message != blank %}
             <div class="conversion-alert conversion-alert-error" role="alert">
